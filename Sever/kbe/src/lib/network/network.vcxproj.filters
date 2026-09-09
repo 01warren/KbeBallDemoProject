@@ -24,9 +24,6 @@
     <ClCompile Include="bundle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bundle_broadcast.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="channel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bundle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bundle_broadcast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="channel.h">
@@ -270,9 +264,6 @@
       <Filter>Inline Files</Filter>
     </None>
     <None Include="bundle.inl">
-      <Filter>Inline Files</Filter>
-    </None>
-    <None Include="bundle_broadcast.inl">
       <Filter>Inline Files</Filter>
     </None>
     <None Include="channel.inl">

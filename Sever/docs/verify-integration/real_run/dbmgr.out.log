@@ -1,0 +1,18 @@
+Logging to: F:\KBEngine\BallProject\KbeBallDemoProject\Sever\docs\verify-integration\real_run\assets/logs/dbmgr.*.log
+
+KBE_ROOT = F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/
+KBE_RES_PATH = F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/res/;F:/KBEngine/BallProject/KbeBallDemoProject/Sever/docs/verify-integration/real_run/assets/;F:/KBEngine/BallProject/KbeBallDemoProject/Sever/docs/verify-integration/real_run/assets/res/
+KBE_BIN_PATH = F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/bin/server/
+
+server-configs:
+	internalTcpAddr : 192.168.31.251:63527
+	componentID : 7683424351499583488
+
+Logging(changed) to: F:\KBEngine\BallProject\KbeBallDemoProject\Sever\docs\verify-integration\real_run\assets/logs/logger_dbmgr.*.log
+
+---- dbmgr Version: 2.5.10. ScriptVersion: 0.1.0. Pythoncore: 3.7.3. Protocol: 2678F694DEEF5E51A8203EB0759A22FE. Config: Release X64. Built: 14:43:50 Sep  9 2026. AppID: 7683424351499583488. UID: 63302. PID: 14524 ----
+Server jmz55: 12th Gen Intel(R) Core(TM) i9-12900K with 50045620kB RAM
+
+[INFO]: TelnetServer server is running on port 32000
+     dbmgr-1: [ERROR]: InterfacesHandler_Interfaces::reconnect(): couldn't connect to(interfaces server): 127.0.0.1:30099! Check kbengine[_defs].xml->interfaces->host and interfaces.*.log
+     dbmgr-1: [ERROR]: app::initialize(): initialization failed!

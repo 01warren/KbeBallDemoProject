@@ -1,0 +1,20 @@
+<root>
+	<!-- 单机三副本冒烟资产 A：副本绑定 127.0.0.1。
+		 B/C 仅 internalInterface 不同(127.0.0.2/127.0.0.3)，
+		 三份 <cluster> 其余字段必须完全一致(成员表顺序 = 副本序号)。
+		 副本 cid 由启动参数 --cid=30001/30002/30003 区分。 -->
+	<cluster>
+		<internalInterface> 127.0.0.1 </internalInterface>
+		<servicePort> 20093 </servicePort>
+		<peerPort> 20094 </peerPort>
+		<addresses>
+			<item> 127.0.0.1 </item>
+			<item> 127.0.0.2 </item>
+			<item> 127.0.0.3 </item>
+		</addresses>
+		<electionTimeout> 1200 </electionTimeout>
+		<heartbeatInterval> 400 </heartbeatInterval>
+		<componentHeartbeatInterval> 2 </componentHeartbeatInterval>
+		<componentLeaseSeconds> 6 </componentLeaseSeconds>
+	</cluster>
+</root>

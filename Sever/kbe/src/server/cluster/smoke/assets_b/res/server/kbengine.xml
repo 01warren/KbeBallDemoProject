@@ -1,0 +1,17 @@
+<root>
+	<!-- 单机三副本冒烟资产 B：副本绑定 127.0.0.2，其余同 assets_a -->
+	<cluster>
+		<internalInterface> 127.0.0.2 </internalInterface>
+		<servicePort> 20093 </servicePort>
+		<peerPort> 20094 </peerPort>
+		<addresses>
+			<item> 127.0.0.1 </item>
+			<item> 127.0.0.2 </item>
+			<item> 127.0.0.3 </item>
+		</addresses>
+		<electionTimeout> 1200 </electionTimeout>
+		<heartbeatInterval> 400 </heartbeatInterval>
+		<componentHeartbeatInterval> 2 </componentHeartbeatInterval>
+		<componentLeaseSeconds> 6 </componentLeaseSeconds>
+	</cluster>
+</root>

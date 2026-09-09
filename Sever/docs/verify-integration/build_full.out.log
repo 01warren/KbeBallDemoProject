@@ -1,0 +1,3148 @@
+
+  zlibstat.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\zlib.lib
+  DetourAlloc.cpp
+  common.cpp
+  xml.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\xml.lib
+  thread.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\thread.lib
+  jwsmtp.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\jwsmtp.lib
+  common.cpp
+  AABox.cpp
+  resmgr.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\resmgr.lib
+  amigaos.c
+  async.c
+  expat_static.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\expat.lib
+  apr.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\apr-1.lib
+  fmt.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\fmt.lib
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/common.cpp”)
+  
+  DetourAssert.cpp
+  DetourCommon.cpp
+  TmxEllipse.cpp
+  DetourCrowd.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“common.cpp”)
+  
+  asyn-ares.c
+  DetourLocalBoundary.cpp
+  server.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\server.lib
+  DetourNavMesh.cpp
+  dict.c
+  asyn-thread.c
+  TmxImage.cpp
+  hiredis.c
+  aprutil.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\aprutil-1.lib
+  DetourNavMeshBuilder.cpp
+  DetourNavMeshQuery.cpp
+  base64.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\async.c(70,52): warning C4267: “函数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\async.c(86,10): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\async.c(87,10): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+  libeay32.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\libeay32.lib
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(124,14): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(292,19): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(352,16): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(431,36): warning C4267: “=”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(683,35): warning C4267: “函数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(713,21): warning C4267: “函数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+  TmxImageLayer.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(744,31): warning C4267: “+=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(901,19): warning C4267: “+=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+  DetourNode.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(923,26): warning C4477: “sprintf”: 格式字符串“%u”需要类型“unsigned int”的参数，但可变参数 1 拥有了类型“size_t” [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(923,26):
+      请考虑在格式字符串中使用“%zu”
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(930,16): warning C4267: “+=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(994,19): warning C4267: “+=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(1009,26): warning C4477: “sprintf”: 格式字符串“%u”需要类型“unsigned int”的参数，但可变参数 1 拥有了类型“size_t” [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(1009,26):
+      请考虑在格式字符串中使用“%zu”
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(1015,16): warning C4267: “+=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\hiredis.c(1205,33): warning C4267: “函数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+  net.c
+  Box.cpp
+  DetourObstacleAvoidance.cpp
+  conncache.c
+  DetourPathCorridor.cpp
+  DetourPathQueue.cpp
+  log4cxx.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\log4cxx.lib
+  DetourProximityGrid.cpp
+  connect.c
+  DetourTileCache.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\net.c(265,56): warning C4133: “函数”: 从“size_t *”到“int *”的类型不兼容 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\net.c(392,11): warning C4244: “=”: 从“SOCKET”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\net.c(405,35): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“LPVOID” [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\net.c(428,36): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“LPVOID” [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+  sds.c
+  TmxLayer.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(54,15): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(84,19): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(105,26): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(123,15): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(124,22): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(136,21): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(137,24): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(158,15): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(159,22): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(219,24): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(220,15): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(230,20): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(234,18): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(242,22): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(250,24): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(251,15): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(256,15): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(262,15): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\deps\hiredis\sds.c(275,28): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\hiredis\redis-win\msvs\hiredis\hiredis.vcxproj]
+  test.c
+  DetourTileCacheBuilder.cpp
+  ssleay32.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\ssleay32.lib
+  content_encoding.c
+  navigation.cpp
+  Killing any running python.exe instances...
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxImageLayer.cpp”)
+  
+  helper.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\helper.lib
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxLayer.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxLayer.cpp”)
+  
+  cookie.c
+  datatype.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/datatype.cpp”)
+  
+  common.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\common.lib
+  db_exception.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+  Crypto.cpp
+  Getting build info from git
+  curl_addrinfo.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“db_exception.cpp”)
+  
+  hiredis.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\hiredis.lib
+  curl_ctype.c
+  Building heads/master-dirty:2bc6649 master
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\PCbuild\pythoncore.vcxproj(523,5): warning : Toolset v143 is not used for official builds. Your build may have errors or incompatibilities.
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\PCbuild\pythoncore.vcxproj(526,5): warning : Not including zlib is not a supported configuration.
+  curl_des.c
+  format.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(123,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxLayer.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(132,61): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxLayer.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(141,59): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxLayer.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(156,52): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxLayer.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxLayer.cpp(227,42): warning C4267: “参数”: 从“size_t”转换到“uLong”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxLayer.cpp(235,14): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  curl_endian.c
+  common.cpp
+  pythoncore.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\bin\server\python37.dll
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+  ..\Lib\abc.py
+  ..\Lib\aifc.py
+  ..\Lib\antigravity.py
+  ..\Lib\argparse.py
+  ..\Lib\ast.py
+  ..\Lib\asynchat.py
+  ..\Lib\asyncore.py
+  ..\Lib\base64.py
+  ..\Lib\bdb.py
+  ..\Lib\binhex.py
+  ..\Lib\bisect.py
+  ..\Lib\bz2.py
+  ..\Lib\calendar.py
+  ..\Lib\cgi.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(123,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(132,61): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(141,59): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+  ..\Lib\cgitb.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(156,52): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+  ..\Lib\chunk.py
+  curl_fnmatch.c
+  ..\Lib\cmd.py
+  ..\Lib\code.py
+  ..\Lib\codecs.py
+  ..\Lib\codeop.py
+  ..\Lib\colorsys.py
+  ..\Lib\compileall.py
+  ..\Lib\configparser.py
+  ..\Lib\contextlib.py
+  ..\Lib\contextvars.py
+  ..\Lib\copy.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxObjectGroup.h(70,50): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+  ..\Lib\copyreg.py
+  ..\Lib\cProfile.py
+  ..\Lib\crypt.py
+  ..\Lib\csv.py
+  ..\Lib\dataclasses.py
+  ..\Lib\datetime.py
+  ..\Lib\decimal.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  ..\Lib\difflib.py
+  (编译源文件“navigation.cpp”)
+  
+  ..\Lib\dis.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation.cpp”)
+  
+  ..\Lib\doctest.py
+  ..\Lib\dummy_threading.py
+  ..\Lib\enum.py
+  ..\Lib\filecmp.py
+  ..\Lib\fileinput.py
+  ..\Lib\fnmatch.py
+  ..\Lib\formatter.py
+  ..\Lib\fractions.py
+  ..\Lib\ftplib.py
+  ..\Lib\functools.py
+  ..\Lib\genericpath.py
+  ..\Lib\getopt.py
+  ..\Lib\getpass.py
+  ..\Lib\gettext.py
+  ..\Lib\glob.py
+  ..\Lib\gzip.py
+  ..\Lib\hashlib.py
+  ..\Lib\heapq.py
+  ..\Lib\hmac.py
+  ..\Lib\imaplib.py
+  ..\Lib\imghdr.py
+  ..\Lib\imp.py
+  ..\Lib\inspect.py
+  ..\Lib\io.py
+  ..\Lib\ipaddress.py
+  ..\Lib\keyword.py
+  ..\Lib\linecache.py
+  ..\Lib\locale.py
+  ..\Lib\lzma.py
+  ..\Lib\macpath.py
+  ..\Lib\mailbox.py
+  ..\Lib\mailcap.py
+  ..\Lib\mimetypes.py
+  ..\Lib\modulefinder.py
+  ..\Lib\netrc.py
+  ..\Lib\nntplib.py
+  ..\Lib\ntpath.py
+  ..\Lib\nturl2path.py
+  ..\Lib\numbers.py
+  ..\Lib\opcode.py
+  ..\Lib\operator.py
+  ..\Lib\optparse.py
+  ..\Lib\os.py
+  ..\Lib\pathlib.py
+  ..\Lib\pdb.py
+  ..\Lib\pickle.py
+  ..\Lib\pickletools.py
+  ..\Lib\pipes.py
+  ..\Lib\pkgutil.py
+  ..\Lib\platform.py
+  ..\Lib\plistlib.py
+  ..\Lib\poplib.py
+  ..\Lib\posixpath.py
+  ..\Lib\pprint.py
+  ..\Lib\profile.py
+  ..\Lib\pstats.py
+  ..\Lib\pty.py
+  ..\Lib\pyclbr.py
+  ..\Lib\pydoc.py
+  ..\Lib\py_compile.py
+  ..\Lib\queue.py
+  ..\Lib\quopri.py
+  ..\Lib\random.py
+  ..\Lib\re.py
+  ..\Lib\reprlib.py
+  ..\Lib\rlcompleter.py
+  ..\Lib\runpy.py
+  ..\Lib\sched.py
+  ..\Lib\secrets.py
+  ..\Lib\selectors.py
+  ..\Lib\shelve.py
+  ..\Lib\shlex.py
+  ..\Lib\shutil.py
+  ..\Lib\signal.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  ..\Lib\site.py
+  ..\Lib\smtpd.py
+  ..\Lib\smtplib.py
+  ..\Lib\sndhdr.py
+  ..\Lib\socket.py
+  ..\Lib\socketserver.py
+  ..\Lib\sre_compile.py
+  (编译源文件“common.cpp”)
+  
+  ..\Lib\sre_constants.py
+  ..\Lib\sre_parse.py
+  ..\Lib\ssl.py
+  ..\Lib\stat.py
+  ..\Lib\statistics.py
+  ..\Lib\string.py
+  ..\Lib\stringprep.py
+  ..\Lib\struct.py
+  ..\Lib\subprocess.py
+  ..\Lib\sunau.py
+  ..\Lib\symbol.py
+  ..\Lib\symtable.py
+  ..\Lib\sysconfig.py
+  ..\Lib\tabnanny.py
+  ..\Lib\tarfile.py
+  ..\Lib\telnetlib.py
+  ..\Lib\tempfile.py
+  ..\Lib\textwrap.py
+  ..\Lib\this.py
+  ..\Lib\threading.py
+  ..\Lib\timeit.py
+  ..\Lib\token.py
+  ..\Lib\tokenize.py
+  ..\Lib\trace.py
+  ..\Lib\traceback.py
+  ..\Lib\tracemalloc.py
+  ..\Lib\tty.py
+  ..\Lib\turtle.py
+  ..\Lib\types.py
+  ..\Lib\typing.py
+  ..\Lib\uu.py
+  ..\Lib\uuid.py
+  ..\Lib\warnings.py
+  ..\Lib\wave.py
+  ..\Lib\weakref.py
+  ..\Lib\webbrowser.py
+  ..\Lib\xdrlib.py
+  ..\Lib\zipapp.py
+  ..\Lib\zipfile.py
+  ..\Lib\_bootlocale.py
+  ..\Lib\_collections_abc.py
+  ..\Lib\_compat_pickle.py
+  ..\Lib\_compression.py
+  ..\Lib\_dummy_thread.py
+  ..\Lib\_markupbase.py
+  ..\Lib\_osx_support.py
+  ..\Lib\_pydecimal.py
+  ..\Lib\_pyio.py
+  ..\Lib\_py_abc.py
+  ..\Lib\_sitebuiltins.py
+  ..\Lib\_strptime.py
+  ..\Lib\_threading_local.py
+  ..\Lib\_weakrefset.py
+  ..\Lib\__future__.py
+  ..\Lib\__phello__.foo.py
+  ..\Lib\asyncio\base_events.py
+  ..\Lib\asyncio\base_futures.py
+  ..\Lib\asyncio\base_subprocess.py
+  ..\Lib\asyncio\base_tasks.py
+  ..\Lib\asyncio\constants.py
+  ..\Lib\asyncio\coroutines.py
+  ..\Lib\asyncio\events.py
+  ..\Lib\asyncio\format_helpers.py
+  ..\Lib\asyncio\futures.py
+  ..\Lib\asyncio\locks.py
+  ..\Lib\asyncio\log.py
+  ..\Lib\asyncio\proactor_events.py
+  ..\Lib\asyncio\protocols.py
+  ..\Lib\asyncio\queues.py
+  ..\Lib\asyncio\runners.py
+  ..\Lib\asyncio\selector_events.py
+  ..\Lib\asyncio\sslproto.py
+  ..\Lib\asyncio\streams.py
+  ..\Lib\asyncio\subprocess.py
+  ..\Lib\asyncio\tasks.py
+  ..\Lib\asyncio\transports.py
+  ..\Lib\asyncio\unix_events.py
+  ..\Lib\asyncio\windows_events.py
+  ..\Lib\asyncio\windows_utils.py
+  ..\Lib\asyncio\__init__.py
+  TmxMap.cpp
+  ..\Lib\collections\abc.py
+  ..\Lib\collections\__init__.py
+  ..\Lib\concurrent\__init__.py
+  ..\Lib\concurrent\futures\process.py
+  ..\Lib\concurrent\futures\thread.py
+  ..\Lib\concurrent\futures\_base.py
+  ..\Lib\concurrent\futures\__init__.py
+  ..\Lib\ctypes\util.py
+  ..\Lib\ctypes\wintypes.py
+  ..\Lib\ctypes\_aix.py
+  ..\Lib\ctypes\_endian.py
+  ..\Lib\ctypes\__init__.py
+  ..\Lib\ctypes\macholib\dyld.py
+  ..\Lib\ctypes\macholib\dylib.py
+  ..\Lib\ctypes\macholib\fetch_macholib
+  ..\Lib\ctypes\macholib\fetch_macholib.bat
+  ..\Lib\ctypes\macholib\framework.py
+  ..\Lib\ctypes\macholib\README.ctypes
+  ..\Lib\ctypes\macholib\__init__.py
+  curl_gethostname.c
+  ..\Lib\ctypes\test\test_anon.py
+  ..\Lib\ctypes\test\test_arrays.py
+  ..\Lib\ctypes\test\test_array_in_pointer.py
+  ..\Lib\ctypes\test\test_as_parameter.py
+  ..\Lib\ctypes\test\test_bitfields.py
+  ..\Lib\ctypes\test\test_buffers.py
+  ..\Lib\ctypes\test\test_bytes.py
+  ..\Lib\ctypes\test\test_byteswap.py
+  ..\Lib\ctypes\test\test_callbacks.py
+  ..\Lib\ctypes\test\test_cast.py
+  ..\Lib\ctypes\test\test_cfuncs.py
+  ..\Lib\ctypes\test\test_checkretval.py
+  ..\Lib\ctypes\test\test_delattr.py
+  ..\Lib\ctypes\test\test_errno.py
+  ..\Lib\ctypes\test\test_find.py
+  ..\Lib\ctypes\test\test_frombuffer.py
+  ..\Lib\ctypes\test\test_funcptr.py
+  ..\Lib\ctypes\test\test_functions.py
+  ..\Lib\ctypes\test\test_incomplete.py
+  ..\Lib\ctypes\test\test_init.py
+  math.cpp
+  ..\Lib\ctypes\test\test_internals.py
+  ..\Lib\ctypes\test\test_keeprefs.py
+  ..\Lib\ctypes\test\test_libc.py
+  ..\Lib\ctypes\test\test_loading.py
+  ..\Lib\ctypes\test\test_macholib.py
+  ..\Lib\ctypes\test\test_memfunctions.py
+  ..\Lib\ctypes\test\test_numbers.py
+  ..\Lib\ctypes\test\test_objects.py
+  ..\Lib\ctypes\test\test_parameters.py
+  ..\Lib\ctypes\test\test_pep3118.py
+  ..\Lib\ctypes\test\test_pickling.py
+  ..\Lib\ctypes\test\test_pointers.py
+  ..\Lib\ctypes\test\test_prototypes.py
+  ..\Lib\ctypes\test\test_python_api.py
+  ..\Lib\ctypes\test\test_random_things.py
+  ..\Lib\ctypes\test\test_refcounts.py
+  ..\Lib\ctypes\test\test_repr.py
+  ..\Lib\ctypes\test\test_returnfuncptrs.py
+  ..\Lib\ctypes\test\test_simplesubclasses.py
+  ..\Lib\ctypes\test\test_sizes.py
+  ..\Lib\ctypes\test\test_slicing.py
+  ..\Lib\ctypes\test\test_stringptr.py
+  ..\Lib\ctypes\test\test_strings.py
+  ..\Lib\ctypes\test\test_structures.py
+  ..\Lib\ctypes\test\test_struct_fields.py
+  ..\Lib\ctypes\test\test_unaligned_structures.py
+  ..\Lib\ctypes\test\test_unicode.py
+  ..\Lib\ctypes\test\test_values.py
+  ..\Lib\ctypes\test\test_varsize_struct.py
+  ..\Lib\ctypes\test\test_win32.py
+  ..\Lib\ctypes\test\test_wintypes.py
+  ..\Lib\ctypes\test\__init__.py
+  ..\Lib\ctypes\test\__main__.py
+  ..\Lib\curses\ascii.py
+  ..\Lib\curses\has_key.py
+  ..\Lib\curses\panel.py
+  ..\Lib\curses\textpad.py
+  ..\Lib\curses\__init__.py
+  ..\Lib\dbm\dumb.py
+  ..\Lib\dbm\gnu.py
+  ..\Lib\dbm\ndbm.py
+  ..\Lib\dbm\__init__.py
+  ..\Lib\distutils\archive_util.py
+  ..\Lib\distutils\bcppcompiler.py
+  ..\Lib\distutils\ccompiler.py
+  ..\Lib\distutils\cmd.py
+  ..\Lib\distutils\config.py
+  ..\Lib\distutils\core.py
+  ..\Lib\distutils\cygwinccompiler.py
+  ..\Lib\distutils\debug.py
+  ..\Lib\distutils\dep_util.py
+  ..\Lib\distutils\dir_util.py
+  ..\Lib\distutils\dist.py
+  ..\Lib\distutils\errors.py
+  ..\Lib\distutils\extension.py
+  ..\Lib\distutils\fancy_getopt.py
+  ..\Lib\distutils\filelist.py
+  ..\Lib\distutils\file_util.py
+  ..\Lib\distutils\log.py
+  ..\Lib\distutils\msvc9compiler.py
+  ..\Lib\distutils\msvccompiler.py
+  ..\Lib\distutils\README
+  ..\Lib\distutils\spawn.py
+  ..\Lib\distutils\sysconfig.py
+  ..\Lib\distutils\text_file.py
+  ..\Lib\distutils\unixccompiler.py
+  ..\Lib\distutils\util.py
+  ..\Lib\distutils\version.py
+  ..\Lib\distutils\versionpredicate.py
+  ..\Lib\distutils\_msvccompiler.py
+  ..\Lib\distutils\__init__.py
+  ..\Lib\distutils\command\bdist.py
+  ..\Lib\distutils\command\bdist_dumb.py
+  ..\Lib\distutils\command\bdist_msi.py
+  ..\Lib\distutils\command\bdist_rpm.py
+  ..\Lib\distutils\command\bdist_wininst.py
+  ..\Lib\distutils\command\build.py
+  ..\Lib\distutils\command\build_clib.py
+  ..\Lib\distutils\command\build_ext.py
+  ..\Lib\distutils\command\build_py.py
+  ..\Lib\distutils\command\build_scripts.py
+  ..\Lib\distutils\command\check.py
+  ..\Lib\distutils\command\clean.py
+  ..\Lib\distutils\command\command_template
+  ..\Lib\distutils\command\config.py
+  ..\Lib\distutils\command\install.py
+  ..\Lib\distutils\command\install_data.py
+  ..\Lib\distutils\command\install_egg_info.py
+  ..\Lib\distutils\command\install_headers.py
+  ..\Lib\distutils\command\install_lib.py
+  ..\Lib\distutils\command\install_scripts.py
+  ..\Lib\distutils\command\register.py
+  ..\Lib\distutils\command\sdist.py
+  ..\Lib\distutils\command\upload.py
+  ..\Lib\distutils\command\__init__.py
+  ..\Lib\distutils\tests\Setup.sample
+  ..\Lib\distutils\tests\support.py
+  ..\Lib\distutils\tests\test_archive_util.py
+  ..\Lib\distutils\tests\test_bdist.py
+  ..\Lib\distutils\tests\test_bdist_dumb.py
+  ..\Lib\distutils\tests\test_bdist_msi.py
+  ..\Lib\distutils\tests\test_bdist_rpm.py
+  ..\Lib\distutils\tests\test_bdist_wininst.py
+  ..\Lib\distutils\tests\test_build.py
+  ..\Lib\distutils\tests\test_build_clib.py
+  ..\Lib\distutils\tests\test_build_ext.py
+  ..\Lib\distutils\tests\test_build_py.py
+  ..\Lib\distutils\tests\test_build_scripts.py
+  ..\Lib\distutils\tests\test_check.py
+  ..\Lib\distutils\tests\test_clean.py
+  ..\Lib\distutils\tests\test_cmd.py
+  ..\Lib\distutils\tests\test_config.py
+  ..\Lib\distutils\tests\test_config_cmd.py
+  ..\Lib\distutils\tests\test_core.py
+  ..\Lib\distutils\tests\test_cygwinccompiler.py
+  ..\Lib\distutils\tests\test_dep_util.py
+  ..\Lib\distutils\tests\test_dir_util.py
+  ..\Lib\distutils\tests\test_dist.py
+  ..\Lib\distutils\tests\test_extension.py
+  ..\Lib\distutils\tests\test_filelist.py
+  ..\Lib\distutils\tests\test_file_util.py
+  ..\Lib\distutils\tests\test_install.py
+  ..\Lib\distutils\tests\test_install_data.py
+  ..\Lib\distutils\tests\test_install_headers.py
+  ..\Lib\distutils\tests\test_install_lib.py
+  ..\Lib\distutils\tests\test_install_scripts.py
+  ..\Lib\distutils\tests\test_log.py
+  ..\Lib\distutils\tests\test_msvc9compiler.py
+  ..\Lib\distutils\tests\test_msvccompiler.py
+  ..\Lib\distutils\tests\test_register.py
+  ..\Lib\distutils\tests\test_sdist.py
+  ..\Lib\distutils\tests\test_spawn.py
+  ..\Lib\distutils\tests\test_sysconfig.py
+  ..\Lib\distutils\tests\test_text_file.py
+  ..\Lib\distutils\tests\test_unixccompiler.py
+  ..\Lib\distutils\tests\test_upload.py
+  ..\Lib\distutils\tests\test_util.py
+  ..\Lib\distutils\tests\test_version.py
+  ..\Lib\distutils\tests\test_versionpredicate.py
+  ..\Lib\distutils\tests\__init__.py
+  ..\Lib\email\architecture.rst
+  ..\Lib\email\base64mime.py
+  ..\Lib\email\charset.py
+  ..\Lib\email\contentmanager.py
+  ..\Lib\email\encoders.py
+  ..\Lib\email\errors.py
+  ..\Lib\email\feedparser.py
+  ..\Lib\email\generator.py
+  ..\Lib\email\header.py
+  ..\Lib\email\headerregistry.py
+  ..\Lib\email\iterators.py
+  ..\Lib\email\message.py
+  ..\Lib\email\parser.py
+  ..\Lib\email\policy.py
+  ..\Lib\email\quoprimime.py
+  ..\Lib\email\utils.py
+  ..\Lib\email\_encoded_words.py
+  ..\Lib\email\_header_value_parser.py
+  ..\Lib\email\_parseaddr.py
+  ..\Lib\email\_policybase.py
+  ..\Lib\email\__init__.py
+  ..\Lib\email\mime\application.py
+  ..\Lib\email\mime\audio.py
+  ..\Lib\email\mime\base.py
+  ..\Lib\email\mime\image.py
+  ..\Lib\email\mime\message.py
+  ..\Lib\email\mime\multipart.py
+  ..\Lib\email\mime\nonmultipart.py
+  ..\Lib\email\mime\text.py
+  ..\Lib\email\mime\__init__.py
+  ..\Lib\encodings\aliases.py
+  ..\Lib\encodings\ascii.py
+  ..\Lib\encodings\base64_codec.py
+  ..\Lib\encodings\big5.py
+  ..\Lib\encodings\big5hkscs.py
+  ..\Lib\encodings\bz2_codec.py
+  ..\Lib\encodings\charmap.py
+  ..\Lib\encodings\cp037.py
+  ..\Lib\encodings\cp1006.py
+  ..\Lib\encodings\cp1026.py
+  ..\Lib\encodings\cp1125.py
+  ..\Lib\encodings\cp1140.py
+  ..\Lib\encodings\cp1250.py
+  ..\Lib\encodings\cp1251.py
+  ..\Lib\encodings\cp1252.py
+  ..\Lib\encodings\cp1253.py
+  ..\Lib\encodings\cp1254.py
+  ..\Lib\encodings\cp1255.py
+  ..\Lib\encodings\cp1256.py
+  ..\Lib\encodings\cp1257.py
+  ..\Lib\encodings\cp1258.py
+  ..\Lib\encodings\cp273.py
+  ..\Lib\encodings\cp424.py
+  ..\Lib\encodings\cp437.py
+  ..\Lib\encodings\cp500.py
+  ..\Lib\encodings\cp65001.py
+  ..\Lib\encodings\cp720.py
+  curl_gssapi.c
+  ..\Lib\encodings\cp737.py
+  ..\Lib\encodings\cp775.py
+  ..\Lib\encodings\cp850.py
+  ..\Lib\encodings\cp852.py
+  ..\Lib\encodings\cp855.py
+  ..\Lib\encodings\cp856.py
+  ..\Lib\encodings\cp857.py
+  ..\Lib\encodings\cp858.py
+  ..\Lib\encodings\cp860.py
+  ..\Lib\encodings\cp861.py
+  ..\Lib\encodings\cp862.py
+  ..\Lib\encodings\cp863.py
+  ..\Lib\encodings\cp864.py
+  ..\Lib\encodings\cp865.py
+  ..\Lib\encodings\cp866.py
+  ..\Lib\encodings\cp869.py
+  ..\Lib\encodings\cp874.py
+  ..\Lib\encodings\cp875.py
+  ..\Lib\encodings\cp932.py
+  ..\Lib\encodings\cp949.py
+  ..\Lib\encodings\cp950.py
+  ..\Lib\encodings\euc_jisx0213.py
+  ..\Lib\encodings\euc_jis_2004.py
+  ..\Lib\encodings\euc_jp.py
+  ..\Lib\encodings\euc_kr.py
+  ..\Lib\encodings\gb18030.py
+  ..\Lib\encodings\gb2312.py
+  ..\Lib\encodings\gbk.py
+  ..\Lib\encodings\hex_codec.py
+  ..\Lib\encodings\hp_roman8.py
+  ..\Lib\encodings\hz.py
+  ..\Lib\encodings\idna.py
+  ..\Lib\encodings\iso2022_jp.py
+  ..\Lib\encodings\iso2022_jp_1.py
+  ..\Lib\encodings\iso2022_jp_2.py
+  ..\Lib\encodings\iso2022_jp_2004.py
+  ..\Lib\encodings\iso2022_jp_3.py
+  ..\Lib\encodings\iso2022_jp_ext.py
+  ..\Lib\encodings\iso2022_kr.py
+  ..\Lib\encodings\iso8859_1.py
+  ..\Lib\encodings\iso8859_10.py
+  ..\Lib\encodings\iso8859_11.py
+  ..\Lib\encodings\iso8859_13.py
+  ..\Lib\encodings\iso8859_14.py
+  ..\Lib\encodings\iso8859_15.py
+  ..\Lib\encodings\iso8859_16.py
+  ..\Lib\encodings\iso8859_2.py
+  ..\Lib\encodings\iso8859_3.py
+  ..\Lib\encodings\iso8859_4.py
+  ..\Lib\encodings\iso8859_5.py
+  ..\Lib\encodings\iso8859_6.py
+  ..\Lib\encodings\iso8859_7.py
+  ..\Lib\encodings\iso8859_8.py
+  ..\Lib\encodings\iso8859_9.py
+  ..\Lib\encodings\johab.py
+  ..\Lib\encodings\koi8_r.py
+  ..\Lib\encodings\koi8_t.py
+  ..\Lib\encodings\koi8_u.py
+  ..\Lib\encodings\kz1048.py
+  ..\Lib\encodings\latin_1.py
+  ..\Lib\encodings\mac_arabic.py
+  ..\Lib\encodings\mac_centeuro.py
+  ..\Lib\encodings\mac_croatian.py
+  ..\Lib\encodings\mac_cyrillic.py
+  ..\Lib\encodings\mac_farsi.py
+  ..\Lib\encodings\mac_greek.py
+  ..\Lib\encodings\mac_iceland.py
+  ..\Lib\encodings\mac_latin2.py
+  ..\Lib\encodings\mac_roman.py
+  ..\Lib\encodings\mac_romanian.py
+  ..\Lib\encodings\mac_turkish.py
+  ..\Lib\encodings\mbcs.py
+  ..\Lib\encodings\oem.py
+  ..\Lib\encodings\palmos.py
+  ..\Lib\encodings\ptcp154.py
+  ..\Lib\encodings\punycode.py
+  ..\Lib\encodings\quopri_codec.py
+  ..\Lib\encodings\raw_unicode_escape.py
+  ..\Lib\encodings\rot_13.py
+  ..\Lib\encodings\shift_jis.py
+  ..\Lib\encodings\shift_jisx0213.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\datatype.cpp(1140,25): warning C4244: “参数”: 从“Py_ssize_t”转换到“KBEngine::ArraySize”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  ..\Lib\encodings\shift_jis_2004.py
+  ..\Lib\encodings\tis_620.py
+  ..\Lib\encodings\undefined.py
+  ..\Lib\encodings\unicode_escape.py
+  ..\Lib\encodings\unicode_internal.py
+  ..\Lib\encodings\utf_16.py
+  ..\Lib\encodings\utf_16_be.py
+  ..\Lib\encodings\utf_16_le.py
+  ..\Lib\encodings\utf_32.py
+  ..\Lib\encodings\utf_32_be.py
+  ..\Lib\encodings\utf_32_le.py
+  ..\Lib\encodings\utf_7.py
+  ..\Lib\encodings\utf_8.py
+  ..\Lib\encodings\utf_8_sig.py
+  ..\Lib\encodings\uu_codec.py
+  ..\Lib\encodings\zlib_codec.py
+  ..\Lib\encodings\__init__.py
+  ..\Lib\ensurepip\_uninstall.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxMap.cpp”)
+  
+  ..\Lib\ensurepip\__init__.py
+  ..\Lib\ensurepip\__main__.py
+  ..\Lib\ensurepip\_bundled\pip-19.0.3-py2.py3-none-any.whl
+  ..\Lib\ensurepip\_bundled\setuptools-40.8.0-py2.py3-none-any.whl
+  ..\Lib\html\entities.py
+  ..\Lib\html\parser.py
+  ..\Lib\html\__init__.py
+  ..\Lib\http\client.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(123,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxMap.cpp”)
+  
+  ..\Lib\http\cookiejar.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(132,61): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxMap.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(141,59): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  ..\Lib\http\cookies.py
+  (编译源文件“../TmxMap.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(156,52): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxMap.cpp”)
+  
+  ..\Lib\http\server.py
+  ..\Lib\http\__init__.py
+  ..\Lib\idlelib\autocomplete.py
+  ..\Lib\idlelib\autocomplete_w.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxMap.cpp”)
+  
+  ..\Lib\idlelib\autoexpand.py
+  ..\Lib\idlelib\browser.py
+  ..\Lib\idlelib\calltip.py
+  ..\Lib\idlelib\calltip_w.py
+  ..\Lib\idlelib\ChangeLog
+  ..\Lib\idlelib\codecontext.py
+  ..\Lib\idlelib\colorizer.py
+  ..\Lib\idlelib\config-extensions.def
+  ..\Lib\idlelib\config-highlight.def
+  ..\Lib\idlelib\config-keys.def
+  ..\Lib\idlelib\config-main.def
+  ..\Lib\idlelib\config.py
+  ..\Lib\idlelib\configdialog.py
+  ..\Lib\idlelib\config_key.py
+  ..\Lib\idlelib\CREDITS.txt
+  ..\Lib\idlelib\debugger.py
+  ..\Lib\idlelib\debugger_r.py
+  ..\Lib\idlelib\debugobj.py
+  ..\Lib\idlelib\debugobj_r.py
+  ..\Lib\idlelib\delegator.py
+  ..\Lib\idlelib\dynoption.py
+  ..\Lib\idlelib\editor.py
+  ..\Lib\idlelib\extend.txt
+  ..\Lib\idlelib\filelist.py
+  ..\Lib\idlelib\grep.py
+  ..\Lib\idlelib\help.html
+  ..\Lib\idlelib\help.py
+  ..\Lib\idlelib\help_about.py
+  ..\Lib\idlelib\history.py
+  ..\Lib\idlelib\HISTORY.txt
+  ..\Lib\idlelib\hyperparser.py
+  ..\Lib\idlelib\idle.bat
+  ..\Lib\idlelib\idle.py
+  ..\Lib\idlelib\idle.pyw
+  ..\Lib\idlelib\iomenu.py
+  ..\Lib\idlelib\macosx.py
+  ..\Lib\idlelib\mainmenu.py
+  ..\Lib\idlelib\multicall.py
+  ..\Lib\idlelib\NEWS.txt
+  ..\Lib\idlelib\NEWS2x.txt
+  ..\Lib\idlelib\outwin.py
+  ..\Lib\idlelib\paragraph.py
+  ..\Lib\idlelib\parenmatch.py
+  ..\Lib\idlelib\pathbrowser.py
+  ..\Lib\idlelib\percolator.py
+  ..\Lib\idlelib\pyparse.py
+  ..\Lib\idlelib\pyshell.py
+  ..\Lib\idlelib\query.py
+  ..\Lib\idlelib\README.txt
+  ..\Lib\idlelib\redirector.py
+  ..\Lib\idlelib\replace.py
+  ..\Lib\idlelib\rpc.py
+  ..\Lib\idlelib\rstrip.py
+  ..\Lib\idlelib\run.py
+  ..\Lib\idlelib\runscript.py
+  ..\Lib\idlelib\scrolledlist.py
+  ..\Lib\idlelib\search.py
+  ..\Lib\idlelib\searchbase.py
+  ..\Lib\idlelib\searchengine.py
+  ..\Lib\idlelib\squeezer.py
+  ..\Lib\idlelib\stackviewer.py
+  ..\Lib\idlelib\statusbar.py
+  ..\Lib\idlelib\textview.py
+  ..\Lib\idlelib\TODO.txt
+  ..\Lib\idlelib\tooltip.py
+  ..\Lib\idlelib\tree.py
+  ..\Lib\idlelib\undo.py
+  ..\Lib\idlelib\window.py
+  ..\Lib\idlelib\zoomheight.py
+  navigation_handle.cpp
+  ..\Lib\idlelib\zzdummy.py
+  ..\Lib\idlelib\__init__.py
+  ..\Lib\idlelib\__main__.py
+  ..\Lib\idlelib\Icons\folder.gif
+  ..\Lib\idlelib\Icons\idle.icns
+  ..\Lib\idlelib\Icons\idle.ico
+  ..\Lib\idlelib\Icons\idle_16.gif
+  ..\Lib\idlelib\Icons\idle_16.png
+  ..\Lib\idlelib\Icons\idle_32.gif
+  ..\Lib\idlelib\Icons\idle_32.png
+  ..\Lib\idlelib\Icons\idle_48.gif
+  ..\Lib\idlelib\Icons\idle_48.png
+  ..\Lib\idlelib\Icons\minusnode.gif
+  ..\Lib\idlelib\Icons\openfolder.gif
+  ..\Lib\idlelib\Icons\plusnode.gif
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  ..\Lib\idlelib\Icons\python.gif
+  (编译源文件“navigation_handle.cpp”)
+  
+  ..\Lib\idlelib\Icons\tk.gif
+  ..\Lib\idlelib\idle_test\htest.py
+  ..\Lib\idlelib\idle_test\mock_idle.py
+  ..\Lib\idlelib\idle_test\mock_tk.py
+  ..\Lib\idlelib\idle_test\README.txt
+  ..\Lib\idlelib\idle_test\template.py
+  ..\Lib\idlelib\idle_test\test_autocomplete.py
+  ..\Lib\idlelib\idle_test\test_autocomplete_w.py
+  ..\Lib\idlelib\idle_test\test_autoexpand.py
+  ..\Lib\idlelib\idle_test\test_browser.py
+  ..\Lib\idlelib\idle_test\test_calltip.py
+  ..\Lib\idlelib\idle_test\test_calltip_w.py
+  ..\Lib\idlelib\idle_test\test_codecontext.py
+  ..\Lib\idlelib\idle_test\test_colorizer.py
+  ..\Lib\idlelib\idle_test\test_config.py
+  ..\Lib\idlelib\idle_test\test_configdialog.py
+  ..\Lib\idlelib\idle_test\test_config_key.py
+  curl_memrchr.c
+  ..\Lib\idlelib\idle_test\test_debugger.py
+  ..\Lib\idlelib\idle_test\test_debugger_r.py
+  ..\Lib\idlelib\idle_test\test_debugobj.py
+  ..\Lib\idlelib\idle_test\test_debugobj_r.py
+  ..\Lib\idlelib\idle_test\test_delegator.py
+  ..\Lib\idlelib\idle_test\test_editmenu.py
+  ..\Lib\idlelib\idle_test\test_editor.py
+  ..\Lib\idlelib\idle_test\test_filelist.py
+  ..\Lib\idlelib\idle_test\test_grep.py
+  ..\Lib\idlelib\idle_test\test_help.py
+  ..\Lib\idlelib\idle_test\test_help_about.py
+  ..\Lib\idlelib\idle_test\test_history.py
+  ..\Lib\idlelib\idle_test\test_hyperparser.py
+  ..\Lib\idlelib\idle_test\test_iomenu.py
+  ..\Lib\idlelib\idle_test\test_macosx.py
+  ..\Lib\idlelib\idle_test\test_mainmenu.py
+  ..\Lib\idlelib\idle_test\test_multicall.py
+  ..\Lib\idlelib\idle_test\test_outwin.py
+  ..\Lib\idlelib\idle_test\test_paragraph.py
+  ..\Lib\idlelib\idle_test\test_parenmatch.py
+  ..\Lib\idlelib\idle_test\test_pathbrowser.py
+  ..\Lib\idlelib\idle_test\test_percolator.py
+  ..\Lib\idlelib\idle_test\test_pyparse.py
+  ..\Lib\idlelib\idle_test\test_pyshell.py
+  ..\Lib\idlelib\idle_test\test_query.py
+  ..\Lib\idlelib\idle_test\test_redirector.py
+  ..\Lib\idlelib\idle_test\test_replace.py
+  ..\Lib\idlelib\idle_test\test_rpc.py
+  ..\Lib\idlelib\idle_test\test_rstrip.py
+  ..\Lib\idlelib\idle_test\test_run.py
+  ..\Lib\idlelib\idle_test\test_runscript.py
+  ..\Lib\idlelib\idle_test\test_scrolledlist.py
+  ..\Lib\idlelib\idle_test\test_search.py
+  ..\Lib\idlelib\idle_test\test_searchbase.py
+  ..\Lib\idlelib\idle_test\test_searchengine.py
+  ..\Lib\idlelib\idle_test\test_squeezer.py
+  ..\Lib\idlelib\idle_test\test_stackviewer.py
+  ..\Lib\idlelib\idle_test\test_statusbar.py
+  ..\Lib\idlelib\idle_test\test_text.py
+  ..\Lib\idlelib\idle_test\test_textview.py
+  ..\Lib\idlelib\idle_test\test_tooltip.py
+  ..\Lib\idlelib\idle_test\test_tree.py
+  ..\Lib\idlelib\idle_test\test_undo.py
+  ..\Lib\idlelib\idle_test\test_warning.py
+  ..\Lib\idlelib\idle_test\test_window.py
+  ..\Lib\idlelib\idle_test\test_zoomheight.py
+  ..\Lib\idlelib\idle_test\__init__.py
+  ..\Lib\importlib\abc.py
+  ..\Lib\importlib\machinery.py
+  ..\Lib\importlib\resources.py
+  ..\Lib\importlib\util.py
+  ..\Lib\importlib\_bootstrap.py
+  ..\Lib\importlib\_bootstrap_external.py
+  ..\Lib\importlib\__init__.py
+  ..\Lib\json\decoder.py
+  ..\Lib\json\encoder.py
+  ..\Lib\json\scanner.py
+  ..\Lib\json\tool.py
+  ..\Lib\json\__init__.py
+  ..\Lib\lib2to3\btm_matcher.py
+  ..\Lib\lib2to3\btm_utils.py
+  ..\Lib\lib2to3\fixer_base.py
+  ..\Lib\lib2to3\fixer_util.py
+  ..\Lib\lib2to3\Grammar.txt
+  ..\Lib\lib2to3\main.py
+  ..\Lib\lib2to3\patcomp.py
+  ..\Lib\lib2to3\PatternGrammar.txt
+  ..\Lib\lib2to3\pygram.py
+  ..\Lib\lib2to3\pytree.py
+  ..\Lib\lib2to3\refactor.py
+  ..\Lib\lib2to3\__init__.py
+  ..\Lib\lib2to3\__main__.py
+  ..\Lib\lib2to3\fixes\fix_apply.py
+  ..\Lib\lib2to3\fixes\fix_asserts.py
+  ..\Lib\lib2to3\fixes\fix_basestring.py
+  ..\Lib\lib2to3\fixes\fix_buffer.py
+  ..\Lib\lib2to3\fixes\fix_dict.py
+  ..\Lib\lib2to3\fixes\fix_except.py
+  ..\Lib\lib2to3\fixes\fix_exec.py
+  ..\Lib\lib2to3\fixes\fix_execfile.py
+  ..\Lib\lib2to3\fixes\fix_exitfunc.py
+  ..\Lib\lib2to3\fixes\fix_filter.py
+  ..\Lib\lib2to3\fixes\fix_funcattrs.py
+  ..\Lib\lib2to3\fixes\fix_future.py
+  ..\Lib\lib2to3\fixes\fix_getcwdu.py
+  ..\Lib\lib2to3\fixes\fix_has_key.py
+  ..\Lib\lib2to3\fixes\fix_idioms.py
+  ..\Lib\lib2to3\fixes\fix_import.py
+  ..\Lib\lib2to3\fixes\fix_imports.py
+  ..\Lib\lib2to3\fixes\fix_imports2.py
+  ..\Lib\lib2to3\fixes\fix_input.py
+  ..\Lib\lib2to3\fixes\fix_intern.py
+  ..\Lib\lib2to3\fixes\fix_isinstance.py
+  ..\Lib\lib2to3\fixes\fix_itertools.py
+  ..\Lib\lib2to3\fixes\fix_itertools_imports.py
+  ..\Lib\lib2to3\fixes\fix_long.py
+  ..\Lib\lib2to3\fixes\fix_map.py
+  ..\Lib\lib2to3\fixes\fix_metaclass.py
+  ..\Lib\lib2to3\fixes\fix_methodattrs.py
+  ..\Lib\lib2to3\fixes\fix_ne.py
+  ..\Lib\lib2to3\fixes\fix_next.py
+  ..\Lib\lib2to3\fixes\fix_nonzero.py
+  ..\Lib\lib2to3\fixes\fix_numliterals.py
+  ..\Lib\lib2to3\fixes\fix_operator.py
+  ..\Lib\lib2to3\fixes\fix_paren.py
+  ..\Lib\lib2to3\fixes\fix_print.py
+  ..\Lib\lib2to3\fixes\fix_raise.py
+  ..\Lib\lib2to3\fixes\fix_raw_input.py
+  ..\Lib\lib2to3\fixes\fix_reduce.py
+  ..\Lib\lib2to3\fixes\fix_reload.py
+  ..\Lib\lib2to3\fixes\fix_renames.py
+  ..\Lib\lib2to3\fixes\fix_repr.py
+  ..\Lib\lib2to3\fixes\fix_set_literal.py
+  ..\Lib\lib2to3\fixes\fix_standarderror.py
+  ..\Lib\lib2to3\fixes\fix_sys_exc.py
+  ..\Lib\lib2to3\fixes\fix_throw.py
+  ..\Lib\lib2to3\fixes\fix_tuple_params.py
+  ..\Lib\lib2to3\fixes\fix_types.py
+  ..\Lib\lib2to3\fixes\fix_unicode.py
+  ..\Lib\lib2to3\fixes\fix_urllib.py
+  ..\Lib\lib2to3\fixes\fix_ws_comma.py
+  ..\Lib\lib2to3\fixes\fix_xrange.py
+  ..\Lib\lib2to3\fixes\fix_xreadlines.py
+  ..\Lib\lib2to3\fixes\fix_zip.py
+  ..\Lib\lib2to3\fixes\__init__.py
+  ..\Lib\lib2to3\pgen2\conv.py
+  ..\Lib\lib2to3\pgen2\driver.py
+  ..\Lib\lib2to3\pgen2\grammar.py
+  ..\Lib\lib2to3\pgen2\literals.py
+  ..\Lib\lib2to3\pgen2\parse.py
+  ..\Lib\lib2to3\pgen2\pgen.py
+  ..\Lib\lib2to3\pgen2\token.py
+  ..\Lib\lib2to3\pgen2\tokenize.py
+  ..\Lib\lib2to3\pgen2\__init__.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\math\math.vcxproj]
+  ..\Lib\lib2to3\tests\pytree_idempotency.py
+  ..\Lib\lib2to3\tests\support.py
+  ..\Lib\lib2to3\tests\test_all_fixers.py
+  ..\Lib\lib2to3\tests\test_fixers.py
+  ..\Lib\lib2to3\tests\test_main.py
+  (编译源文件“../../../lib/math/math.cpp”)
+  
+  ..\Lib\lib2to3\tests\test_parser.py
+  ..\Lib\lib2to3\tests\test_pytree.py
+  ..\Lib\lib2to3\tests\test_refactor.py
+  ..\Lib\lib2to3\tests\test_util.py
+  ..\Lib\lib2to3\tests\__init__.py
+  ..\Lib\lib2to3\tests\__main__.py
+  ..\Lib\lib2to3\tests\data\bom.py
+  ..\Lib\lib2to3\tests\data\crlf.py
+  ..\Lib\lib2to3\tests\data\different_encoding.py
+  ..\Lib\lib2to3\tests\data\false_encoding.py
+  ..\Lib\lib2to3\tests\data\infinite_recursion.py
+  ..\Lib\lib2to3\tests\data\py2_test_grammar.py
+  ..\Lib\lib2to3\tests\data\py3_test_grammar.py
+  ..\Lib\lib2to3\tests\data\README
+  ..\Lib\lib2to3\tests\data\fixers\bad_order.py
+  ..\Lib\lib2to3\tests\data\fixers\no_fixer_cls.py
+  ..\Lib\lib2to3\tests\data\fixers\parrot_example.py
+  ..\Lib\lib2to3\tests\data\fixers\myfixes\fix_explicit.py
+  ..\Lib\lib2to3\tests\data\fixers\myfixes\fix_first.py
+  ..\Lib\lib2to3\tests\data\fixers\myfixes\fix_last.py
+  ..\Lib\lib2to3\tests\data\fixers\myfixes\fix_parrot.py
+  ..\Lib\lib2to3\tests\data\fixers\myfixes\fix_preorder.py
+  ..\Lib\lib2to3\tests\data\fixers\myfixes\__init__.py
+  ..\Lib\logging\config.py
+  ..\Lib\logging\handlers.py
+  ..\Lib\logging\__init__.py
+  ..\Lib\msilib\schema.py
+  ..\Lib\msilib\sequence.py
+  ..\Lib\msilib\text.py
+  ..\Lib\msilib\__init__.py
+  ..\Lib\multiprocessing\connection.py
+  ..\Lib\multiprocessing\context.py
+  ..\Lib\multiprocessing\forkserver.py
+  ..\Lib\multiprocessing\heap.py
+  ..\Lib\multiprocessing\managers.py
+  ..\Lib\multiprocessing\pool.py
+  ..\Lib\multiprocessing\popen_fork.py
+  ..\Lib\multiprocessing\popen_forkserver.py
+  ..\Lib\multiprocessing\popen_spawn_posix.py
+  ..\Lib\multiprocessing\popen_spawn_win32.py
+  ..\Lib\multiprocessing\process.py
+  ..\Lib\multiprocessing\queues.py
+  ..\Lib\multiprocessing\reduction.py
+  ..\Lib\multiprocessing\resource_sharer.py
+  ..\Lib\multiprocessing\semaphore_tracker.py
+  ..\Lib\multiprocessing\sharedctypes.py
+  ..\Lib\multiprocessing\spawn.py
+  ..\Lib\multiprocessing\synchronize.py
+  ..\Lib\multiprocessing\util.py
+  ..\Lib\multiprocessing\__init__.py
+  ..\Lib\multiprocessing\dummy\connection.py
+  db_interface_mysql.cpp
+  ..\Lib\multiprocessing\dummy\__init__.py
+  ..\Lib\pydoc_data\topics.py
+  curl_multibyte.c
+  ..\Lib\pydoc_data\_pydoc.css
+  ..\Lib\pydoc_data\__init__.py
+  ..\Lib\site-packages\README.txt
+  ..\Lib\sqlite3\dbapi2.py
+  ..\Lib\sqlite3\dump.py
+  ..\Lib\sqlite3\__init__.py
+  ..\Lib\sqlite3\test\backup.py
+  ..\Lib\sqlite3\test\dbapi.py
+  ..\Lib\sqlite3\test\dump.py
+  ..\Lib\sqlite3\test\factory.py
+  ..\Lib\sqlite3\test\hooks.py
+  ..\Lib\sqlite3\test\regression.py
+  ..\Lib\sqlite3\test\transactions.py
+  ..\Lib\sqlite3\test\types.py
+  ..\Lib\sqlite3\test\userfunctions.py
+  ..\Lib\sqlite3\test\__init__.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“db_interface_mysql.cpp”)
+  
+  ..\Lib\test\allsans.pem
+  ..\Lib\test\ann_module.py
+  ..\Lib\test\ann_module2.py
+  ..\Lib\test\ann_module3.py
+  ..\Lib\test\audiotest.au
+  ..\Lib\test\audiotests.py
+  ..\Lib\test\autotest.py
+  ..\Lib\test\badcert.pem
+  ..\Lib\test\badkey.pem
+  ..\Lib\test\badsyntax_3131.py
+  ..\Lib\test\badsyntax_future10.py
+  ..\Lib\test\badsyntax_future3.py
+  ..\Lib\test\badsyntax_future4.py
+  ..\Lib\test\badsyntax_future5.py
+  ..\Lib\test\badsyntax_future6.py
+  ..\Lib\test\badsyntax_future7.py
+  ..\Lib\test\badsyntax_future8.py
+  ..\Lib\test\badsyntax_future9.py
+  ..\Lib\test\badsyntax_pep3120.py
+  ..\Lib\test\bad_coding.py
+  ..\Lib\test\bad_coding2.py
+  ..\Lib\test\bad_getattr.py
+  ..\Lib\test\bad_getattr2.py
+  ..\Lib\test\bad_getattr3.py
+  ..\Lib\test\bisect_cmd.py
+  ..\Lib\test\bytecode_helper.py
+  ..\Lib\test\cfgparser.1
+  ..\Lib\test\cfgparser.2
+  ..\Lib\test\cfgparser.3
+  ..\Lib\test\clinic.test
+  ..\Lib\test\cmath_testcases.txt
+  ..\Lib\test\coding20731.py
+  ..\Lib\test\curses_tests.py
+  ..\Lib\test\dataclass_module_1.py
+  ..\Lib\test\dataclass_module_1_str.py
+  ..\Lib\test\dataclass_module_2.py
+  ..\Lib\test\dataclass_module_2_str.py
+  ..\Lib\test\datetimetester.py
+  ..\Lib\test\dis_module.py
+  ..\Lib\test\doctest_aliases.py
+  ..\Lib\test\double_const.py
+  ..\Lib\test\empty.vbs
+  ..\Lib\test\exception_hierarchy.txt
+  ..\Lib\test\ffdh3072.pem
+  ..\Lib\test\final_a.py
+  ..\Lib\test\final_b.py
+  ..\Lib\test\floating_points.txt
+  ..\Lib\test\fork_wait.py
+  ..\Lib\test\formatfloat_testcases.txt
+  ..\Lib\test\future_test1.py
+  ..\Lib\test\future_test2.py
+  ..\Lib\test\gdb_sample.py
+  ..\Lib\test\good_getattr.py
+  ..\Lib\test\idnsans.pem
+  ..\Lib\test\ieee754.txt
+  ..\Lib\test\imp_dummy.py
+  ..\Lib\test\inspect_fodder.py
+  ..\Lib\test\inspect_fodder2.py
+  ..\Lib\test\keycert.passwd.pem
+  ..\Lib\test\keycert.pem
+  ..\Lib\test\keycert2.pem
+  ..\Lib\test\keycert3.pem
+  ..\Lib\test\keycert4.pem
+  ..\Lib\test\keycertecc.pem
+  ..\Lib\test\list_tests.py
+  ..\Lib\test\lock_tests.py
+  ..\Lib\test\mailcap.txt
+  ..\Lib\test\make_ssl_certs.py
+  ..\Lib\test\mapping_tests.py
+  ..\Lib\test\math_testcases.txt
+  ..\Lib\test\memory_watchdog.py
+  ..\Lib\test\mime.types
+  ..\Lib\test\mock_socket.py
+  ..\Lib\test\mod_generics_cache.py
+  ..\Lib\test\mp_fork_bomb.py
+  ..\Lib\test\mp_preload.py
+  ..\Lib\test\multibytecodec_support.py
+  ..\Lib\test\nokia.pem
+  ..\Lib\test\nullbytecert.pem
+  ..\Lib\test\nullcert.pem
+  ..\Lib\test\outstanding_bugs.py
+  ..\Lib\test\pickletester.py
+  ..\Lib\test\profilee.py
+  ..\Lib\test\pstats.pck
+  ..\Lib\test\pycacert.pem
+  ..\Lib\test\pycakey.pem
+  ..\Lib\test\pyclbr_input.py
+  ..\Lib\test\pydocfodder.py
+  ..\Lib\test\pydoc_mod.py
+  ..\Lib\test\pythoninfo.py
+  ..\Lib\test\randv2_32.pck
+  ..\Lib\test\randv2_64.pck
+  ..\Lib\test\randv3.pck
+  ..\Lib\test\regrtest.py
+  ..\Lib\test\relimport.py
+  ..\Lib\test\reperf.py
+  ..\Lib\test\revocation.crl
+  ..\Lib\test\re_tests.py
+  ..\Lib\test\sample_doctest.py
+  ..\Lib\test\sample_doctest_no_docstrings.py
+  ..\Lib\test\sample_doctest_no_doctests.py
+  ..\Lib\test\secp384r1.pem
+  ..\Lib\test\selfsigned_pythontestdotnet.pem
+  ..\Lib\test\seq_tests.py
+  ..\Lib\test\sgml_input.html
+  ..\Lib\test\signalinterproctester.py
+  ..\Lib\test\Sine-1000Hz-300ms.aif
+  ..\Lib\test\sortperf.py
+  ..\Lib\test\ssltests.py
+  ..\Lib\test\ssl_cert.pem
+  ..\Lib\test\ssl_key.passwd.pem
+  ..\Lib\test\ssl_key.pem
+  ..\Lib\test\ssl_servers.py
+  ..\Lib\test\string_tests.py
+  ..\Lib\test\talos-2019-0758.pem
+  ..\Lib\test\testcodec.py
+  ..\Lib\test\testtar.tar
+  ..\Lib\test\test_abc.py
+  ..\Lib\test\test_abstract_numbers.py
+  ..\Lib\test\test_aifc.py
+  ..\Lib\test\test_argparse.py
+  ..\Lib\test\test_array.py
+  ..\Lib\test\test_asdl_parser.py
+  ..\Lib\test\test_ast.py
+  ..\Lib\test\test_asyncgen.py
+  ..\Lib\test\test_asynchat.py
+  ..\Lib\test\test_asyncore.py
+  ..\Lib\test\test_atexit.py
+  ..\Lib\test\test_audioop.py
+  ..\Lib\test\test_augassign.py
+  ..\Lib\test\test_base64.py
+  ..\Lib\test\test_baseexception.py
+  ..\Lib\test\test_bdb.py
+  ..\Lib\test\test_bigaddrspace.py
+  ..\Lib\test\test_bigmem.py
+  ..\Lib\test\test_binascii.py
+  ..\Lib\test\test_binhex.py
+  ..\Lib\test\test_binop.py
+  ..\Lib\test\test_bisect.py
+  ..\Lib\test\test_bool.py
+  ..\Lib\test\test_buffer.py
+  ..\Lib\test\test_bufio.py
+  ..\Lib\test\test_builtin.py
+  ..\Lib\test\test_bytes.py
+  ..\Lib\test\test_bz2.py
+  ..\Lib\test\test_calendar.py
+  ..\Lib\test\test_call.py
+  ..\Lib\test\test_capi.py
+  ..\Lib\test\test_cgi.py
+  ..\Lib\test\test_cgitb.py
+  ..\Lib\test\test_charmapcodec.py
+  ..\Lib\test\test_class.py
+  ..\Lib\test\test_clinic.py
+  ..\Lib\test\test_cmath.py
+  ..\Lib\test\test_cmd.py
+  ..\Lib\test\test_cmd_line.py
+  ..\Lib\test\test_cmd_line_script.py
+  ..\Lib\test\test_code.py
+  ..\Lib\test\test_codeccallbacks.py
+  ..\Lib\test\test_codecencodings_cn.py
+  ..\Lib\test\test_codecencodings_hk.py
+  ..\Lib\test\test_codecencodings_iso2022.py
+  ..\Lib\test\test_codecencodings_jp.py
+  ..\Lib\test\test_codecencodings_kr.py
+  ..\Lib\test\test_codecencodings_tw.py
+  ..\Lib\test\test_codecmaps_cn.py
+  ..\Lib\test\test_codecmaps_hk.py
+  ..\Lib\test\test_codecmaps_jp.py
+  ..\Lib\test\test_codecmaps_kr.py
+  ..\Lib\test\test_codecmaps_tw.py
+  ..\Lib\test\test_codecs.py
+  ..\Lib\test\test_codeop.py
+  ..\Lib\test\test_code_module.py
+  ..\Lib\test\test_collections.py
+  ..\Lib\test\test_colorsys.py
+  ..\Lib\test\test_compare.py
+  ..\Lib\test\test_compile.py
+  ..\Lib\test\test_compileall.py
+  ..\Lib\test\test_complex.py
+  ..\Lib\test\test_concurrent_futures.py
+  ..\Lib\test\test_configparser.py
+  ..\Lib\test\test_contains.py
+  ..\Lib\test\test_context.py
+  ..\Lib\test\test_contextlib.py
+  ..\Lib\test\test_contextlib_async.py
+  ..\Lib\test\test_copy.py
+  ..\Lib\test\test_copyreg.py
+  ..\Lib\test\test_coroutines.py
+  ..\Lib\test\test_cprofile.py
+  ..\Lib\test\test_crashers.py
+  ..\Lib\test\test_crypt.py
+  ..\Lib\test\test_csv.py
+  ..\Lib\test\test_ctypes.py
+  ..\Lib\test\test_curses.py
+  ..\Lib\test\test_c_locale_coercion.py
+  ..\Lib\test\test_dataclasses.py
+  ..\Lib\test\test_datetime.py
+  ..\Lib\test\test_dbm.py
+  ..\Lib\test\test_dbm_dumb.py
+  ..\Lib\test\test_dbm_gnu.py
+  ..\Lib\test\test_dbm_ndbm.py
+  ..\Lib\test\test_decimal.py
+  ..\Lib\test\test_decorators.py
+  ..\Lib\test\test_defaultdict.py
+  ..\Lib\test\test_deque.py
+  ..\Lib\test\test_descr.py
+  ..\Lib\test\test_descrtut.py
+  ..\Lib\test\test_devpoll.py
+  ..\Lib\test\test_dict.py
+  curl_ntlm_core.c
+  ..\Lib\test\test_dictcomps.py
+  ..\Lib\test\test_dictviews.py
+  ..\Lib\test\test_dict_version.py
+  ..\Lib\test\test_difflib.py
+  ..\Lib\test\test_difflib_expect.html
+  ..\Lib\test\test_dis.py
+  ..\Lib\test\test_distutils.py
+  ..\Lib\test\test_doctest.py
+  ..\Lib\test\test_doctest.txt
+  ..\Lib\test\test_doctest2.py
+  ..\Lib\test\test_doctest2.txt
+  ..\Lib\test\test_doctest3.txt
+  ..\Lib\test\test_doctest4.txt
+  ..\Lib\test\test_docxmlrpc.py
+  ..\Lib\test\test_dtrace.py
+  ..\Lib\test\test_dummy_thread.py
+  ..\Lib\test\test_dummy_threading.py
+  ..\Lib\test\test_dynamic.py
+  ..\Lib\test\test_dynamicclassattribute.py
+  ..\Lib\test\test_eintr.py
+  ..\Lib\test\test_embed.py
+  ..\Lib\test\test_ensurepip.py
+  ..\Lib\test\test_enum.py
+  ..\Lib\test\test_enumerate.py
+  ..\Lib\test\test_eof.py
+  ..\Lib\test\test_epoll.py
+  ..\Lib\test\test_errno.py
+  ..\Lib\test\test_exceptions.py
+  ..\Lib\test\test_exception_hierarchy.py
+  ..\Lib\test\test_exception_variations.py
+  ..\Lib\test\test_extcall.py
+  ..\Lib\test\test_faulthandler.py
+  ..\Lib\test\test_fcntl.py
+  ..\Lib\test\test_file.py
+  ..\Lib\test\test_filecmp.py
+  ..\Lib\test\test_fileinput.py
+  ..\Lib\test\test_fileio.py
+  ..\Lib\test\test_file_eintr.py
+  ..\Lib\test\test_finalization.py
+  ..\Lib\test\test_float.py
+  ..\Lib\test\test_flufl.py
+  ..\Lib\test\test_fnmatch.py
+  ..\Lib\test\test_fork1.py
+  ..\Lib\test\test_format.py
+  ..\Lib\test\test_fractions.py
+  ..\Lib\test\test_frame.py
+  ..\Lib\test\test_frozen.py
+  ..\Lib\test\test_fstring.py
+  ..\Lib\test\test_ftplib.py
+  ..\Lib\test\test_funcattrs.py
+  ..\Lib\test\test_functools.py
+  ..\Lib\test\test_future.py
+  ..\Lib\test\test_future3.py
+  ..\Lib\test\test_future4.py
+  ..\Lib\test\test_future5.py
+  ..\Lib\test\test_gc.py
+  ..\Lib\test\test_gdb.py
+  ..\Lib\test\test_generators.py
+  ..\Lib\test\test_generator_stop.py
+  ..\Lib\test\test_genericclass.py
+  ..\Lib\test\test_genericpath.py
+  ..\Lib\test\test_genexps.py
+  ..\Lib\test\test_getargs2.py
+  ..\Lib\test\test_getopt.py
+  ..\Lib\test\test_getpass.py
+  ..\Lib\test\test_gettext.py
+  ..\Lib\test\test_glob.py
+  ..\Lib\test\test_global.py
+  ..\Lib\test\test_grammar.py
+  ..\Lib\test\test_grp.py
+  ..\Lib\test\test_gzip.py
+  ..\Lib\test\test_hash.py
+  ..\Lib\test\test_hashlib.py
+  ..\Lib\test\test_heapq.py
+  ..\Lib\test\test_hmac.py
+  ..\Lib\test\test_html.py
+  ..\Lib\test\test_htmlparser.py
+  ..\Lib\test\test_httplib.py
+  ..\Lib\test\test_httpservers.py
+  ..\Lib\test\test_http_cookiejar.py
+  ..\Lib\test\test_http_cookies.py
+  ..\Lib\test\test_idle.py
+  ..\Lib\test\test_imaplib.py
+  ..\Lib\test\test_imghdr.py
+  ..\Lib\test\test_imp.py
+  ..\Lib\test\test_index.py
+  ..\Lib\test\test_inspect.py
+  ..\Lib\test\test_int.py
+  ..\Lib\test\test_int_literal.py
+  ..\Lib\test\test_io.py
+  ..\Lib\test\test_ioctl.py
+  ..\Lib\test\test_ipaddress.py
+  ..\Lib\test\test_isinstance.py
+  ..\Lib\test\test_iter.py
+  ..\Lib\test\test_iterlen.py
+  ..\Lib\test\test_itertools.py
+  ..\Lib\test\test_keyword.py
+  ..\Lib\test\test_keywordonlyarg.py
+  ..\Lib\test\test_kqueue.py
+  ..\Lib\test\test_largefile.py
+  ..\Lib\test\test_lib2to3.py
+  ..\Lib\test\test_linecache.py
+  ..\Lib\test\test_list.py
+  ..\Lib\test\test_listcomps.py
+  ..\Lib\test\test_locale.py
+  ..\Lib\test\test_logging.py
+  ..\Lib\test\test_long.py
+  ..\Lib\test\test_longexp.py
+  ..\Lib\test\test_lzma.py
+  ..\Lib\test\test_macpath.py
+  ..\Lib\test\test_mailbox.py
+  ..\Lib\test\test_mailcap.py
+  ..\Lib\test\test_marshal.py
+  ..\Lib\test\test_math.py
+  ..\Lib\test\test_memoryio.py
+  ..\Lib\test\test_memoryview.py
+  ..\Lib\test\test_metaclass.py
+  ..\Lib\test\test_mimetypes.py
+  ..\Lib\test\test_minidom.py
+  ..\Lib\test\test_mmap.py
+  ..\Lib\test\test_module.py
+  ..\Lib\test\test_modulefinder.py
+  ..\Lib\test\test_msilib.py
+  ..\Lib\test\test_multibytecodec.py
+  ..\Lib\test\test_multiprocessing_fork.py
+  ..\Lib\test\test_multiprocessing_forkserver.py
+  ..\Lib\test\test_multiprocessing_main_handling.py
+  ..\Lib\test\test_multiprocessing_spawn.py
+  ..\Lib\test\test_netrc.py
+  ..\Lib\test\test_nis.py
+  ..\Lib\test\test_nntplib.py
+  ..\Lib\test\test_normalization.py
+  ..\Lib\test\test_ntpath.py
+  ..\Lib\test\test_numeric_tower.py
+  ..\Lib\test\test_opcodes.py
+  ..\Lib\test\test_openpty.py
+  ..\Lib\test\test_operator.py
+  ..\Lib\test\test_optparse.py
+  ..\Lib\test\test_ordered_dict.py
+  ..\Lib\test\test_os.py
+  ..\Lib\test\test_ossaudiodev.py
+  ..\Lib\test\test_osx_env.py
+  ..\Lib\test\test_parser.py
+  ..\Lib\test\test_pathlib.py
+  ..\Lib\test\test_pdb.py
+  ..\Lib\test\test_peepholer.py
+  ..\Lib\test\test_pickle.py
+  ..\Lib\test\test_pickletools.py
+  ..\Lib\test\test_pipes.py
+  ..\Lib\test\test_pkg.py
+  ..\Lib\test\test_pkgimport.py
+  ..\Lib\test\test_pkgutil.py
+  ..\Lib\test\test_platform.py
+  ..\Lib\test\test_plistlib.py
+  ..\Lib\test\test_poll.py
+  ..\Lib\test\test_popen.py
+  ..\Lib\test\test_poplib.py
+  ..\Lib\test\test_posix.py
+  ..\Lib\test\test_posixpath.py
+  ..\Lib\test\test_pow.py
+  ..\Lib\test\test_pprint.py
+  ..\Lib\test\test_print.py
+  ..\Lib\test\test_profile.py
+  ..\Lib\test\test_property.py
+  ..\Lib\test\test_pstats.py
+  ..\Lib\test\test_pty.py
+  ..\Lib\test\test_pulldom.py
+  ..\Lib\test\test_pwd.py
+  ..\Lib\test\test_pyclbr.py
+  ..\Lib\test\test_pydoc.py
+  ..\Lib\test\test_pyexpat.py
+  ..\Lib\test\test_py_compile.py
+  ..\Lib\test\test_queue.py
+  ..\Lib\test\test_quopri.py
+  ..\Lib\test\test_raise.py
+  ..\Lib\test\test_random.py
+  ..\Lib\test\test_range.py
+  ..\Lib\test\test_re.py
+  ..\Lib\test\test_readline.py
+  ..\Lib\test\test_regrtest.py
+  ..\Lib\test\test_repl.py
+  ..\Lib\test\test_reprlib.py
+  ..\Lib\test\test_resource.py
+  ..\Lib\test\test_richcmp.py
+  ..\Lib\test\test_rlcompleter.py
+  ..\Lib\test\test_robotparser.py
+  ..\Lib\test\test_runpy.py
+  ..\Lib\test\test_sax.py
+  ..\Lib\test\test_sched.py
+  ..\Lib\test\test_scope.py
+  ..\Lib\test\test_script_helper.py
+  ..\Lib\test\test_secrets.py
+  ..\Lib\test\test_select.py
+  ..\Lib\test\test_selectors.py
+  ..\Lib\test\test_set.py
+  ..\Lib\test\test_setcomps.py
+  ..\Lib\test\test_shelve.py
+  ..\Lib\test\test_shlex.py
+  ..\Lib\test\test_shutil.py
+  ..\Lib\test\test_signal.py
+  ..\Lib\test\test_site.py
+  ..\Lib\test\test_slice.py
+  ..\Lib\test\test_smtpd.py
+  ..\Lib\test\test_smtplib.py
+  ..\Lib\test\test_smtpnet.py
+  ..\Lib\test\test_sndhdr.py
+  ..\Lib\test\test_socket.py
+  ..\Lib\test\test_socketserver.py
+  ..\Lib\test\test_sort.py
+  ..\Lib\test\test_source_encoding.py
+  ..\Lib\test\test_spwd.py
+  ..\Lib\test\test_sqlite.py
+  ..\Lib\test\test_ssl.py
+  ..\Lib\test\test_startfile.py
+  ..\Lib\test\test_stat.py
+  ..\Lib\test\test_statistics.py
+  ..\Lib\test\test_strftime.py
+  ..\Lib\test\test_string.py
+  ..\Lib\test\test_stringprep.py
+  ..\Lib\test\test_string_literals.py
+  ..\Lib\test\test_strptime.py
+  ..\Lib\test\test_strtod.py
+  ..\Lib\test\test_struct.py
+  ..\Lib\test\test_structmembers.py
+  ..\Lib\test\test_structseq.py
+  ..\Lib\test\test_subclassinit.py
+  ..\Lib\test\test_subprocess.py
+  ..\Lib\test\test_sunau.py
+  datatypes.cpp
+  ..\Lib\test\test_sundry.py
+  ..\Lib\test\test_super.py
+  ..\Lib\test\test_support.py
+  ..\Lib\test\test_symbol.py
+  ..\Lib\test\test_symtable.py
+  ..\Lib\test\test_syntax.py
+  ..\Lib\test\test_sys.py
+  ..\Lib\test\test_sysconfig.py
+  ..\Lib\test\test_syslog.py
+  ..\Lib\test\test_sys_setprofile.py
+  ..\Lib\test\test_sys_settrace.py
+  ..\Lib\test\test_tarfile.py
+  ..\Lib\test\test_tcl.py
+  ..\Lib\test\test_telnetlib.py
+  ..\Lib\test\test_tempfile.py
+  ..\Lib\test\test_textwrap.py
+  ..\Lib\test\test_thread.py
+  ..\Lib\test\test_threadedtempfile.py
+  ..\Lib\test\test_threaded_import.py
+  ..\Lib\test\test_threading.py
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/datatypes.cpp”)
+  
+  ..\Lib\test\test_threading_local.py
+  ..\Lib\test\test_threadsignals.py
+  ..\Lib\test\test_time.py
+  ..\Lib\test\test_timeit.py
+  ..\Lib\test\test_timeout.py
+  ..\Lib\test\test_tix.py
+  ..\Lib\test\test_tk.py
+  ..\Lib\test\test_tokenize.py
+  ..\Lib\test\test_trace.py
+  ..\Lib\test\test_traceback.py
+  ..\Lib\test\test_tracemalloc.py
+  ..\Lib\test\test_ttk_guionly.py
+  ..\Lib\test\test_ttk_textonly.py
+  ..\Lib\test\test_tuple.py
+  ..\Lib\test\test_turtle.py
+  ..\Lib\test\test_typechecks.py
+  ..\Lib\test\test_types.py
+  ..\Lib\test\test_typing.py
+  ..\Lib\test\test_ucn.py
+  ..\Lib\test\test_unary.py
+  ..\Lib\test\test_unicode.py
+  ..\Lib\test\test_unicodedata.py
+  ..\Lib\test\test_unicode_file.py
+  ..\Lib\test\test_unicode_file_functions.py
+  ..\Lib\test\test_unicode_identifiers.py
+  ..\Lib\test\test_unittest.py
+  ..\Lib\test\test_univnewlines.py
+  ..\Lib\test\test_unpack.py
+  ..\Lib\test\test_unpack_ex.py
+  ..\Lib\test\test_urllib.py
+  ..\Lib\test\test_urllib2.py
+  ..\Lib\test\test_urllib2net.py
+  ..\Lib\test\test_urllib2_localnet.py
+  ..\Lib\test\test_urllibnet.py
+  ..\Lib\test\test_urllib_response.py
+  ..\Lib\test\test_urlparse.py
+  ..\Lib\test\test_userdict.py
+  ..\Lib\test\test_userlist.py
+  ..\Lib\test\test_userstring.py
+  ..\Lib\test\test_utf8source.py
+  ..\Lib\test\test_utf8_mode.py
+  ..\Lib\test\test_uu.py
+  ..\Lib\test\test_uuid.py
+  ..\Lib\test\test_venv.py
+  ..\Lib\test\test_wait3.py
+  ..\Lib\test\test_wait4.py
+  ..\Lib\test\test_wave.py
+  ..\Lib\test\test_weakref.py
+  ..\Lib\test\test_weakset.py
+  ..\Lib\test\test_webbrowser.py
+  ..\Lib\test\test_winconsoleio.py
+  ..\Lib\test\test_winreg.py
+  ..\Lib\test\test_winsound.py
+  ..\Lib\test\test_with.py
+  ..\Lib\test\test_wsgiref.py
+  ..\Lib\test\test_xdrlib.py
+  ..\Lib\test\test_xmlrpc.py
+  ..\Lib\test\test_xmlrpc_net.py
+  ..\Lib\test\test_xml_dom_minicompat.py
+  ..\Lib\test\test_xml_etree.py
+  ..\Lib\test\test_xml_etree_c.py
+  ..\Lib\test\test_xxtestfuzz.py
+  ..\Lib\test\test_yield_from.py
+  ..\Lib\test\test_zipapp.py
+  ..\Lib\test\test_zipfile.py
+  ..\Lib\test\test_zipfile64.py
+  ..\Lib\test\test_zipimport.py
+  ..\Lib\test\test_zipimport_support.py
+  ..\Lib\test\test_zlib.py
+  ..\Lib\test\test__locale.py
+  ..\Lib\test\test__opcode.py
+  ..\Lib\test\test__osx_support.py
+  ..\Lib\test\test___all__.py
+  ..\Lib\test\test___future__.py
+  ..\Lib\test\tf_inherit_check.py
+  ..\Lib\test\threaded_import_hangers.py
+  ..\Lib\test\time_hashlib.py
+  ..\Lib\test\tokenize_tests-latin1-coding-cookie-and-utf8-bom-sig.txt
+  ..\Lib\test\tokenize_tests-no-coding-cookie-and-utf8-bom-sig-only.txt
+  ..\Lib\test\tokenize_tests-utf8-coding-cookie-and-no-utf8-bom-sig.txt
+  ..\Lib\test\tokenize_tests-utf8-coding-cookie-and-utf8-bom-sig.txt
+  ..\Lib\test\tokenize_tests.txt
+  ..\Lib\test\win_console_handler.py
+  ..\Lib\test\xmltests.py
+  ..\Lib\test\zipdir.zip
+  ..\Lib\test\zip_cp437_header.zip
+  ..\Lib\test\_test_multiprocessing.py
+  ..\Lib\test\__init__.py
+  ..\Lib\test\__main__.py
+  ..\Lib\test\audiodata\pluck-alaw.aifc
+  ..\Lib\test\audiodata\pluck-pcm16.aiff
+  ..\Lib\test\audiodata\pluck-pcm16.au
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxObjectGroup.h(70,50): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxMap.cpp”)
+  
+  ..\Lib\test\audiodata\pluck-pcm16.wav
+  ..\Lib\test\audiodata\pluck-pcm24.aiff
+  ..\Lib\test\audiodata\pluck-pcm24.au
+  ..\Lib\test\audiodata\pluck-pcm24.wav
+  ..\Lib\test\audiodata\pluck-pcm32.aiff
+  ..\Lib\test\audiodata\pluck-pcm32.au
+  ..\Lib\test\audiodata\pluck-pcm32.wav
+  ..\Lib\test\audiodata\pluck-pcm8.aiff
+  ..\Lib\test\audiodata\pluck-pcm8.au
+  ..\Lib\test\audiodata\pluck-pcm8.wav
+  ..\Lib\test\audiodata\pluck-ulaw.aifc
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.cpp(152,17): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  ..\Lib\test\audiodata\pluck-ulaw.au
+  ..\Lib\test\capath\4e1295a3.0
+  ..\Lib\test\capath\5ed36f99.0
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.cpp(338,14): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.cpp(352,14): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  ..\Lib\test\capath\6e88d7b8.0
+  ..\Lib\test\capath\99d0fa06.0
+  ..\Lib\test\capath\b1930218.0
+  ..\Lib\test\capath\ceff1710.0
+  ..\Lib\test\cjkencodings\big5-utf8.txt
+  ..\Lib\test\cjkencodings\big5.txt
+  ..\Lib\test\cjkencodings\big5hkscs-utf8.txt
+  ..\Lib\test\cjkencodings\big5hkscs.txt
+  ..\Lib\test\cjkencodings\cp949-utf8.txt
+  ..\Lib\test\cjkencodings\cp949.txt
+  ..\Lib\test\cjkencodings\euc_jisx0213-utf8.txt
+  ..\Lib\test\cjkencodings\euc_jisx0213.txt
+  ..\Lib\test\cjkencodings\euc_jp-utf8.txt
+  ..\Lib\test\cjkencodings\euc_jp.txt
+  ..\Lib\test\cjkencodings\euc_kr-utf8.txt
+  ..\Lib\test\cjkencodings\euc_kr.txt
+  ..\Lib\test\cjkencodings\gb18030-utf8.txt
+  ..\Lib\test\cjkencodings\gb18030.txt
+  ..\Lib\test\cjkencodings\gb2312-utf8.txt
+  ..\Lib\test\cjkencodings\gb2312.txt
+  ..\Lib\test\cjkencodings\gbk-utf8.txt
+  ..\Lib\test\cjkencodings\gbk.txt
+  ..\Lib\test\cjkencodings\hz-utf8.txt
+  ..\Lib\test\cjkencodings\hz.txt
+  ..\Lib\test\cjkencodings\iso2022_jp-utf8.txt
+  ..\Lib\test\cjkencodings\iso2022_jp.txt
+  ..\Lib\test\cjkencodings\iso2022_kr-utf8.txt
+  ..\Lib\test\cjkencodings\iso2022_kr.txt
+  ..\Lib\test\cjkencodings\johab-utf8.txt
+  ..\Lib\test\cjkencodings\johab.txt
+  ..\Lib\test\cjkencodings\shift_jis-utf8.txt
+  ..\Lib\test\cjkencodings\shift_jis.txt
+  ..\Lib\test\cjkencodings\shift_jisx0213-utf8.txt
+  ..\Lib\test\cjkencodings\shift_jisx0213.txt
+  ..\Lib\test\crashers\bogus_code_obj.py
+  ..\Lib\test\crashers\gc_inspection.py
+  ..\Lib\test\crashers\infinite_loop_re.py
+  ..\Lib\test\crashers\mutation_inside_cyclegc.py
+  ..\Lib\test\crashers\README
+  ..\Lib\test\crashers\recursive_call.py
+  ..\Lib\test\crashers\trace_at_recursion_limit.py
+  ..\Lib\test\crashers\underlying_dict.py
+  ..\Lib\test\data\README
+  ..\Lib\test\decimaltestdata\abs.decTest
+  ..\Lib\test\decimaltestdata\add.decTest
+  ..\Lib\test\decimaltestdata\and.decTest
+  ..\Lib\test\decimaltestdata\base.decTest
+  ..\Lib\test\decimaltestdata\clamp.decTest
+  ..\Lib\test\decimaltestdata\class.decTest
+  ..\Lib\test\decimaltestdata\compare.decTest
+  ..\Lib\test\decimaltestdata\comparetotal.decTest
+  ..\Lib\test\decimaltestdata\comparetotmag.decTest
+  ..\Lib\test\decimaltestdata\copy.decTest
+  ..\Lib\test\decimaltestdata\copyabs.decTest
+  ..\Lib\test\decimaltestdata\copynegate.decTest
+  ..\Lib\test\decimaltestdata\copysign.decTest
+  ..\Lib\test\decimaltestdata\ddAbs.decTest
+  ..\Lib\test\decimaltestdata\ddAdd.decTest
+  ..\Lib\test\decimaltestdata\ddAnd.decTest
+  ..\Lib\test\decimaltestdata\ddBase.decTest
+  ..\Lib\test\decimaltestdata\ddCanonical.decTest
+  ..\Lib\test\decimaltestdata\ddClass.decTest
+  ..\Lib\test\decimaltestdata\ddCompare.decTest
+  ..\Lib\test\decimaltestdata\ddCompareSig.decTest
+  ..\Lib\test\decimaltestdata\ddCompareTotal.decTest
+  ..\Lib\test\decimaltestdata\ddCompareTotalMag.decTest
+  ..\Lib\test\decimaltestdata\ddCopy.decTest
+  ..\Lib\test\decimaltestdata\ddCopyAbs.decTest
+  ..\Lib\test\decimaltestdata\ddCopyNegate.decTest
+  ..\Lib\test\decimaltestdata\ddCopySign.decTest
+  ..\Lib\test\decimaltestdata\ddDivide.decTest
+  ..\Lib\test\decimaltestdata\ddDivideInt.decTest
+  ..\Lib\test\decimaltestdata\ddEncode.decTest
+  ..\Lib\test\decimaltestdata\ddFMA.decTest
+  ..\Lib\test\decimaltestdata\ddInvert.decTest
+  ..\Lib\test\decimaltestdata\ddLogB.decTest
+  ..\Lib\test\decimaltestdata\ddMax.decTest
+  ..\Lib\test\decimaltestdata\ddMaxMag.decTest
+  ..\Lib\test\decimaltestdata\ddMin.decTest
+  ..\Lib\test\decimaltestdata\ddMinMag.decTest
+  ..\Lib\test\decimaltestdata\ddMinus.decTest
+  ..\Lib\test\decimaltestdata\ddMultiply.decTest
+  ..\Lib\test\decimaltestdata\ddNextMinus.decTest
+  ..\Lib\test\decimaltestdata\ddNextPlus.decTest
+  ..\Lib\test\decimaltestdata\ddNextToward.decTest
+  ..\Lib\test\decimaltestdata\ddOr.decTest
+  ..\Lib\test\decimaltestdata\ddPlus.decTest
+  ..\Lib\test\decimaltestdata\ddQuantize.decTest
+  ..\Lib\test\decimaltestdata\ddReduce.decTest
+  ..\Lib\test\decimaltestdata\ddRemainder.decTest
+  ..\Lib\test\decimaltestdata\ddRemainderNear.decTest
+  ..\Lib\test\decimaltestdata\ddRotate.decTest
+  ..\Lib\test\decimaltestdata\ddSameQuantum.decTest
+  ..\Lib\test\decimaltestdata\ddScaleB.decTest
+  ..\Lib\test\decimaltestdata\ddShift.decTest
+  ..\Lib\test\decimaltestdata\ddSubtract.decTest
+  ..\Lib\test\decimaltestdata\ddToIntegral.decTest
+  ..\Lib\test\decimaltestdata\ddXor.decTest
+  ..\Lib\test\decimaltestdata\decDouble.decTest
+  ..\Lib\test\decimaltestdata\decQuad.decTest
+  ..\Lib\test\decimaltestdata\decSingle.decTest
+  ..\Lib\test\decimaltestdata\divide.decTest
+  ..\Lib\test\decimaltestdata\divideint.decTest
+  ..\Lib\test\decimaltestdata\dqAbs.decTest
+  ..\Lib\test\decimaltestdata\dqAdd.decTest
+  ..\Lib\test\decimaltestdata\dqAnd.decTest
+  ..\Lib\test\decimaltestdata\dqBase.decTest
+  ..\Lib\test\decimaltestdata\dqCanonical.decTest
+  ..\Lib\test\decimaltestdata\dqClass.decTest
+  ..\Lib\test\decimaltestdata\dqCompare.decTest
+  ..\Lib\test\decimaltestdata\dqCompareSig.decTest
+  ..\Lib\test\decimaltestdata\dqCompareTotal.decTest
+  ..\Lib\test\decimaltestdata\dqCompareTotalMag.decTest
+  ..\Lib\test\decimaltestdata\dqCopy.decTest
+  ..\Lib\test\decimaltestdata\dqCopyAbs.decTest
+  ..\Lib\test\decimaltestdata\dqCopyNegate.decTest
+  ..\Lib\test\decimaltestdata\dqCopySign.decTest
+  ..\Lib\test\decimaltestdata\dqDivide.decTest
+  ..\Lib\test\decimaltestdata\dqDivideInt.decTest
+  ..\Lib\test\decimaltestdata\dqEncode.decTest
+  ..\Lib\test\decimaltestdata\dqFMA.decTest
+  ..\Lib\test\decimaltestdata\dqInvert.decTest
+  ..\Lib\test\decimaltestdata\dqLogB.decTest
+  ..\Lib\test\decimaltestdata\dqMax.decTest
+  ..\Lib\test\decimaltestdata\dqMaxMag.decTest
+  ..\Lib\test\decimaltestdata\dqMin.decTest
+  ..\Lib\test\decimaltestdata\dqMinMag.decTest
+  ..\Lib\test\decimaltestdata\dqMinus.decTest
+  ..\Lib\test\decimaltestdata\dqMultiply.decTest
+  ..\Lib\test\decimaltestdata\dqNextMinus.decTest
+  ..\Lib\test\decimaltestdata\dqNextPlus.decTest
+  ..\Lib\test\decimaltestdata\dqNextToward.decTest
+  ..\Lib\test\decimaltestdata\dqOr.decTest
+  ..\Lib\test\decimaltestdata\dqPlus.decTest
+  ..\Lib\test\decimaltestdata\dqQuantize.decTest
+  ..\Lib\test\decimaltestdata\dqReduce.decTest
+  ..\Lib\test\decimaltestdata\dqRemainder.decTest
+  ..\Lib\test\decimaltestdata\dqRemainderNear.decTest
+  ..\Lib\test\decimaltestdata\dqRotate.decTest
+  ..\Lib\test\decimaltestdata\dqSameQuantum.decTest
+  ..\Lib\test\decimaltestdata\dqScaleB.decTest
+  ..\Lib\test\decimaltestdata\dqShift.decTest
+  ..\Lib\test\decimaltestdata\dqSubtract.decTest
+  ..\Lib\test\decimaltestdata\dqToIntegral.decTest
+  ..\Lib\test\decimaltestdata\dqXor.decTest
+  ..\Lib\test\decimaltestdata\dsBase.decTest
+  ..\Lib\test\decimaltestdata\dsEncode.decTest
+  ..\Lib\test\decimaltestdata\exp.decTest
+  ..\Lib\test\decimaltestdata\extra.decTest
+  ..\Lib\test\decimaltestdata\fma.decTest
+  ..\Lib\test\decimaltestdata\inexact.decTest
+  ..\Lib\test\decimaltestdata\invert.decTest
+  ..\Lib\test\decimaltestdata\ln.decTest
+  ..\Lib\test\decimaltestdata\log10.decTest
+  ..\Lib\test\decimaltestdata\logb.decTest
+  ..\Lib\test\decimaltestdata\max.decTest
+  ..\Lib\test\decimaltestdata\maxmag.decTest
+  ..\Lib\test\decimaltestdata\min.decTest
+  ..\Lib\test\decimaltestdata\minmag.decTest
+  ..\Lib\test\decimaltestdata\minus.decTest
+  ..\Lib\test\decimaltestdata\multiply.decTest
+  ..\Lib\test\decimaltestdata\nextminus.decTest
+  ..\Lib\test\decimaltestdata\nextplus.decTest
+  ..\Lib\test\decimaltestdata\nexttoward.decTest
+  ..\Lib\test\decimaltestdata\or.decTest
+  ..\Lib\test\decimaltestdata\plus.decTest
+  ..\Lib\test\decimaltestdata\power.decTest
+  ..\Lib\test\decimaltestdata\powersqrt.decTest
+  ..\Lib\test\decimaltestdata\quantize.decTest
+  ..\Lib\test\decimaltestdata\randomBound32.decTest
+  ..\Lib\test\decimaltestdata\randoms.decTest
+  ..\Lib\test\decimaltestdata\reduce.decTest
+  ..\Lib\test\decimaltestdata\remainder.decTest
+  ..\Lib\test\decimaltestdata\remainderNear.decTest
+  ..\Lib\test\decimaltestdata\rescale.decTest
+  ..\Lib\test\decimaltestdata\rotate.decTest
+  ..\Lib\test\decimaltestdata\rounding.decTest
+  ..\Lib\test\decimaltestdata\samequantum.decTest
+  ..\Lib\test\decimaltestdata\scaleb.decTest
+  ..\Lib\test\decimaltestdata\shift.decTest
+  ..\Lib\test\decimaltestdata\squareroot.decTest
+  ..\Lib\test\decimaltestdata\subtract.decTest
+  ..\Lib\test\decimaltestdata\testall.decTest
+  ..\Lib\test\decimaltestdata\tointegral.decTest
+  ..\Lib\test\decimaltestdata\tointegralx.decTest
+  ..\Lib\test\decimaltestdata\xor.decTest
+  ..\Lib\test\dtracedata\assert_usable.stp
+  ..\Lib\test\dtracedata\call_stack.d.expected
+  ..\Lib\test\dtracedata\call_stack.py
+  ..\Lib\test\dtracedata\call_stack.stp
+  ..\Lib\test\dtracedata\call_stack.stp.expected
+  ..\Lib\test\dtracedata\gc.d.expected
+  ..\Lib\test\dtracedata\gc.py
+  ..\Lib\test\dtracedata\gc.stp
+  ..\Lib\test\dtracedata\gc.stp.expected
+  ..\Lib\test\dtracedata\instance.py
+  ..\Lib\test\dtracedata\line.d.expected
+  ..\Lib\test\dtracedata\line.py
+  ..\Lib\test\eintrdata\eintr_tester.py
+  ..\Lib\test\encoded_modules\module_iso_8859_1.py
+  ..\Lib\test\encoded_modules\module_koi8_r.py
+  ..\Lib\test\encoded_modules\__init__.py
+  ..\Lib\test\imghdrdata\python.bmp
+  ..\Lib\test\imghdrdata\python.exr
+  ..\Lib\test\imghdrdata\python.gif
+  ..\Lib\test\imghdrdata\python.jpg
+  ..\Lib\test\imghdrdata\python.pbm
+  ..\Lib\test\imghdrdata\python.pgm
+  ..\Lib\test\imghdrdata\python.png
+  ..\Lib\test\imghdrdata\python.ppm
+  ..\Lib\test\imghdrdata\python.ras
+  ..\Lib\test\imghdrdata\python.sgi
+  ..\Lib\test\imghdrdata\python.tiff
+  ..\Lib\test\imghdrdata\python.webp
+  ..\Lib\test\imghdrdata\python.xbm
+  ..\Lib\test\leakers\README.txt
+  ..\Lib\test\leakers\test_ctypes.py
+  ..\Lib\test\leakers\test_selftype.py
+  ..\Lib\test\leakers\__init__.py
+  ..\Lib\test\libregrtest\cmdline.py
+  ..\Lib\test\libregrtest\main.py
+  ..\Lib\test\libregrtest\refleak.py
+  ..\Lib\test\libregrtest\runtest.py
+  ..\Lib\test\libregrtest\runtest_mp.py
+  ..\Lib\test\libregrtest\save_env.py
+  ..\Lib\test\libregrtest\setup.py
+  ..\Lib\test\libregrtest\utils.py
+  ..\Lib\test\libregrtest\__init__.py
+  ..\Lib\test\sndhdrdata\README
+  ..\Lib\test\sndhdrdata\sndhdr.8svx
+  ..\Lib\test\sndhdrdata\sndhdr.aifc
+  ..\Lib\test\sndhdrdata\sndhdr.aiff
+  ..\Lib\test\sndhdrdata\sndhdr.au
+  ..\Lib\test\sndhdrdata\sndhdr.hcom
+  ..\Lib\test\sndhdrdata\sndhdr.sndt
+  ..\Lib\test\sndhdrdata\sndhdr.voc
+  ..\Lib\test\sndhdrdata\sndhdr.wav
+  ..\Lib\test\subprocessdata\fd_status.py
+  ..\Lib\test\subprocessdata\input_reader.py
+  ..\Lib\test\subprocessdata\qcat.py
+  ..\Lib\test\subprocessdata\qgrep.py
+  ..\Lib\test\subprocessdata\sigchild_ignore.py
+  ..\Lib\test\support\script_helper.py
+  ..\Lib\test\support\testresult.py
+  ..\Lib\test\support\__init__.py
+  ..\Lib\test\test_asyncio\echo.py
+  ..\Lib\test\test_asyncio\echo2.py
+  ..\Lib\test\test_asyncio\echo3.py
+  ..\Lib\test\test_asyncio\functional.py
+  ..\Lib\test\test_asyncio\test_base_events.py
+  ..\Lib\test\test_asyncio\test_buffered_proto.py
+  ..\Lib\test\test_asyncio\test_context.py
+  ..\Lib\test\test_asyncio\test_events.py
+  ..\Lib\test\test_asyncio\test_futures.py
+  ..\Lib\test\test_asyncio\test_locks.py
+  ..\Lib\test\test_asyncio\test_pep492.py
+  ..\Lib\test\test_asyncio\test_proactor_events.py
+  ..\Lib\test\test_asyncio\test_queues.py
+  ..\Lib\test\test_asyncio\test_runners.py
+  ..\Lib\test\test_asyncio\test_selector_events.py
+  ..\Lib\test\test_asyncio\test_server.py
+  ..\Lib\test\test_asyncio\test_sslproto.py
+  ..\Lib\test\test_asyncio\test_streams.py
+  ..\Lib\test\test_asyncio\test_subprocess.py
+  ..\Lib\test\test_asyncio\test_tasks.py
+  ..\Lib\test\test_asyncio\test_transports.py
+  ..\Lib\test\test_asyncio\test_unix_events.py
+  ..\Lib\test\test_asyncio\test_windows_events.py
+  ..\Lib\test\test_asyncio\test_windows_utils.py
+  ..\Lib\test\test_asyncio\utils.py
+  ..\Lib\test\test_asyncio\__init__.py
+  ..\Lib\test\test_asyncio\__main__.py
+  ..\Lib\test\test_email\test_asian_codecs.py
+  ..\Lib\test\test_email\test_contentmanager.py
+  ..\Lib\test\test_email\test_defect_handling.py
+  ..\Lib\test\test_email\test_email.py
+  ..\Lib\test\test_email\test_generator.py
+  ..\Lib\test\test_email\test_headerregistry.py
+  ..\Lib\test\test_email\test_inversion.py
+  ..\Lib\test\test_email\test_message.py
+  ..\Lib\test\test_email\test_parser.py
+  ..\Lib\test\test_email\test_pickleable.py
+  ..\Lib\test\test_email\test_policy.py
+  ..\Lib\test\test_email\test_utils.py
+  ..\Lib\test\test_email\test__encoded_words.py
+  ..\Lib\test\test_email\test__header_value_parser.py
+  ..\Lib\test\test_email\torture_test.py
+  ..\Lib\test\test_email\__init__.py
+  ..\Lib\test\test_email\__main__.py
+  ..\Lib\test\test_email\data\audiotest.au
+  ..\Lib\test\test_email\data\msg_01.txt
+  ..\Lib\test\test_email\data\msg_02.txt
+  ..\Lib\test\test_email\data\msg_03.txt
+  ..\Lib\test\test_email\data\msg_04.txt
+  ..\Lib\test\test_email\data\msg_05.txt
+  ..\Lib\test\test_email\data\msg_06.txt
+  ..\Lib\test\test_email\data\msg_07.txt
+  ..\Lib\test\test_email\data\msg_08.txt
+  ..\Lib\test\test_email\data\msg_09.txt
+  ..\Lib\test\test_email\data\msg_10.txt
+  curl_ntlm_wb.c
+  ..\Lib\test\test_email\data\msg_11.txt
+  ..\Lib\test\test_email\data\msg_12.txt
+  ..\Lib\test\test_email\data\msg_12a.txt
+  ..\Lib\test\test_email\data\msg_13.txt
+  ..\Lib\test\test_email\data\msg_14.txt
+  ..\Lib\test\test_email\data\msg_15.txt
+  ..\Lib\test\test_email\data\msg_16.txt
+  ..\Lib\test\test_email\data\msg_17.txt
+  ..\Lib\test\test_email\data\msg_18.txt
+  ..\Lib\test\test_email\data\msg_19.txt
+  ..\Lib\test\test_email\data\msg_20.txt
+  ..\Lib\test\test_email\data\msg_21.txt
+  ..\Lib\test\test_email\data\msg_22.txt
+  ..\Lib\test\test_email\data\msg_23.txt
+  ..\Lib\test\test_email\data\msg_24.txt
+  ..\Lib\test\test_email\data\msg_25.txt
+  ..\Lib\test\test_email\data\msg_26.txt
+  ..\Lib\test\test_email\data\msg_27.txt
+  ..\Lib\test\test_email\data\msg_28.txt
+  ..\Lib\test\test_email\data\msg_29.txt
+  ..\Lib\test\test_email\data\msg_30.txt
+  ..\Lib\test\test_email\data\msg_31.txt
+  ..\Lib\test\test_email\data\msg_32.txt
+  ..\Lib\test\test_email\data\msg_33.txt
+  ..\Lib\test\test_email\data\msg_34.txt
+  ..\Lib\test\test_email\data\msg_35.txt
+  ..\Lib\test\test_email\data\msg_36.txt
+  ..\Lib\test\test_email\data\msg_37.txt
+  ..\Lib\test\test_email\data\msg_38.txt
+  ..\Lib\test\test_email\data\msg_39.txt
+  ..\Lib\test\test_email\data\msg_40.txt
+  ..\Lib\test\test_email\data\msg_41.txt
+  ..\Lib\test\test_email\data\msg_42.txt
+  ..\Lib\test\test_email\data\msg_43.txt
+  ..\Lib\test\test_email\data\msg_44.txt
+  ..\Lib\test\test_email\data\msg_45.txt
+  ..\Lib\test\test_email\data\msg_46.txt
+  ..\Lib\test\test_email\data\PyBanner048.gif
+  ..\Lib\test\test_import\__init__.py
+  ..\Lib\test\test_import\__main__.py
+  ..\Lib\test\test_import\data\circular_imports\basic.py
+  ..\Lib\test\test_import\data\circular_imports\basic2.py
+  ..\Lib\test\test_import\data\circular_imports\binding.py
+  ..\Lib\test\test_import\data\circular_imports\binding2.py
+  ..\Lib\test\test_import\data\circular_imports\indirect.py
+  ..\Lib\test\test_import\data\circular_imports\rebinding.py
+  ..\Lib\test\test_import\data\circular_imports\rebinding2.py
+  ..\Lib\test\test_import\data\circular_imports\subpackage.py
+  ..\Lib\test\test_import\data\circular_imports\util.py
+  ..\Lib\test\test_import\data\circular_imports\subpkg\subpackage2.py
+  ..\Lib\test\test_import\data\circular_imports\subpkg\util.py
+  ..\Lib\test\test_import\data\package\submodule.py
+  ..\Lib\test\test_import\data\package\__init__.py
+  ..\Lib\test\test_import\data\package2\submodule1.py
+  ..\Lib\test\test_import\data\package2\submodule2.py
+  ..\Lib\test\test_importlib\abc.py
+  ..\Lib\test\test_importlib\test_abc.py
+  ..\Lib\test\test_importlib\test_api.py
+  ..\Lib\test\test_importlib\test_lazy.py
+  ..\Lib\test\test_importlib\test_locks.py
+  ..\Lib\test\test_importlib\test_namespace_pkgs.py
+  ..\Lib\test\test_importlib\test_open.py
+  ..\Lib\test\test_importlib\test_path.py
+  ..\Lib\test\test_importlib\test_read.py
+  ..\Lib\test\test_importlib\test_resource.py
+  ..\Lib\test\test_importlib\test_spec.py
+  ..\Lib\test\test_importlib\test_util.py
+  ..\Lib\test\test_importlib\test_windows.py
+  ..\Lib\test\test_importlib\util.py
+  ..\Lib\test\test_importlib\__init__.py
+  ..\Lib\test\test_importlib\__main__.py
+  ..\Lib\test\test_importlib\builtin\test_finder.py
+  ..\Lib\test\test_importlib\builtin\test_loader.py
+  ..\Lib\test\test_importlib\builtin\__init__.py
+  ..\Lib\test\test_importlib\builtin\__main__.py
+  ..\Lib\test\test_importlib\data01\binary.file
+  ..\Lib\test\test_importlib\data01\utf-16.file
+  ..\Lib\test\test_importlib\data01\utf-8.file
+  ..\Lib\test\test_importlib\data01\__init__.py
+  ..\Lib\test\test_importlib\data01\subdirectory\binary.file
+  ..\Lib\test\test_importlib\data01\subdirectory\__init__.py
+  ..\Lib\test\test_importlib\data02\__init__.py
+  ..\Lib\test\test_importlib\data02\one\resource1.txt
+  ..\Lib\test\test_importlib\data02\one\__init__.py
+  ..\Lib\test\test_importlib\data02\two\resource2.txt
+  ..\Lib\test\test_importlib\data02\two\__init__.py
+  ..\Lib\test\test_importlib\data03\__init__.py
+  ..\Lib\test\test_importlib\data03\namespace\resource1.txt
+  ..\Lib\test\test_importlib\data03\namespace\portion1\__init__.py
+  ..\Lib\test\test_importlib\data03\namespace\portion2\__init__.py
+  ..\Lib\test\test_importlib\extension\test_case_sensitivity.py
+  ..\Lib\test\test_importlib\extension\test_finder.py
+  ..\Lib\test\test_importlib\extension\test_loader.py
+  ..\Lib\test\test_importlib\extension\test_path_hook.py
+  ..\Lib\test\test_importlib\extension\__init__.py
+  ..\Lib\test\test_importlib\extension\__main__.py
+  ..\Lib\test\test_importlib\frozen\test_finder.py
+  ..\Lib\test\test_importlib\frozen\test_loader.py
+  ..\Lib\test\test_importlib\frozen\__init__.py
+  ..\Lib\test\test_importlib\frozen\__main__.py
+  ..\Lib\test\test_importlib\import_\test_api.py
+  ..\Lib\test\test_importlib\import_\test_caching.py
+  ..\Lib\test\test_importlib\import_\test_fromlist.py
+  ..\Lib\test\test_importlib\import_\test_meta_path.py
+  ..\Lib\test\test_importlib\import_\test_packages.py
+  ..\Lib\test\test_importlib\import_\test_path.py
+  ..\Lib\test\test_importlib\import_\test_relative_imports.py
+  ..\Lib\test\test_importlib\import_\test___loader__.py
+  ..\Lib\test\test_importlib\import_\test___package__.py
+  ..\Lib\test\test_importlib\import_\__init__.py
+  ..\Lib\test\test_importlib\import_\__main__.py
+  ..\Lib\test\test_importlib\namespace_pkgs\missing_directory.zip
+  ..\Lib\test\test_importlib\namespace_pkgs\nested_portion1.zip
+  ..\Lib\test\test_importlib\namespace_pkgs\top_level_portion1.zip
+  ..\Lib\test\test_importlib\namespace_pkgs\both_portions\foo\one.py
+  ..\Lib\test\test_importlib\namespace_pkgs\both_portions\foo\two.py
+  ..\Lib\test\test_importlib\namespace_pkgs\module_and_namespace_package\a_test.py
+  ..\Lib\test\test_importlib\namespace_pkgs\module_and_namespace_package\a_test\empty
+  ..\Lib\test\test_importlib\namespace_pkgs\not_a_namespace_pkg\foo\one.py
+  ..\Lib\test\test_importlib\namespace_pkgs\not_a_namespace_pkg\foo\__init__.py
+  ..\Lib\test\test_importlib\namespace_pkgs\portion1\foo\one.py
+  ..\Lib\test\test_importlib\namespace_pkgs\portion2\foo\two.py
+  db_exception.cpp
+  ..\Lib\test\test_importlib\namespace_pkgs\project1\parent\child\one.py
+  ..\Lib\test\test_importlib\namespace_pkgs\project2\parent\child\two.py
+  ..\Lib\test\test_importlib\namespace_pkgs\project3\parent\child\three.py
+  ..\Lib\test\test_importlib\source\test_case_sensitivity.py
+  ..\Lib\test\test_importlib\source\test_file_loader.py
+  ..\Lib\test\test_importlib\source\test_finder.py
+  ..\Lib\test\test_importlib\source\test_path_hook.py
+  ..\Lib\test\test_importlib\source\test_source_encoding.py
+  ..\Lib\test\test_importlib\source\__init__.py
+  ..\Lib\test\test_importlib\source\__main__.py
+  ..\Lib\test\test_importlib\zipdata01\ziptestdata.zip
+  ..\Lib\test\test_importlib\zipdata01\__init__.py
+  ..\Lib\test\test_importlib\zipdata02\ziptestdata.zip
+  ..\Lib\test\test_importlib\zipdata02\__init__.py
+  ..\Lib\test\test_json\test_decode.py
+  ..\Lib\test\test_json\test_default.py
+  ..\Lib\test\test_json\test_dump.py
+  ..\Lib\test\test_json\test_encode_basestring_ascii.py
+  ..\Lib\test\test_json\test_enum.py
+  ..\Lib\test\test_json\test_fail.py
+  ..\Lib\test\test_json\test_float.py
+  ..\Lib\test\test_json\test_indent.py
+  ..\Lib\test\test_json\test_pass1.py
+  ..\Lib\test\test_json\test_pass2.py
+  ..\Lib\test\test_json\test_pass3.py
+  ..\Lib\test\test_json\test_recursion.py
+  ..\Lib\test\test_json\test_scanstring.py
+  ..\Lib\test\test_json\test_separators.py
+  ..\Lib\test\test_json\test_speedups.py
+  ..\Lib\test\test_json\test_tool.py
+  ..\Lib\test\test_json\test_unicode.py
+  ..\Lib\test\test_json\__init__.py
+  ..\Lib\test\test_json\__main__.py
+  ..\Lib\test\test_tools\test_fixcid.py
+  ..\Lib\test\test_tools\test_gprof2html.py
+  ..\Lib\test\test_tools\test_i18n.py
+  ..\Lib\test\test_tools\test_md5sum.py
+  ..\Lib\test\test_tools\test_pdeps.py
+  ..\Lib\test\test_tools\test_pindent.py
+  ..\Lib\test\test_tools\test_reindent.py
+  ..\Lib\test\test_tools\test_sundry.py
+  ..\Lib\test\test_tools\test_unparse.py
+  ..\Lib\test\test_tools\__init__.py
+  ..\Lib\test\test_tools\__main__.py
+  ..\Lib\test\test_warnings\__init__.py
+  ..\Lib\test\test_warnings\__main__.py
+  ..\Lib\test\test_warnings\data\import_warning.py
+  ..\Lib\test\test_warnings\data\stacklevel.py
+  ..\Lib\test\tracedmodules\testmod.py
+  ..\Lib\test\tracedmodules\__init__.py
+  ..\Lib\test\xmltestdata\expat224_utf8_bug.xml
+  ..\Lib\test\xmltestdata\simple-ns.xml
+  ..\Lib\test\xmltestdata\simple.xml
+  ..\Lib\test\xmltestdata\test.xml
+  ..\Lib\test\xmltestdata\test.xml.out
+  ..\Lib\tkinter\colorchooser.py
+  ..\Lib\tkinter\commondialog.py
+  ..\Lib\tkinter\constants.py
+  ..\Lib\tkinter\dialog.py
+  ..\Lib\tkinter\dnd.py
+  ..\Lib\tkinter\filedialog.py
+  ..\Lib\tkinter\font.py
+  ..\Lib\tkinter\messagebox.py
+  ..\Lib\tkinter\scrolledtext.py
+  ..\Lib\tkinter\simpledialog.py
+  ..\Lib\tkinter\tix.py
+  ..\Lib\tkinter\ttk.py
+  ..\Lib\tkinter\__init__.py
+  ..\Lib\tkinter\__main__.py
+  ..\Lib\tkinter\test\README
+  ..\Lib\tkinter\test\runtktests.py
+  ..\Lib\tkinter\test\support.py
+  ..\Lib\tkinter\test\widget_tests.py
+  ..\Lib\tkinter\test\__init__.py
+  ..\Lib\tkinter\test\test_tkinter\test_font.py
+  ..\Lib\tkinter\test\test_tkinter\test_geometry_managers.py
+  ..\Lib\tkinter\test\test_tkinter\test_images.py
+  ..\Lib\tkinter\test\test_tkinter\test_loadtk.py
+  ..\Lib\tkinter\test\test_tkinter\test_misc.py
+  ..\Lib\tkinter\test\test_tkinter\test_text.py
+  ..\Lib\tkinter\test\test_tkinter\test_variables.py
+  ..\Lib\tkinter\test\test_tkinter\test_widgets.py
+  ..\Lib\tkinter\test\test_tkinter\__init__.py
+  ..\Lib\tkinter\test\test_ttk\test_extensions.py
+  ..\Lib\tkinter\test\test_ttk\test_functions.py
+  ..\Lib\tkinter\test\test_ttk\test_style.py
+  curl_path.c
+  ..\Lib\tkinter\test\test_ttk\test_widgets.py
+  ..\Lib\tkinter\test\test_ttk\__init__.py
+  ..\Lib\turtledemo\bytedesign.py
+  ..\Lib\turtledemo\chaos.py
+  ..\Lib\turtledemo\clock.py
+  ..\Lib\turtledemo\colormixer.py
+  ..\Lib\turtledemo\forest.py
+  ..\Lib\turtledemo\fractalcurves.py
+  ..\Lib\turtledemo\lindenmayer.py
+  ..\Lib\turtledemo\minimal_hanoi.py
+  ..\Lib\turtledemo\nim.py
+  ..\Lib\turtledemo\paint.py
+  ..\Lib\turtledemo\peace.py
+  ..\Lib\turtledemo\penrose.py
+  ..\Lib\turtledemo\planet_and_moon.py
+  ..\Lib\turtledemo\rosette.py
+  ..\Lib\turtledemo\round_dance.py
+  ..\Lib\turtledemo\sorting_animate.py
+  ..\Lib\turtledemo\tree.py
+  ..\Lib\turtledemo\turtle.cfg
+  ..\Lib\turtledemo\two_canvases.py
+  ..\Lib\turtledemo\yinyang.py
+  ..\Lib\turtledemo\__init__.py
+  ..\Lib\turtledemo\__main__.py
+  ..\Lib\unittest\case.py
+  ..\Lib\unittest\loader.py
+  ..\Lib\unittest\main.py
+  ..\Lib\unittest\mock.py
+  ..\Lib\unittest\result.py
+  ..\Lib\unittest\runner.py
+  ..\Lib\unittest\signals.py
+  ..\Lib\unittest\suite.py
+  ..\Lib\unittest\util.py
+  ..\Lib\unittest\__init__.py
+  ..\Lib\unittest\__main__.py
+  ..\Lib\unittest\test\dummy.py
+  ..\Lib\unittest\test\support.py
+  ..\Lib\unittest\test\test_assertions.py
+  ..\Lib\unittest\test\test_break.py
+  ..\Lib\unittest\test\test_case.py
+  ..\Lib\unittest\test\test_discovery.py
+  ..\Lib\unittest\test\test_functiontestcase.py
+  ..\Lib\unittest\test\test_loader.py
+  ..\Lib\unittest\test\test_program.py
+  ..\Lib\unittest\test\test_result.py
+  ..\Lib\unittest\test\test_runner.py
+  ..\Lib\unittest\test\test_setups.py
+  ..\Lib\unittest\test\test_skipping.py
+  ..\Lib\unittest\test\test_suite.py
+  ..\Lib\unittest\test\_test_warnings.py
+  ..\Lib\unittest\test\__init__.py
+  ..\Lib\unittest\test\__main__.py
+  ..\Lib\unittest\test\testmock\support.py
+  ..\Lib\unittest\test\testmock\testcallable.py
+  ..\Lib\unittest\test\testmock\testhelpers.py
+  ..\Lib\unittest\test\testmock\testmagicmethods.py
+  ..\Lib\unittest\test\testmock\testmock.py
+  ..\Lib\unittest\test\testmock\testpatch.py
+  ..\Lib\unittest\test\testmock\testsealable.py
+  ..\Lib\unittest\test\testmock\testsentinel.py
+  ..\Lib\unittest\test\testmock\testwith.py
+  ..\Lib\unittest\test\testmock\__init__.py
+  ..\Lib\unittest\test\testmock\__main__.py
+  ..\Lib\urllib\error.py
+  ..\Lib\urllib\parse.py
+  ..\Lib\urllib\request.py
+  ..\Lib\urllib\response.py
+  ..\Lib\urllib\robotparser.py
+  ..\Lib\urllib\__init__.py
+  ..\Lib\venv\__init__.py
+  ..\Lib\venv\__main__.py
+  ..\Lib\venv\scripts\common\activate
+  ..\Lib\venv\scripts\nt\activate.bat
+  ..\Lib\venv\scripts\nt\Activate.ps1
+  ..\Lib\venv\scripts\nt\deactivate.bat
+  ..\Lib\venv\scripts\posix\activate.csh
+  ..\Lib\venv\scripts\posix\activate.fish
+  ..\Lib\wsgiref\handlers.py
+  ..\Lib\wsgiref\headers.py
+  ..\Lib\wsgiref\simple_server.py
+  ..\Lib\wsgiref\util.py
+  ..\Lib\wsgiref\validate.py
+  ..\Lib\wsgiref\__init__.py
+  ..\Lib\xml\__init__.py
+  ..\Lib\xml\dom\domreg.py
+  ..\Lib\xml\dom\expatbuilder.py
+  ..\Lib\xml\dom\minicompat.py
+  ..\Lib\xml\dom\minidom.py
+  ..\Lib\xml\dom\NodeFilter.py
+  ..\Lib\xml\dom\pulldom.py
+  ..\Lib\xml\dom\xmlbuilder.py
+  ..\Lib\xml\dom\__init__.py
+  ..\Lib\xml\etree\cElementTree.py
+  ..\Lib\xml\etree\ElementInclude.py
+  ..\Lib\xml\etree\ElementPath.py
+  ..\Lib\xml\etree\ElementTree.py
+  ..\Lib\xml\etree\__init__.py
+  ..\Lib\xml\parsers\expat.py
+  ..\Lib\xml\parsers\__init__.py
+  ..\Lib\xml\sax\expatreader.py
+  ..\Lib\xml\sax\handler.py
+  ..\Lib\xml\sax\saxutils.py
+  ..\Lib\xml\sax\xmlreader.py
+  ..\Lib\xml\sax\_exceptions.py
+  ..\Lib\xml\sax\__init__.py
+  ..\Lib\xmlrpc\client.py
+  ..\Lib\xmlrpc\server.py
+  ..\Lib\xmlrpc\__init__.py
+  复制了 2034 个文件
+  Matrix3.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  (编译源文件“db_exception.cpp”)
+  
+  TmxObject.cpp
+  正在生成代码...
+  Performing Custom Build Tools
+   Assembling: F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\_ctypes\libffi_msvc\win64.asm
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(259,37): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(332,39): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(351,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(374,42): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(433,30): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(446,30): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(532,53): warning C4267: “参数”: 从“size_t”转换到“KBEngine::ArraySize”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_interface_mysql.cpp(544,17): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  navigation_mesh_handle.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“navigation_mesh_handle.cpp”)
+  
+  Performing Custom Build Tools
+   Assembling: F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\_decimal\libmpdec\vcdiv64.asm
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxObject.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxObject.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxObject.cpp”)
+  
+  TmxObjectGroup.cpp
+  socketmodule.c
+  multiprocessing.c
+  _queuemodule.c
+  overlapped.c
+  _decimal.c
+  正在编译...
+  curl_range.c
+  _asynciomodule.c
+  unicodedata.c
+  pyexpat.c
+  _elementtree.c
+  pyscript.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\pyscript.lib
+  _ctypes.c
+  selectmodule.c
+  loadlibrary.c
+  basearith.c
+  loadlibrary.c
+  curl_rtmp.c
+  semaphore.c
+  constants.c
+  Plane.cpp
+  _hashopenssl.c
+  context.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxObjectGroup.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxObjectGroup.h(70,50): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxObjectGroup.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\datatypes.cpp(81,45): warning C4267: “=”: 从“size_t”转换到“KBEngine::uint8”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  convolute.c
+  TmxPolygon.cpp
+  crt.c
+  db_transaction.cpp
+  curl_sasl.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/db_transaction.cpp”)
+  
+  difradix2.c
+  xmlparse.c
+  callbacks.c
+  xmlparse.c
+  fnt.c
+    正在创建库 ../../../../res/scripts/common/DLLs/_queue.lib 和对象 ../../../../res/scripts/common/DLLs/_queue.exp
+  正在生成代码
+    正在创建库 ../../../../res/scripts/common/DLLs/_asyncio.lib 和对象 ../../../../res/scripts/common/DLLs/_asyncio.exp
+  正在生成代码
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxPolygon.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.cpp(41,22): warning C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.cpp(43,17): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.cpp(47,4): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.cpp(51,12): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  curl_sspi.c
+  TmxPolyline.cpp
+  fourstep.c
+  xmlrole.c
+  io.c
+  xmlrole.c
+  curl_threads.c
+  xmltok.c
+  xmltok.c
+  callproc.c
+  memory.c
+    正在创建库 ../../../../res/scripts/common/DLLs/select.lib 和对象 ../../../../res/scripts/common/DLLs/select.exp
+  正在生成代码
+    正在创建库 ../../../../res/scripts/common/DLLs/_hashlib.lib 和对象 ../../../../res/scripts/common/DLLs/_hashlib.exp
+LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\PCbuild\_hashlib.vcxproj]
+  正在生成代码
+  detaillevel.cpp
+  已完成代码的生成
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  已完成代码的生成
+  (编译源文件“../entitydef/detaillevel.cpp”)
+  
+  (编译源文件“../TmxPolyline.cpp”)
+  
+    正在创建库 ../../../../res/scripts/common/DLLs/_overlapped.lib 和对象 ../../../../res/scripts/common/DLLs/_overlapped.exp
+  正在生成代码
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.cpp(41,22): warning C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  已完成代码的生成
+  mpdecimal.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.cpp(43,17): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.cpp(47,4): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.cpp(51,12): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  TmxPropertySet.cpp
+  System.cpp
+    正在创建库 ../../../../res/scripts/common/DLLs/_socket.lib 和对象 ../../../../res/scripts/common/DLLs/_socket.exp
+  已完成代码的生成
+    正在创建库 ../../../../res/scripts/common/DLLs/_multiprocessing.lib 和对象 ../../../../res/scripts/common/DLLs/_multiprocessing.exp
+  正在生成代码
+  正在生成代码
+  db_interface_redis.cpp
+  已完成代码的生成
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation_mesh_handle.cpp(312,18): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“db_interface_redis.cpp”)
+  
+  已完成代码的生成
+  numbertheory.c
+  dict.c
+  _queue.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_queue.pyd
+  select.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\select.pyd
+  已完成代码的生成
+  sixstep.c
+  _asyncio.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_asyncio.pyd
+  _multiprocessing.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_multiprocessing.pyd
+  _overlapped.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_overlapped.pyd
+  transpose.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxPropertySet.cpp”)
+  
+    正在创建库 ../../../../res/scripts/common/DLLs/unicodedata.lib 和对象 ../../../../res/scripts/common/DLLs/unicodedata.exp
+  dotdot.c
+  正在生成代码
+  cfield.c
+  TmxTile.cpp
+  easy.c
+    正在创建库 ../../../../res/scripts/common/DLLs/pyexpat.lib 和对象 ../../../../res/scripts/common/DLLs/pyexpat.exp
+  正在生成代码
+  已完成代码的生成
+  navigation_tile_handle.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+  Triangle.cpp
+  _hashlib.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_hashlib.pyd
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxTile.cpp”)
+  
+  unicodedata.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\unicodedata.pyd
+  TmxTileset.cpp
+  ffi.c
+  malloc_closure.c
+  escape.c
+    正在创建库 ../../../../res/scripts/common/DLLs/_elementtree.lib 和对象 ../../../../res/scripts/common/DLLs/_elementtree.exp
+  正在生成代码
+  file.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  (编译源文件“../TmxTileset.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxTileset.cpp(113,17): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\tmxparser\tmxparser.vcxproj]
+  _socket.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_socket.pyd
+  TmxUtil.cpp
+    正在创建库 ../../../../res/scripts/common/DLLs/_decimal.lib 和对象 ../../../../res/scripts/common/DLLs/_decimal.exp
+  stgdict.c
+  正在生成代码
+  fileinfo.c
+  applink.c
+  entity_sqlstatement_mapping.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_sqlstatement_mapping.cpp”)
+  
+  Vector3.cpp
+  _ssl.c
+  formdata.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_interface_redis.cpp(456,63): warning C4267: “参数”: 从“size_t”转换到“KBEngine::ArraySize”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_interface_redis.cpp(460,36): warning C4267: “参数”: 从“size_t”转换到“KBEngine::ArraySize”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  ftp.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPropertySet.h(60,47): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(123,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(132,61): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(141,59): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxMap.h(156,52): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxObjectGroup.h(70,50): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolygon.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\tmxparser\TmxPolyline.h(54,48): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/navigation_tile_handle.cpp”)
+  
+  ftplistparser.c
+  prep_cif.c
+  entity_component.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_component.cpp”)
+  
+  已完成代码的生成
+  db_transaction.cpp
+  getenv.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  (编译源文件“db_transaction.cpp”)
+  
+  Vector4.cpp
+  _elementtree.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_elementtree.pyd
+  getinfo.c
+    正在创建库 ../../../../res/scripts/common/DLLs/_ctypes.lib 和对象 ../../../../res/scripts/common/DLLs/_ctypes.exp
+  Recast.cpp
+  正在生成代码
+  正在生成代码...
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\Recast.cpp(38,33): warning C4291: “void *operator new(size_t,const rcNewTag &,void *)”: 未找到匹配的删除运算符；如果初始化引发异常，则不会释放内存 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastAlloc.h(68,14):
+      参见“operator new”的声明
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\Recast.cpp(38,33):
+      模板实例化上下文(最早的实例化上下文)为
+          F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\Recast.cpp(99,9):
+          查看对正在编译的函数 模板 实例化“T *`anonymous-namespace'::rcNew<rcHeightfield>(rcAllocHint)”的引用
+          with
+          [
+              T=rcHeightfield
+          ]
+  
+  gopher.c
+  tmxparser.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\tmxparser.lib
+    正在创建库 ../../../../res/scripts/common/DLLs/_ssl.lib 和对象 ../../../../res/scripts/common/DLLs/_ssl.exp
+LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\PCbuild\_ssl.vcxproj]
+  正在生成代码
+  已完成代码的生成
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\sqlstatement.h(45,110): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_sqlstatement_mapping.cpp”)
+  
+  hash.c
+  _ctypes.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_ctypes.pyd
+  已完成代码的生成
+  已完成代码的生成
+  hmac.c
+  pyexpat.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\pyexpat.pyd
+  hostasyn.c
+  entity_table_mysql.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+  已完成代码的生成
+  正在生成代码...
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_component.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_component.cpp”)
+  
+  math.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\math.lib
+  _decimal.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_decimal.pyd
+  _ssl.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\res\scripts\common\DLLs\_ssl.pyd
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entity_component.cpp(1081,17): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entity_component.cpp(1083,17): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  entity_table_redis.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  (编译源文件“entity_table_redis.cpp”)
+  
+  正在编译...
+  hostcheck.c
+  hostip4.c
+  hostip6.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\sqlstatement.h(45,110): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+  entity_component_call.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\read_entity_helper.h(78,35): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\read_entity_helper.h(193,35): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_component_call.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\write_entity_helper.h(137,62): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\write_entity_helper.h(176,36): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\write_entity_helper.h(257,55): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\remove_entity_helper.h(46,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\remove_entity_helper.h(95,59): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\remove_entity_helper.h(134,33): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\remove_entity_helper.h(177,53): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/entity_table_mysql.cpp”)
+  
+  hostip.c
+  hostsyn.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(58,34): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(72,38): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(109,36): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(246,41): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(349,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(392,41): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(1865,30): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(1935,30): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(1969,40): warning C4267: “参数”: 从“size_t”转换到“KBEngine::ArraySize”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(1987,29): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\entity_table_mysql.cpp(2039,30): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  http2.c
+  http.c
+  http_chunks.c
+  http_digest.c
+  kbe_table_mysql.cpp
+  kbe_table_redis.cpp
+  http_negotiate.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  (编译源文件“../../lib/db_mysql/kbe_table_mysql.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_component_call.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_component_call.cpp”)
+  
+  http_ntlm.c
+  http_proxy.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  (编译源文件“kbe_table_redis.cpp”)
+  
+  正在编译...
+  RecastAlloc.cpp
+  idn_win32.c
+  RecastArea.cpp
+  RecastAssert.cpp
+  RecastContour.cpp
+  entity_call.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_call.cpp”)
+  
+  if2ip.c
+  RecastFilter.cpp
+  RecastLayers.cpp
+  RecastMesh.cpp
+  imap.c
+  RecastMeshDetail.cpp
+  RecastRasterization.cpp
+  inet_ntop.c
+  RecastRegion.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastAlloc.h(99,73): warning C4291: “void *operator new(size_t,const rcNewTag &,void *)”: 未找到匹配的删除运算符；如果初始化引发异常，则不会释放内存 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\navigation.vcxproj]
+  (编译源文件“../../../lib/navigation/RecastRegion.cpp”)
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastAlloc.h(68,14):
+      参见“operator new”的声明
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastAlloc.h(99,73):
+      模板实例化上下文(最早的实例化上下文)为
+          F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastRegion.cpp(798,25):
+          查看对正在编译的 类 模板 实例化“rcTempVector<rcRegion>”的引用
+          F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastAlloc.h(275,29):
+          查看对正在编译的 类 模板 实例化“rcVectorBase<T,RC_ALLOC_TEMP>”的引用
+          with
+          [
+              T=rcRegion
+          ]
+          F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastAlloc.h(99,14):
+          在编译 类 模板 成员函数“void rcVectorBase<T,RC_ALLOC_TEMP>::construct(T *,const T &)”时
+          with
+          [
+              T=rcRegion
+          ]
+              F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastAlloc.h(194,12):
+              请参阅 "rcVectorBase<T,RC_ALLOC_TEMP>::push_back" 中对 "rcVectorBase<T,RC_ALLOC_TEMP>::construct" 的第一个引用
+          with
+          [
+              T=rcRegion
+          ]
+              F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\navigation\RecastRegion.cpp(806,20):
+              请参阅 "mergeAndFilterRegions" 中对 "rcVectorBase<T,RC_ALLOC_TEMP>::push_back" 的第一个引用
+          with
+          [
+              T=rcRegion
+          ]
+  
+  正在生成代码...
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\kbe_table_redis.cpp(37,41): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\kbe_table_redis.cpp(85,41): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\kbe_table_redis.cpp(287,75): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\kbe_table_redis.cpp(291,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\kbe_table_redis.cpp(728,93): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  inet_pton.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(30,43): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(52,46): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(83,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(94,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(135,48): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(164,19): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(185,46): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(220,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(265,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(283,46): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(311,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(350,46): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(382,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(414,46): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(445,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(499,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(517,46): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(597,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(614,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(622,44): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(636,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(645,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(681,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(690,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(732,40): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(735,33): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(759,42): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(766,50): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(773,43): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(780,44): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(809,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(839,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(849,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(885,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(895,34): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(902,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(915,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(934,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(944,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1038,42): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1071,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1081,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1135,36): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1142,34): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1177,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1187,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1241,93): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1269,32): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1280,45): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1304,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1312,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1319,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\kbe_table_mysql.cpp(1326,47): warning C4267: “参数”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_mysql\db_mysql.vcxproj]
+  krb5.c
+  ldap.c
+  llist.c
+  redis_watcher.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_redis\db_redis.vcxproj]
+  (编译源文件“redis_watcher.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_call.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entity_call.cpp”)
+  
+  正在生成代码...
+  正在编译...
+  md4.c
+  db_mysql.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\db_mysql.lib
+  entitydef.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entitydef.cpp”)
+  
+  md5.c
+  navigation.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\navigation.lib
+  memdebug.c
+  mime.c
+  mprintf.c
+  multi.c
+  netrc.c
+  non-ascii.c
+  nonblock.c
+  db_redis.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\db_redis.lib
+  openldap.c
+  db_interface.cpp
+  parsedate.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_interface\db_interface.vcxproj]
+  (编译源文件“db_interface.cpp”)
+  
+  pingpong.c
+  pipeline.c
+  entitycallabstract.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entitycallabstract.cpp”)
+  
+  pop3.c
+  progress.c
+  psl.c
+  rand.c
+  rtsp.c
+  security.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entitycallabstract.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/entitycallabstract.cpp”)
+  
+  db_tasks.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_interface\db_interface.vcxproj]
+  (编译源文件“db_tasks.cpp”)
+  
+  select.c
+  正在生成代码...
+  fixedarray.cpp
+  正在编译...
+  sendf.c
+  setopt.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/fixedarray.cpp”)
+  
+  sha256.c
+  share.c
+  db_threadpool.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_interface\db_interface.vcxproj]
+  (编译源文件“db_threadpool.cpp”)
+  
+  slist.c
+  smb.c
+  smtp.c
+  socks.c
+  socks_gssapi.c
+  fixeddict.cpp
+  socks_sspi.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/fixeddict.cpp”)
+  
+  speedcheck.c
+  splay.c
+  ssh.c
+  entity_table.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_interface\db_interface.vcxproj]
+  (编译源文件“entity_table.cpp”)
+  
+  ssh-libssh.c
+  strcase.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\fixeddict.cpp(268,20): warning C4244: “return”: 从“Py_ssize_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  strdup.c
+  strerror.c
+  strtok.c
+  method.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/method.cpp”)
+  
+  strtoofft.c
+  system_win32.c
+  正在生成代码...
+  正在编译...
+  telnet.c
+  kbe_tables.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\db_interface\db_interface.vcxproj]
+  (编译源文件“kbe_tables.cpp”)
+  
+  tftp.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/method.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/method.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\method.cpp(148,17): warning C4267: “初始化”: 从“size_t”转换到“KBEngine::uint8”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  timeval.c
+  transfer.c
+  url.c
+  property.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/property.cpp”)
+  
+  version.c
+  warnless.c
+  wildcard.c
+  x509asn1.c
+  cleartext.c
+  cram.c
+  db_interface.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\db_interface.lib
+  digest.c
+  digest_sspi.c
+  krb5_gssapi.c
+  krb5_sspi.c
+  py_entitydef.cpp
+\py_entitydef.cpp(1,1): error C1083: 无法打开源文件: “py_entitydef.cpp”: No such file or directory [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“/py_entitydef.cpp”)
+  
+  remote_entity_method.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/remote_entity_method.cpp”)
+  
+  ntlm.c
+  ntlm_sspi.c
+  oauth2.c
+  spnego_gssapi.c
+  spnego_sspi.c
+  正在生成代码...
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/remote_entity_method.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/remote_entity_method.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\remote_entity_method.cpp(81,56): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  正在编译...
+  vauth.c
+  axtls.c
+  cyassl.c
+  scriptdef_module.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/scriptdef_module.cpp”)
+  
+  darwinssl.c
+  gskit.c
+  gtls.c
+  mbedtls.c
+  nss.c
+  openssl.c
+  polarssl.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/scriptdef_module.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/scriptdef_module.cpp”)
+  
+  polarssl_threadlock.c
+  schannel.c
+  schannel_verify.c
+  vtls.c
+  正在生成代码...
+  volatileinfo.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\entitydef\entitydef.vcxproj]
+  (编译源文件“../entitydef/volatileinfo.cpp”)
+  
+  libcurl.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\libcurl.lib
+  network.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\libs\network.lib
+  applink.c
+  applink.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\vsopenssl\include\openssl\applink.c(106,47): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\vsopenssl\include\openssl\applink.c(114,46): warning C4996: '_open': This function or variable may be unsafe. Consider using _sopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  getbuildinfo.c
+  getbuildinfo.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\getbuildinfo.c(35,1): warning C4273: “Py_GetBuildInfo”: dll 链接不一致 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Include\pylifecycle.h(159,26):
+      参见“Py_GetBuildInfo”的前一个定义
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\getbuildinfo.c(52,1): warning C4273: “_Py_gitversion”: dll 链接不一致 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Include\pylifecycle.h(162,26):
+      参见“_Py_gitversion”的前一个定义
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\getbuildinfo.c(58,1): warning C4273: “_Py_gitidentifier”: dll 链接不一致 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Include\pylifecycle.h(161,26):
+      参见“_Py_gitidentifier”的前一个定义
+  
+  applink.c
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\vsopenssl\include\openssl\applink.c(106,47): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\vsopenssl\include\openssl\applink.c(114,46): warning C4996: '_open': This function or variable may be unsafe. Consider using _sopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\getbuildinfo.c(35,1): warning C4273: “Py_GetBuildInfo”: dll 链接不一致 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Include\pylifecycle.h(159,26):
+      参见“Py_GetBuildInfo”的前一个定义
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\getbuildinfo.c(52,1): warning C4273: “_Py_gitversion”: dll 链接不一致 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Include\pylifecycle.h(162,26):
+      参见“_Py_gitversion”的前一个定义
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Modules\getbuildinfo.c(58,1): warning C4273: “_Py_gitidentifier”: dll 链接不一致 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  logwatcher.cpp
+      F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\python\Include\pylifecycle.h(161,26):
+      参见“_Py_gitidentifier”的前一个定义
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logwatcher.cpp”)
+  
+  interfaces_tasks.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\vsopenssl\include\openssl\applink.c(106,47): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\dependencies\vsopenssl\include\openssl\applink.c(114,46): warning C4996: '_open': This function or variable may be unsafe. Consider using _sopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces_tasks.cpp”)
+  
+  cell.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces_tasks.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces_tasks.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logwatcher.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logwatcher.cpp”)
+  
+  cellapp.cpp
+    正在创建库 ../../../bin/server/cluster.lib 和对象 ../../../bin/server/cluster.exp
+  main.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“main.cpp”)
+  
+  正在生成代码
+  interfaces.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellapp.h(42,51): warning C4267: “return”: 从“size_t”转换到“KBEngine::ENTITY_ID”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellapp.cpp”)
+  
+  cellappmgr.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“main.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“main.cpp”)
+  
+  2 of 12948 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    11 functions had inline decision re-evaluated but remain unchanged
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces.cpp”)
+  
+  已完成代码的生成
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellapp.h(42,51): warning C4267: “return”: 从“size_t”转换到“KBEngine::ENTITY_ID”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellappmgr.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellappmgr.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellappmgr.cpp”)
+  
+  logger.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.cpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\server\kbemain.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logger.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logger.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.cpp(341,21): warning C4267: “初始化”: 从“size_t”转换到“KBEngine::uint32”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  interfaces_interface.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces_interface.cpp”)
+  
+  cellappmgr_interface.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellappmgr_interface.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logger.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logger.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces_interface.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“interfaces_interface.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellappmgr_interface.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellappmgr_interface.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellapp.h(42,51): warning C4267: “return”: 从“size_t”转换到“KBEngine::ENTITY_ID”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/cellappmgr_interface.cpp”)
+  
+  logger_interface.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logger_interface.cpp”)
+  
+  main.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\server\kbemain.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“main.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“main.cpp”)
+  
+  cluster.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\bin\server\cluster.exe
+  cells.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logger_interface.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“logger_interface.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“main.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“main.cpp”)
+  
+  profile.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\logger\logger.vcxproj]
+  (编译源文件“profile.cpp”)
+  
+  main.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\server\kbemain.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/main.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/main.cpp”)
+  
+  orders.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“orders.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/main.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/main.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellapp.h(42,51): warning C4267: “return”: 从“size_t”转换到“KBEngine::ENTITY_ID”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/main.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“orders.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“orders.cpp”)
+  
+  space.cpp
+  profile.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\common\common.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\tools\interfaces\interfaces.vcxproj]
+  (编译源文件“profile.cpp”)
+  
+  spaces.cpp
+    正在创建库 ../../../../bin/server/logger.lib 和对象 ../../../../bin/server/logger.exp
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  space_viewer.cpp
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellapp.h(42,51): warning C4267: “return”: 从“size_t”转换到“KBEngine::ENTITY_ID”，可能丢失数据 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/space_viewer.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(221,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/space_viewer.cpp”)
+  
+F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\lib\network\endpoint.inl(234,27): warning C4309: “参数”: 截断常量值 [F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\src\server\cellappmgr\cellappmgr.vcxproj]
+  (编译源文件“../../server/cellappmgr/space_viewer.cpp”)
+  
+    正在创建库 ../../../../bin/server/interfaces.lib 和对象 ../../../../bin/server/interfaces.exp
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  All 13897 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+    正在创建库 ../../../bin/server/cellappmgr.lib 和对象 ../../../bin/server/cellappmgr.exp
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  logger.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\bin\server\logger.exe
+  All 12533 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  All 15426 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  cellappmgr.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\bin\server\cellappmgr.exe
+  interfaces.vcxproj -> F:\KBEngine\BallProject\KbeBallDemoProject\Sever\kbe\bin\server\interfaces.exe

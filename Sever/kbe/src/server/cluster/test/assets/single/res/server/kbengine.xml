@@ -1,0 +1,18 @@
+<root>
+	<!-- 测试资产 single：单成员集群(地址表仅本机)，leader 固定为唯一副本。
+		 独立端口 20193/20194 与冒烟/三副本测试隔离。
+		 lease=6s：用于 TTL 到期清理/续租保持等需要较快看到过期的用例；
+		 写应答回归、cid 冲突、ctl 起停等快速用例亦在此资产上运行。 -->
+	<cluster>
+		<internalInterface> 127.0.0.1 </internalInterface>
+		<servicePort> 20193 </servicePort>
+		<peerPort> 20194 </peerPort>
+		<addresses>
+			<item> 127.0.0.1 </item>
+		</addresses>
+		<electionTimeout> 1200 </electionTimeout>
+		<heartbeatInterval> 400 </heartbeatInterval>
+		<componentHeartbeatInterval> 2 </componentHeartbeatInterval>
+		<componentLeaseSeconds> 6 </componentLeaseSeconds>
+	</cluster>
+</root>

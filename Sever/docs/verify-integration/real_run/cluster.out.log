@@ -1,0 +1,45 @@
+  INFO [2026-09-09 14:50:26,774] - 
+Logging to: F:\KBEngine\BallProject\KbeBallDemoProject\Sever\docs\verify-integration\real_run\assets/logs/cluster.*.log
+
+  INFO [2026-09-09 14:50:26,776] - -----------------------------------------------------------------------------------------
+
+
+  INFO [2026-09-09 14:50:26,777] - Resmgr::initialize: KBE_ROOT=F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/
+  INFO [2026-09-09 14:50:26,777] - Resmgr::initialize: KBE_RES_PATH=F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/res/;F:/KBEngine/BallProject/KbeBallDemoProject/Sever/docs/verify-integration/real_run/assets/;F:/KBEngine/BallProject/KbeBallDemoProject/Sever/docs/verify-integration/real_run/assets/res/
+  INFO [2026-09-09 14:50:26,778] - Resmgr::initialize: KBE_BIN_PATH=F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/bin/server/
+KBE_ROOT = F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/
+KBE_RES_PATH = F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/res/;F:/KBEngine/BallProject/KbeBallDemoProject/Sever/docs/verify-integration/real_run/assets/;F:/KBEngine/BallProject/KbeBallDemoProject/Sever/docs/verify-integration/real_run/assets/res/
+KBE_BIN_PATH = F:/KBEngine/BallProject/KbeBallDemoProject/Sever/kbe/bin/server/
+
+  INFO [2026-09-09 14:50:26,778] - NetworkInterface::initialize(INTERNAL-TCP): Creating on interface '127.0.0.1' (= 127.0.0.1)
+  INFO [2026-09-09 14:50:26,779] - NetworkInterface::initialize(INTERNAL-TCP): address 127.0.0.1:63518, SOMAXCONN=5.
+  INFO [2026-09-09 14:50:26,779] - server-configs:
+  INFO [2026-09-09 14:50:26,779] - 	internalTcpAddr : 127.0.0.1:63518
+  INFO [2026-09-09 14:50:26,779] - 	componentID : 7683424304101785600
+server-configs:
+	internalTcpAddr : 127.0.0.1:63518
+	componentID : 7683424304101785600
+
+  WARN [2026-09-09 14:50:26,779] - invalid UID(0) <= 0, please check UID for environment! automatically set to 63302.
+  INFO [2026-09-09 14:50:26,779] - Cluster::Cluster(): cluster component created.
+  INFO [2026-09-09 14:50:26,780] - ---- cluster Version: 2.5.10. ScriptVersion: 0.1.0. Pythoncore: 3.7.3. Protocol: EB1D0A9CA8172F7BAED7406B147020A0. Config: Release X64. Built: 00:10:41 Sep  8 2026. AppID: 7683424304101785600. UID: 63302. PID: 27572 ----
+---- cluster Version: 2.5.10. ScriptVersion: 0.1.0. Pythoncore: 3.7.3. Protocol: EB1D0A9CA8172F7BAED7406B147020A0. Config: Release X64. Built: 00:10:41 Sep  8 2026. AppID: 7683424304101785600. UID: 63302. PID: 27572 ----
+  INFO [2026-09-09 14:50:26,780] - Server jmz55: 12th Gen Intel(R) Core(TM) i9-12900K with 50045620kB RAM
+Server jmz55: 12th Gen Intel(R) Core(TM) i9-12900K with 50045620kB RAM
+
+  INFO [2026-09-09 14:50:26,780] - ThreadPool::createThreadPool: creating  threadpool...
+  INFO [2026-09-09 14:50:26,780] - ThreadPool::createThreadPool: successfully(2), newThreadCount=1, normalMaxThreadCount=2, maxThreadCount=8
+  INFO [2026-09-09 14:50:26,888] - Cluster::initializeBegin()
+  INFO [2026-09-09 14:50:26,888] - Cluster::initializeBegin(): servicePort=20093, peerPort=20094, members=0
+  INFO [2026-09-09 14:50:26,890] - Cluster::initializeEnd()
+  WARN [2026-09-09 14:50:26,891] - Cluster::startServiceListeners(): <cluster><addresses> is empty, running as single-member cluster on 127.0.0.1.
+  INFO [2026-09-09 14:50:26,891] - ClusterCore::start(): single-member mode, acting as leader.
+  INFO [2026-09-09 14:50:26,892] - ClusterCore::start(): self=0(127.0.0.1) servicePort=20093 peerPort=20094 members=1 started.
+  INFO [2026-09-09 14:50:26,892] - Cluster::startServiceListeners(): core started, self=0(127.0.0.1), members=1, servicePort=20093, peerPort=20094.
+  INFO [2026-09-09 14:50:26,892] - ClusterCore::peerAcceptorLoop(): thread start.
+  INFO [2026-09-09 14:50:26,893] - ClusterCore::peerConnectorLoop(): thread start.
+  INFO [2026-09-09 14:50:26,893] - ClusterCore::serviceAcceptorLoop(): thread start.
+  INFO [2026-09-09 14:50:26,898] - ---- cluster is running ----
+[INFO]: ---- cluster is running ----
+  INFO [2026-09-09 14:50:26,899] - Cluster::run(): entering main loop.
+  INFO [2026-09-09 14:50:26,899] - Components::process(): Found all the components!

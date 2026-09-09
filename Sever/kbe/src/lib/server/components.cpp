@@ -9,7 +9,6 @@
 #include "network/bundle.h"	
 #include "network/udp_packet.h"
 #include "network/tcp_packet.h"
-#include "network/bundle_broadcast.h"
 #include "network/network_interface.h"
 #include "client_lib/client_interface.h"
 #include "server/serverconfig.h"
@@ -24,10 +23,221 @@
 #include "../../server/tools/bots/bots_interface.h"
 #include "../../server/tools/interfaces/interfaces_interface.h"
 
-#include "../../server/machine/machine_interface.h"
+// æ³¨: components çš„æ³¨å†Œ/æŸ¥è¯¢/ç»­ç§Ÿå·²å…¨éƒ¨èµ° clusterï¼Œä¸å†å¼•ç”¨ machine æ¶ˆæ¯é›†ã€‚
+// (updateComponentInfos ç­‰é—ç•™çš„ machine æœ¬åœ°æ¢æ´»å®ç°å¾… machine è¿›ç¨‹æ‘˜é™¤æ—¶ä¸€å¹¶åˆ é™¤)
+#include "../../server/cluster/cluster_interface.h"
+#include "network/endpoint.h"
+
+#if KBE_PLATFORM != PLATFORM_WIN32
+#include <sys/socket.h>
+#include <sys/select.h>
+#include <arpa/inet.h>
+#include <signal.h>
+#include <errno.h>
+#endif
 
 namespace KBEngine
 {
+namespace
+{
+//-------------------------------------------------------------------------------------
+// cluster æœåŠ¡é¢ TCP å®¢æˆ·ç«¯(çŸ­è¿æ¥è¯·æ±‚/åº”ç­”)ã€‚
+// æ¯æ¡æ¶ˆæ¯å‘é€åˆ° cluster å‰¯æœ¬çš„ servicePortï¼Œè‹¥åº”ç­”ä¸ºé‡å®šå‘(NOT_LEADER)
+// åˆ™è‡ªåŠ¨è·Ÿéšåˆ°å½“å‰ leaderï¼Œä¸Šå±‚åªæ„ŸçŸ¥"æ˜¯å¦å–å›ä¸€å¸§åº”ç­”"ã€‚
+//-------------------------------------------------------------------------------------
+
+bool clusterSelectWait(Network::EndPoint& ep, bool writable, uint32 timeoutMS)
+{
+	fd_set fds;
+	FD_ZERO(&fds);
+	FD_SET((int)ep, &fds);
+	struct timeval tv;
+	tv.tv_sec = (long)(timeoutMS / 1000);
+	tv.tv_usec = (long)(timeoutMS % 1000) * 1000;
+
+	if(writable)
+		return select((int)ep + 1, NULL, &fds, NULL, &tv) > 0;
+
+	return select((int)ep + 1, &fds, NULL, NULL, &tv) > 0;
+}
+
+int clusterRoundTrip(const std::string& requestMsg, std::string& response, uint32 ip, uint16 port, uint32 timeoutMS)
+{
+	Network::EndPoint ep;
+	ep.socket(SOCK_STREAM);
+	if(!ep.good())
+		return -1;
+
+	ep.setnonblocking(true);
+
+	// EndPoint::connect è¦æ±‚ç«¯å£ä¸ºç½‘ç»œå­—èŠ‚åº(è§ endpoint.inl: sin_port = networkPort)
+	if(ep.connect(htons(port), ip) == -1)
+	{
+		if(!clusterSelectWait(ep, true, timeoutMS))
+		{
+			ep.close();
+			return -1;
+		}
+	}
+
+	ep.setnodelay(true);
+
+	std::string frame;
+	ClusterInterface::Wire::putU32(frame, (uint32_t)requestMsg.size());
+	frame += requestMsg;
+
+	size_t sent = 0;
+	while(sent < frame.size())
+	{
+		int n = ep.send(frame.c_str() + sent, (int)(frame.size() - sent));
+		if(n > 0)
+		{
+			sent += (size_t)n;
+			continue;
+		}
+
+		if(n < 0)
+		{
+			if(!clusterSelectWait(ep, true, 50))
+			{
+				ep.close();
+				return -1;
+			}
+			continue;
+		}
+
+		ep.close();
+		return -1;
+	}
+
+	char lenbuf[4];
+	size_t got = 0;
+	while(got < 4)
+	{
+		int n = ep.recv(lenbuf + got, 4 - (int)got);
+		if(n > 0) { got += (size_t)n; continue; }
+		if(n == 0) { ep.close(); return -1; }
+		if(!clusterSelectWait(ep, false, 100)) { ep.close(); return -1; }
+	}
+
+	uint32_t plen = ((uint32_t)(uint8_t)lenbuf[0] << 24) | ((uint32_t)(uint8_t)lenbuf[1] << 16) |
+		((uint32_t)(uint8_t)lenbuf[2] << 8) | (uint32_t)(uint8_t)lenbuf[3];
+	if(plen == 0 || plen > 8 * 1024 * 1024)
+	{
+		ep.close();
+		return -1;
+	}
+
+	response.assign(plen, '\0');
+	got = 0;
+	while(got < plen)
+	{
+		int n = ep.recv(&response[0] + got, (int)(plen - got));
+		if(n > 0) { got += (size_t)n; continue; }
+		if(n == 0) { ep.close(); return -1; }
+		if(!clusterSelectWait(ep, false, 100)) { ep.close(); return -1; }
+	}
+
+	ep.close();
+	return 0;
+}
+
+// å®Œæ•´è¯·æ±‚ï¼šè‡ªåŠ¨é‡å®šå‘åˆ° leaderã€‚è¿”å› 0 ä¸” resp éç©ºè¡¨ç¤ºå–å›äº†æœåŠ¡ç«¯åº”ç­”ã€‚
+int clusterRequest(const std::string& msg, std::string& resp, uint32 timeoutMS)
+{
+	const ENGINE_COMPONENT_INFO& cinfos = ServerConfig::getSingleton().getKCluster();
+
+	uint16 servicePort = cinfos.clusterServicePort;
+	std::vector<std::string> addrs = cinfos.cluster_addresses;
+	if(addrs.size() == 0)
+		addrs.push_back(std::string("127.0.0.1"));
+
+	for(size_t i = 0; i < addrs.size(); ++i)
+	{
+		uint32 ip = inet_addr(addrs[i].c_str());
+		if(ip == (uint32)INADDR_NONE)
+			continue;
+
+		for(int redirect = 0; redirect < 4; ++redirect)
+		{
+			resp.clear();
+			if(clusterRoundTrip(msg, resp, ip, servicePort, timeoutMS) != 0)
+				break;	// è¯¥å‰¯æœ¬è¿ä¸ä¸Šï¼Œæ¢ä¸‹ä¸€ä¸ªåœ°å€
+
+			if(resp.size() < 1)
+				return -1;
+
+			uint8_t msgType = (uint8_t)resp[0];
+			if(msgType == ClusterInterface::MSG_RESP_NOT_LEADER)
+			{
+				size_t off = 1;
+				uint32_t lip = 0;
+				uint16_t lp = 0;
+				if(!ClusterInterface::Wire::getU32(resp.data(), resp.size(), off, lip))
+					return -1;
+				if(!ClusterInterface::Wire::getU16(resp.data(), resp.size(), off, lp))
+					return -1;
+				if(lip == 0)
+					return -1;	// é›†ç¾¤é€‰ä¸¾ä¸­å°šæ—  leaderï¼Œäº¤ç”±ä¸Šå±‚ç¨åé‡è¯•
+				ip = lip;
+				servicePort = lp;
+				continue;
+			}
+
+			return 0;
+		}
+	}
+
+	return -1;
+}
+
+// æ£€æŸ¥æœ¬æœº pid è¿›ç¨‹æ˜¯å¦å­˜æ´»(ä»…åœ¨å†²çªä½“ä¸æœ¬æœºåŒæœºæ—¶ä½¿ç”¨)
+bool clusterIsProcessRunning(uint32 pid)
+{
+	if(pid == 0)
+		return true;
+
+#if KBE_PLATFORM == PLATFORM_WIN32
+	HANDLE h = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid);
+	if(h == NULL)
+		return GetLastError() == ERROR_ACCESS_DENIED;	// æƒé™ä¸è¶³è§†ä¸ºå­˜æ´»
+	CloseHandle(h);
+	return true;
+#else
+	return kill((pid_t)pid, 0) == 0 || errno == EPERM;
+#endif
+}
+
+// å°† cluster è¿”å›çš„ç»„ä»¶ä¿¡æ¯åŠ å…¥æœ¬åœ°ç»„ä»¶è¡¨(ä¸machineå›å¤è§£æè¡Œä¸ºä¸€è‡´)
+void clusterAddFoundComponent(const ClusterInterface::ComponentData& cd)
+{
+	std::string extaddrEx = cd.extaddrEx;
+
+	Components::getSingleton().addComponent(cd.uid, cd.username.c_str(),
+		(KBEngine::COMPONENT_TYPE)cd.componentType, (COMPONENT_ID)cd.componentID,
+		cd.globalOrder, cd.groupOrder, cd.gus,
+		cd.intaddr, cd.intport, cd.extaddr, cd.extport, extaddrEx, cd.pid,
+		cd.cpu, cd.mem, cd.usedmem,
+		cd.extradata[0], cd.extradata[1], cd.extradata[2], cd.extradata[3]);
+}
+
+std::string clusterFindPayload(int32 uid, int32 componentType, COMPONENT_ID cid)
+{
+	std::string payload;
+	ClusterInterface::Wire::putI32(payload, uid);
+	ClusterInterface::Wire::putI32(payload, componentType);
+	ClusterInterface::Wire::putU64(payload, (uint64_t)cid);
+	return payload;
+}
+
+// æœ¬ç»„ä»¶åœ¨é›†ç¾¤ä¸­çš„æ³¨å†ŒçŠ¶æ€
+bool clusterRegistered = false;
+uint64 clusterLastRegisterMS = 0;
+uint64 clusterLastRenewMS = 0;
+uint64 clusterLastTickMS = 0;
+
+} // anon namespace
+
 int32 Components::ANY_UID = -1;
 
 KBE_SINGLETON_INIT(Components);
@@ -116,6 +326,7 @@ void Components::initialize(Network::NetworkInterface * pNetworkInterface, COMPO
 	default:
 		if(componentType_ != LOGGER_TYPE && 
 			componentType_ != MACHINE_TYPE && 
+			componentType_ != CLUSTER_TYPE &&
 			componentType_ != INTERFACES_TYPE)
 			findComponentTypes_[0] = LOGGER_TYPE;
 		break;
@@ -126,6 +337,19 @@ void Components::initialize(Network::NetworkInterface * pNetworkInterface, COMPO
 void Components::finalise()
 {
 	clear(0, false);
+
+	// ä¼˜é›…é€€å‡º: é€šçŸ¥clusterç§»é™¤è‡ªå·±çš„æ³¨å†Œ(ä¸éœ€è¦åº”ç­”)
+	if(clusterRegistered)
+	{
+		std::string payload;
+		ClusterInterface::Wire::putI32(payload, getUserUID());
+		ClusterInterface::Wire::putI32(payload, (int32_t)componentType_);
+		ClusterInterface::Wire::putU64(payload, (uint64_t)componentID_);
+
+		std::string resp;
+		clusterRequest(ClusterInterface::encodeMessage(ClusterInterface::MSG_UNREGISTER, payload), resp, 800);
+		clusterRegistered = false;
+	}
 }
 
 //-------------------------------------------------------------------------------------
@@ -145,7 +369,7 @@ bool Components::checkComponents(int32 uid, COMPONENT_ID componentID, uint32 pid
 		ComponentInfos* cinfos = findComponent(ct, uid, componentID);
 		if(cinfos != NULL)
 		{
-			if(cinfos->componentType != MACHINE_TYPE && cinfos->pid != 0 /* µÈÓÚ0Í¨³£ÊÇÔ¤Éè£¬ ÕâÖÖÇé¿öÎÒÃÇÏÈ²»×÷±È½Ï */ && pid != cinfos->pid)
+			if(cinfos->componentType != MACHINE_TYPE && cinfos->pid != 0 /* ç­‰äº0é€šå¸¸æ˜¯é¢„è®¾ï¼Œ è¿™ç§æƒ…å†µæˆ‘ä»¬å…ˆä¸ä½œæ¯”è¾ƒ */ && pid != cinfos->pid)
 			{
 				ERROR_MSG(fmt::format("Components::checkComponents: uid:{}, componentType={}, componentID:{} exist.\n",
 					uid, COMPONENT_NAME_EX(ct), componentID));
@@ -180,7 +404,7 @@ void Components::addComponent(int32 uid, const char* username,
 		return;
 	}
 	
-	// Èç¹û¸ÃuidÏÂÃ»ÓĞÒÑ¾­ÔËĞĞµÄÈÎºÎÏà¹Ø×é¼ş£¬ÄÇÃ´ÖØÖÃ¼ÆÊıÆ÷
+	// å¦‚æœè¯¥uidä¸‹æ²¡æœ‰å·²ç»è¿è¡Œçš„ä»»ä½•ç›¸å…³ç»„ä»¶ï¼Œé‚£ä¹ˆé‡ç½®è®¡æ•°å™¨
 	if (getGameSrvComponentsSize(uid) == 0)
 	{
 		_globalOrderLog[uid] = 0;
@@ -460,7 +684,7 @@ int Components::connectComponent(COMPONENT_TYPE componentType, int32 uid, COMPON
 			pComponentInfos->pChannel->destroy();
 			Network::Channel::reclaimPoolObject(pComponentInfos->pChannel);
 
-			// ´ËÊ±²»¿ÉÇ¿ÖÆÊÍ·ÅÄÚ´æ£¬destroyÖĞÒÑ¾­¶ÔÆä¼õÒıÓÃ
+			// æ­¤æ—¶ä¸å¯å¼ºåˆ¶é‡Šæ”¾å†…å­˜ï¼Œdestroyä¸­å·²ç»å¯¹å…¶å‡å¼•ç”¨
 			// SAFE_RELEASE(pComponentInfos->pChannel);
 			pComponentInfos->pChannel = NULL;
 			return -1;
@@ -753,7 +977,7 @@ const Components::ComponentInfos* Components::lookupLocalComponentRunning(uint32
 //-------------------------------------------------------------------------------------		
 bool Components::updateComponentInfos(const Components::ComponentInfos* info)
 {
-	// ²»¶ÔÆäËûmachine×ö´¦Àí
+	// ä¸å¯¹å…¶ä»–machineåšå¤„ç†
 	if(info->componentType == MACHINE_TYPE)
 	{
 		return true;
@@ -805,7 +1029,7 @@ bool Components::updateComponentInfos(const Components::ComponentInfos* info)
 
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 
-	// ÓÉÓÚCOMMON_NETWORK_MESSAGE²»°üº¬client£¬ Èç¹ûÊÇbots£¬ ÎÒÃÇĞèÒªµ¥¶À´¦Àí
+	// ç”±äºCOMMON_NETWORK_MESSAGEä¸åŒ…å«clientï¼Œ å¦‚æœæ˜¯botsï¼Œ æˆ‘ä»¬éœ€è¦å•ç‹¬å¤„ç†
 	if(info->componentType != BOTS_TYPE)
 	{
 		COMMON_NETWORK_MESSAGE(info->componentType, (*pBundle), lookApp);
@@ -827,7 +1051,7 @@ bool Components::updateComponentInfos(const Components::ComponentInfos* info)
 	int selgot = select(epListen+1, &fds, NULL, NULL, &tv);
 	if(selgot == 0)
 	{
-		// ³¬Ê±, ¿ÉÄÜ¶Ô·½·±Ã¦
+		// è¶…æ—¶, å¯èƒ½å¯¹æ–¹ç¹å¿™
 		return true;	
 	}
 	else if(selgot == -1)
@@ -1057,118 +1281,60 @@ void Components::onChannelDeregister(Network::Channel * pChannel, bool isShuting
 //-------------------------------------------------------------------------------------
 bool Components::findLogger()
 {
-	if (g_componentType == LOGGER_TYPE || g_componentType == MACHINE_TYPE || g_componentType == TOOL_TYPE ||
-		g_componentType == CONSOLE_TYPE || g_componentType == CLIENT_TYPE || g_componentType == BOTS_TYPE ||
+	if (g_componentType == LOGGER_TYPE || g_componentType == MACHINE_TYPE || g_componentType == CLUSTER_TYPE ||
+		g_componentType == TOOL_TYPE || g_componentType == CONSOLE_TYPE || g_componentType == CLIENT_TYPE || g_componentType == BOTS_TYPE ||
 		g_componentType == WATCHER_TYPE || componentType_ == INTERFACES_TYPE)
 	{
 		DebugHelper::getSingleton().onNoLogger();
 		return true;
 	}
 	
-	int i = 0;
-	
-	while(i++ < 1/*Èç¹ûLoggerÓëÆäËûÓÎÏ·½ø³ÌÍ¬Ê±Æô¶¯£¬ÕâÀïÉè¶¨µÄ²éÕÒ´ÎÊıÔ½¶à£¬
-		ÕÒµ½LoggerµÄ¸ÅÂÊÔ½´ó£¬µ±Ç°Ö»Éè¶¨²éÕÒÒ»´Î£¬¼Ù¶¨ÓÃ»§ÒÑ¾­ÌáÇ°ºÃÆô¶¯Logger·şÎñ*/)
+	// ä»clusteræ³¨å†Œè¡¨ä¸­æŸ¥æ‰¾loggerå¹¶è¿æ¥
+	int retryCount = 0;
+	while(retryCount++ < 5)
 	{
-		srand(KBEngine::getSystemTime());
-		uint16 nport = KBE_PORT_START + (rand() % 1000);
-			
-		Network::BundleBroadcast bhandler(*pNetworkInterface(), nport);
-		if(!bhandler.good())
+		std::string resp;
+		if(clusterRequest(ClusterInterface::encodeMessage(ClusterInterface::MSG_FIND,
+				clusterFindPayload(getUserUID(), (int32)LOGGER_TYPE, 0)), resp, 800) == 0 &&
+			resp.size() > 0 && (uint8_t)resp[0] == ClusterInterface::MSG_RESP_ENTRY_LIST)
 		{
-			continue;
-		}
+			size_t off = 1;
+			uint16_t count16 = 0;
+			bool found = false;
 
-		bhandler.itry(0);
-		if(bhandler.pCurrPacket() != NULL)
-		{
-			bhandler.pCurrPacket()->resetPacket();
-		}
-			
-		COMPONENT_TYPE findComponentType = LOGGER_TYPE;
-		bhandler.newMessage(MachineInterface::onFindInterfaceAddr);
-		MachineInterface::onFindInterfaceAddrArgs7::staticAddToBundle(bhandler, getUserUID(), getUsername(), 
-			g_componentType, g_componentID, findComponentType, pNetworkInterface()->intTcpAddr().ip, bhandler.epListen().addr().port);
-		
-		ENGINE_COMPONENT_INFO cinfos = ServerConfig::getSingleton().getKBMachine();
-		std::vector< std::string >::iterator machine_addresses_iter = cinfos.machine_addresses.begin();
-		for(; machine_addresses_iter != cinfos.machine_addresses.end(); ++machine_addresses_iter)
-			bhandler.addBroadCastAddress((*machine_addresses_iter));
-			
-		if(!bhandler.broadcast())
-		{
-			//ERROR_MSG("Components::findLogger: broadcast error!\n");
-			continue;
-		}
-
-		int32 timeout = 1500000;
-		MachineInterface::onBroadcastInterfaceArgs25 args;
-
-RESTART_RECV:
-
-		if(bhandler.receive(&args, 0, timeout, false))
-		{
-			bool isContinue = false;
-			timeout = 1000000;
-
-			do
+			if(ClusterInterface::Wire::getU16(resp.data(), resp.size(), off, count16))
 			{
-				if(isContinue)
+				for(uint16_t i = 0; i < count16; ++i)
 				{
-					try
-					{
-						args.createFromStream(*bhandler.pCurrPacket());
-					}catch(MemoryStreamException &)
-					{
+					ClusterInterface::ComponentData cd;
+					if(!ClusterInterface::decodeComponentData(resp.data(), resp.size(), off, cd))
 						break;
-					}
+
+					if((int32)cd.componentType != (int32)LOGGER_TYPE)
+						continue;
+
+					INFO_MSG(fmt::format("Components::findLogger: found {}, addr:{}:{}\n",
+						COMPONENT_NAME_EX((COMPONENT_TYPE)cd.componentType),
+						inet_ntoa((struct in_addr&)cd.intaddr),
+						ntohs(cd.intport)));
+
+					clusterAddFoundComponent(cd);
+					found = true;
 				}
-				
-				if(args.componentIDEx != g_componentID)
-				{
-					//WARNING_MSG(fmt::format("Components::findLogger: msg.componentID {} != {}.\n", 
-					//	args.componentIDEx, g_componentID));
-					
-					args.componentIDEx = 0;
-					goto RESTART_RECV;
-				}
+			}
 
-				// Èç¹ûÕÒ²»µ½
-				if(args.componentType == UNKNOWN_COMPONENT_TYPE)
-				{
-					isContinue = true;
-					continue;
-				}
-
-				INFO_MSG(fmt::format("Components::findLogger: found {}, addr:{}:{}\n",
-					COMPONENT_NAME_EX((COMPONENT_TYPE)args.componentType),
-					inet_ntoa((struct in_addr&)args.intaddr),
-					ntohs(args.intport)));
-
-				Components::getSingleton().addComponent(args.uid, args.username.c_str(), 
-					(KBEngine::COMPONENT_TYPE)args.componentType, args.componentID, args.globalorderid, args.grouporderid, args.gus,
-					args.intaddr, args.intport, args.extaddr, args.extport, args.extaddrEx, args.pid, args.cpu, args.mem, 
-					args.usedmem, args.extradata, args.extradata1, args.extradata2, 123);
-
-				isContinue = true;
-			}while(bhandler.pCurrPacket()->length() > 0);
-
-			// ·ÀÖ¹½ÓÊÕµ½µÄÊı¾İ²»ÊÇÏëÒªµÄÊı¾İ
-			if(findComponentType == args.componentType)
+			if(found)
 			{
-				for(int iconn=0; iconn<5; iconn++)
+				for(int iconn = 0; iconn < 5; iconn++)
 				{
-					if(connectComponent(static_cast<COMPONENT_TYPE>(findComponentType), getUserUID(), 0, false) != 0)
+					if(connectComponent(LOGGER_TYPE, getUserUID(), 0, false) != 0)
 					{
-						//ERROR_MSG(fmt::format("Components::findLogger: register self to {} error!\n",
-						//COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType)));
-						//dispatcher().breakProcessing();
 						KBEngine::sleep(200);
 					}
 					else
 					{
-						//findComponentTypes_[0] = -1;
-						for(size_t ic=1; ic<sizeof(findComponentTypes_) - 1; ++ic)
+						// å·²è¿æ¥logger, ä»åç»­æŸ¥æ‰¾åºåˆ—ä¸­ç§»é™¤logger
+						for(size_t ic = 1; ic < sizeof(findComponentTypes_) - 1; ++ic)
 						{
 							findComponentTypes_[ic - 1] = findComponentTypes_[ic];
 						}
@@ -1178,10 +1344,9 @@ RESTART_RECV:
 				}
 			}
 		}
-		else
-		{
-			// ½ÓÊÜÊı¾İ³¬Ê±ÁË
-		}
+
+		// loggerå¯èƒ½è¿˜åœ¨å¯åŠ¨ä¸­, ç­‰å¾…åé‡è¯•
+		KBEngine::sleep(300);
 	}
 
 	return false;
@@ -1190,209 +1355,166 @@ RESTART_RECV:
 //-------------------------------------------------------------------------------------
 bool Components::findComponents()
 {
+	// é˜¶æ®µ1: ä»clusteræ³¨å†Œè¡¨æŒ‰ç±»å‹é€ä¸ªå‘ç°ç»„ä»¶
 	if(state_ == 1)
 	{
-		srand(KBEngine::getSystemTime());
-		uint16 nport = KBE_PORT_START + (rand() % 1000);
-
-		while(findComponentTypes_[findIdx_] != UNKNOWN_COMPONENT_TYPE)
+		while(findIdx_ < 8)
 		{
 			if(dispatcher().hasBreakProcessing() || dispatcher().waitingBreakProcessing())
 				return false;
 
 			COMPONENT_TYPE findComponentType = (COMPONENT_TYPE)findComponentTypes_[findIdx_];
-			static int count = 0;
 
-			if(count <= 15)
+			// æ‰€æœ‰ç±»å‹éƒ½å¤„ç†å®Œæ¯•
+			if(findComponentType == UNKNOWN_COMPONENT_TYPE)
 			{
-				INFO_MSG(fmt::format("Components::findComponents: find {}({})...\n",
-					COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType), ++count));
-			}
-			else
-			{
-				std::string s = fmt::format("Components::findComponents: find {}({})...\ndelay time is too long, please check the {} logs!\n",
-					COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType), ++count, COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType));
-
-				WARNING_MSG(s);
-
-#if KBE_PLATFORM == PLATFORM_WIN32
-				if(count <= 25)
-					DebugHelper::getSingleton().set_warningcolor();
-				else
-					DebugHelper::getSingleton().set_errorcolor();
-
-				printf("[WARNING]: %s", s.c_str());
-				DebugHelper::getSingleton().set_normalcolor();
-#endif
+				state_ = 2;
+				findIdx_ = 0;
+				break;
 			}
 
-			Network::BundleBroadcast bhandler(*pNetworkInterface(), nport);
-			if(!bhandler.good())
+			// å·²è¢«è·³è¿‡(è¾…åŠ©ç»„ä»¶ç¼ºå¤±)çš„ç±»å‹
+			if(findComponentType == (COMPONENT_TYPE)-1)
 			{
-				//ERROR_MSG("Components::findComponents: bhandler error!\n");
+				findIdx_++;
+				continue;
+			}
+
+			// è¯¥ç±»å‹ç»„ä»¶å·²ç»åœ¨æœ¬åœ°è¡¨ä¸­(å¯èƒ½åŒä¸€ç±»å‹è¢«æŸ¥æ‰¾åˆ°å¤šæ¬¡)
+			if(getComponents(findComponentType).size() > 0)
+			{
+				findIdx_++;
+				continue;
+			}
+
+			INFO_MSG(fmt::format("Components::findComponents: find {}...\n",
+				COMPONENT_NAME_EX(findComponentType)));
+
+			std::string resp;
+			if(clusterRequest(ClusterInterface::encodeMessage(ClusterInterface::MSG_FIND,
+					clusterFindPayload(getUserUID(), (int32)findComponentType, 0)), resp, 800) != 0 || resp.size() < 1)
+			{
+				// clusteræš‚ä¸å¯ç”¨, ä¸‹è½®é‡è¯•
 				return false;
 			}
 
-			bhandler.itry(0);
-			if(bhandler.pCurrPacket() != NULL)
+			uint8_t rt = (uint8_t)resp[0];
+			bool foundOne = false;
+
+			if(rt == ClusterInterface::MSG_RESP_ENTRY_LIST)
 			{
-				bhandler.pCurrPacket()->resetPacket();
-			}
-
-			bhandler.newMessage(MachineInterface::onFindInterfaceAddr);
-			MachineInterface::onFindInterfaceAddrArgs7::staticAddToBundle(bhandler, getUserUID(), getUsername(), 
-				componentType_, componentID_, findComponentType, pNetworkInterface()->intTcpAddr().ip, bhandler.epListen().addr().port);
-			
-			ENGINE_COMPONENT_INFO cinfos = ServerConfig::getSingleton().getKBMachine();
-			std::vector< std::string >::iterator machine_addresses_iter = cinfos.machine_addresses.begin();
-			for(; machine_addresses_iter != cinfos.machine_addresses.end(); ++machine_addresses_iter)
-				bhandler.addBroadCastAddress((*machine_addresses_iter));
-			
-			if(!bhandler.broadcast())
-			{
-				ERROR_MSG("Components::findComponents: broadcast error!\n");
-				return false;
-			}
-		
-			int32 timeout = 1500000;
-			bool showerr = true;
-			MachineInterface::onBroadcastInterfaceArgs25 args;
-
-RESTART_RECV:
-
-			if(bhandler.receive(&args, 0, timeout, showerr))
-			{
-				bool isContinue = false;
-				showerr = false;
-				timeout = 1000000;
-
-				do
+				size_t off = 1;
+				uint16_t count16 = 0;
+				if(ClusterInterface::Wire::getU16(resp.data(), resp.size(), off, count16))
 				{
-					if(isContinue)
+					for(uint16_t i = 0; i < count16; ++i)
 					{
-						try
-						{
-							args.createFromStream(*bhandler.pCurrPacket());
-						}catch(MemoryStreamException &)
-						{
+						ClusterInterface::ComponentData cd;
+						if(!ClusterInterface::decodeComponentData(resp.data(), resp.size(), off, cd))
 							break;
+
+						// å¿½ç•¥è‡ªå·±
+						if(cd.uid == getUserUID() && (COMPONENT_TYPE)cd.componentType == componentType_ &&
+							(COMPONENT_ID)cd.componentID == componentID_)
+						{
+							continue;
+						}
+
+						if((int32)cd.componentType == (int32)findComponentType)
+						{
+							INFO_MSG(fmt::format("Components::findComponents: found {}, addr:{}:{}\n",
+								COMPONENT_NAME_EX(findComponentType),
+								inet_ntoa((struct in_addr&)cd.intaddr),
+								ntohs(cd.intport)));
+
+							clusterAddFoundComponent(cd);
+							foundOne = true;
 						}
 					}
-					
-					if(args.componentIDEx != componentID_)
-					{
-						WARNING_MSG(fmt::format("Components::findComponents: msg.componentID {} != {}.\n", 
-							args.componentIDEx, componentID_));
-						
-						args.componentIDEx = 0;
-						goto RESTART_RECV;
-					}
+				}
+			}
+			else if(rt == ClusterInterface::MSG_RESP_ENTRY)
+			{
+				size_t off = 1;
+				ClusterInterface::ComponentData cd;
+				if(ClusterInterface::decodeComponentData(resp.data(), resp.size(), off, cd) &&
+					(int32)cd.componentType == (int32)findComponentType &&
+					!(cd.uid == getUserUID() && (COMPONENT_ID)cd.componentID == componentID_))
+				{
+					INFO_MSG(fmt::format("Components::findComponents: found {}, addr:{}:{}\n",
+						COMPONENT_NAME_EX(findComponentType),
+						inet_ntoa((struct in_addr&)cd.intaddr),
+						ntohs(cd.intport)));
 
-					// Èç¹ûÕÒ²»µ½
-					if(args.componentType == UNKNOWN_COMPONENT_TYPE)
+					clusterAddFoundComponent(cd);
+					foundOne = true;
+				}
+			}
+
+			if(foundOne)
+			{
+				// loggerç‰¹ä¾‹: æ‰¾åˆ°åç«‹å³è¿æ¥, ä»¥ä¾¿å°½æ—©åŒæ­¥æ—¥å¿—
+				if(findComponentType == LOGGER_TYPE)
+				{
+					if(connectComponent(LOGGER_TYPE, getUserUID(), 0) == 0)
 					{
-						isContinue = true;
+						findComponentTypes_[findIdx_] = -1;
+						findIdx_++;
 						continue;
 					}
 
-					INFO_MSG(fmt::format("Components::findComponents: found {}, addr:{}:{}\n",
-						COMPONENT_NAME_EX((COMPONENT_TYPE)args.componentType),
-						inet_ntoa((struct in_addr&)args.intaddr),
-						ntohs(args.intport)));
-
-					Components::getSingleton().addComponent(args.uid, args.username.c_str(), 
-						(KBEngine::COMPONENT_TYPE)args.componentType, args.componentID, args.globalorderid, args.grouporderid, args.gus,
-						args.intaddr, args.intport, args.extaddr, args.extport, args.extaddrEx, args.pid, args.cpu, args.mem, 
-						args.usedmem, args.extradata, args.extradata1, args.extradata2, args.extradata3);
-
-					isContinue = true;
-				}while(bhandler.pCurrPacket()->length() > 0);
-
-				// ·ÀÖ¹½ÓÊÕµ½µÄÊı¾İ²»ÊÇÏëÒªµÄÊı¾İ
-				if(findComponentType == args.componentType)
-				{
-					// ÕâÀï×ö¸öÌØÀı£¬ ÊÇloggerÔòÓÅÏÈÁ¬½ÓÉÏÈ¥£¬ ÕâÑù¿ÉÒÔ¾¡ÔçÍ¬²½ÈÕÖ¾
-					if(findComponentType == (int8)LOGGER_TYPE)
-					{
-						findComponentTypes_[findIdx_] = -1;
-						if(connectComponent(static_cast<COMPONENT_TYPE>(findComponentType), getUserUID(), 0) != 0)
-						{
-							ERROR_MSG(fmt::format("Components::findComponents: register self to {} error!\n",
-							COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType)));
-							findIdx_++;
-							//dispatcher().breakProcessing();
-							return false;
-						}
-						else
-						{
-							findIdx_++;
-							continue;
-						}
-					}
-				}
-				
-				goto RESTART_RECV;
-			}
-			else
-			{
-				if(Components::getSingleton().getComponents((COMPONENT_TYPE)findComponentType).size() > 0)
-				{
+					findComponentTypes_[findIdx_] = -1;
 					findIdx_++;
-					count = 0;
-				}
-				else
-				{
-					if(showerr)
-					{
-						ERROR_MSG("Components::findComponents: receive error!\n");
-					}
-
-					// Èç¹ûÊÇÕâĞ©¸¨Öú×é¼şÃ»ÕÒµ½ÔòÌø¹ı
-					int helperComponentIdx = 0;
-
-					while(1)
-					{
-						COMPONENT_TYPE helperComponentType = ALL_HELPER_COMPONENT_TYPE[helperComponentIdx++];
-						if(helperComponentType == UNKNOWN_COMPONENT_TYPE)
-						{
-							break;
-						}
-						else if(findComponentType == helperComponentType)
-						{
-							WARNING_MSG(fmt::format("Components::findComponents: not found {}!\n",
-								COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType)));
-
-							findComponentTypes_[findIdx_] = -1; // Ìø¹ı±êÖ¾
-							count = 0;
-							findIdx_++;
-							return false;
-						}
-					}
+					return false;
 				}
 
-				return false;
+				findIdx_++;
+				continue;
 			}
-		}
 
-		state_ = 2;
-		findIdx_ = 0;
-		return false;
+			// è¯¥ç±»å‹å½“å‰å°šæœªæ³¨å†Œåˆ°cluster
+			// è¾…åŠ©ç±»ç»„ä»¶(å¦‚logger/interfaces)ç¼ºå¤±åˆ™è·³è¿‡, å…¶å®ƒç±»å‹ç­‰å¾…é‡è¯•
+			bool isHelper = false;
+			for(int helperIdx = 0; ALL_HELPER_COMPONENT_TYPE[helperIdx] != UNKNOWN_COMPONENT_TYPE; ++helperIdx)
+			{
+				if(findComponentType == ALL_HELPER_COMPONENT_TYPE[helperIdx])
+				{
+					isHelper = true;
+					break;
+				}
+			}
+
+			if(isHelper)
+			{
+				WARNING_MSG(fmt::format("Components::findComponents: not found {}!\n",
+					COMPONENT_NAME_EX(findComponentType)));
+
+				findComponentTypes_[findIdx_] = -1; // è·³è¿‡æ ‡å¿—
+				findIdx_++;
+				continue;
+			}
+
+			// éœ€è¦çš„ç»„ä»¶å°šæœªå‡ºç°, ä¿æŒç»§ç»­ç­‰å¾…
+			return false;
+		}
 	}
 
+	// é˜¶æ®µ2: å‘å·²å‘ç°çš„ç»„ä»¶æ³¨å†Œè‡ªå·±
 	if(state_ == 2)
 	{
-		// ¿ªÊ¼×¢²áµ½ËùÓĞµÄ×é¼ş
-		while(findComponentTypes_[findIdx_] != UNKNOWN_COMPONENT_TYPE)
+		while(findIdx_ < 8)
 		{
 			if(dispatcher().hasBreakProcessing())
 				return false;
 
 			int8 findComponentType = findComponentTypes_[findIdx_];
-			
+			if(findComponentType == UNKNOWN_COMPONENT_TYPE)
+				break;
+
 			if(findComponentType == -1)
 			{
 				findIdx_++;
-				return false;
+				continue;
 			}
 
 			INFO_MSG(fmt::format("Components::findComponents: register self to {}...\n",
@@ -1401,17 +1523,17 @@ RESTART_RECV:
 			if(connectComponent(static_cast<COMPONENT_TYPE>(findComponentType), getUserUID(), 0) != 0)
 			{
 				ERROR_MSG(fmt::format("Components::findComponents: register self to {} error!\n",
-				COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType)));
-				//dispatcher().breakProcessing();
+					COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType)));
 				return false;
 			}
 
 			findIdx_++;
-			return false;
 		}
+
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 //-------------------------------------------------------------------------------------
@@ -1429,190 +1551,246 @@ void Components::onFoundAllComponents()
 //-------------------------------------------------------------------------------------
 void Components::broadcastSelf()
 {
-	int cidex = 0;
-	int errcount = 0;
+	// åŸå®ç°: å‘machineå¹¿æ’­è‡ªèº«æœ€æ–°ä¿¡æ¯(startGlobalOrder/startGroupOrderç­‰è¢«dbmgrä¿®æ­£å)ã€‚
+	// é›†ç¾¤æ¨¡å¼ä¸‹ä¸å†æœ‰machine, æ”¹ä¸ºå‘clusteré‡æ–°æäº¤ä¸€æ¬¡è‡ªèº«æ³¨å†Œä¿¡æ¯(åŒpidè§†ä¸ºæ›´æ–°)ã€‚
+	// ä¾›æœ¬æœºé‡æ–°æ³¨å†Œç”¨, ä¸processçŠ¶æ€0å…±ç”¨åŒä¸€å¥—ComponentDataå­—æ®µã€‚
+	if (dispatcher().hasBreakProcessing() || dispatcher().waitingBreakProcessing())
+		return;
 
-	while (cidex++ < 2)
+	ClusterInterface::ComponentData cd;
+	cd.uid = getUserUID();
+	cd.username = getUsername();
+	cd.componentType = (int32_t)componentType_;
+	cd.componentID = (uint64_t)componentID_;
+	cd.componentIDEx = 0;
+	cd.globalOrder = g_componentGlobalOrder;
+	cd.groupOrder = g_componentGroupOrder;
+	cd.gus = g_genuuid_sections > 0 ? (uint16_t)g_genuuid_sections : (uint16_t)0;
+	cd.intaddr = pNetworkInterface()->intTcpAddr().ip;
+	cd.intport = pNetworkInterface()->intTcpAddr().port;
+	cd.extaddr = pNetworkInterface()->extTcpAddr().ip;
+	cd.extport = pNetworkInterface()->extTcpAddr().port;
+	cd.extaddrEx = g_kbeSrvConfig.getConfig().externalAddress;
+	cd.pid = getProcessPID();
+	cd.cpu = SystemInfo::getSingleton().getCPUPerByPID();
+	cd.mem = 0.f;
+	cd.usedmem = (uint32_t)SystemInfo::getSingleton().getMemUsedByPID();
+	cd.state = 1;
+	cd.machineID = (uint32_t)getMacMD5();
+	cd.extradata[0] = extraData1_;
+	cd.extradata[1] = extraData2_;
+	cd.extradata[2] = extraData3_;
+	cd.extradata[3] = extraData4_;
+
+	std::string resp;
+	if(clusterRequest(ClusterInterface::encodeMessage(ClusterInterface::MSG_REGISTER,
+			ClusterInterface::encodeComponentData(cd)), resp, 600) != 0 || resp.size() < 1)
 	{
-		if (dispatcher().hasBreakProcessing() || dispatcher().waitingBreakProcessing())
-			return;
-
-		srand(KBEngine::getSystemTime());
-		uint16 nport = KBE_PORT_START + (rand() % 1000);
-
-		// Ïò¾ÖÓòÍøÄÚ¹ã²¥UDP°ü£¬Ìá½»×Ô¼ºµÄÉí·İ
-		Network::BundleBroadcast bhandler(*pNetworkInterface(), nport);
-
-		if (!bhandler.good())
+		ERROR_MSG("Components::broadcastSelf: update self info to cluster error!\n");
+	}
+	else if((uint8_t)resp[0] == ClusterInterface::MSG_RESP_IDENTITY_CONFLICT)
+	{
+		// è¯´æ˜æœ¬åœ°å‡ºç°äº†é‡å¤çš„è¿›ç¨‹èº«ä»½
+		size_t off = 1;
+		ClusterInterface::ComponentData exist;
+		if(ClusterInterface::decodeComponentData(resp.data(), resp.size(), off, exist))
 		{
-			if (errcount++ > 255)
+			ERROR_MSG(fmt::format("Components::broadcastSelf: found {}, addr:{}:{}\n",
+				COMPONENT_NAME_EX((COMPONENT_TYPE)exist.componentType),
+				inet_ntoa((struct in_addr&)exist.intaddr),
+				ntohs(exist.intport)));
+
+			if(_pHandler)
 			{
-				ERROR_MSG(fmt::format("Components::broadcastSelf(): BundleBroadcast error! count > {}\n", (errcount - 1)));
-				dispatcher().breakProcessing();
-				return;
+				_pHandler->onIdentityillegal((COMPONENT_TYPE)exist.componentType,
+					(COMPONENT_ID)exist.componentID, exist.pid,
+					inet_ntoa((struct in_addr&)exist.intaddr));
 			}
-
-			// Èç¹ûÊ§°ÜÔò¼ÌĞø¹ã²¥
-			--cidex;
-			KBEngine::sleep(10);
-			continue;
 		}
+	}
 
-		bhandler.newMessage(MachineInterface::onBroadcastInterface);
-		MachineInterface::onBroadcastInterfaceArgs25::staticAddToBundle(bhandler, getUserUID(), getUsername(),
-			componentType_, componentID_, cidex, g_componentGlobalOrder, g_componentGroupOrder, g_genuuid_sections,
-			pNetworkInterface()->intTcpAddr().ip, pNetworkInterface()->intTcpAddr().port,
-			pNetworkInterface()->extTcpAddr().ip, pNetworkInterface()->extTcpAddr().port, g_kbeSrvConfig.getConfig().externalAddress, getProcessPID(),
-			SystemInfo::getSingleton().getCPUPerByPID(), 0.f, (uint32)SystemInfo::getSingleton().getMemUsedByPID(), 0, 0, extraData1_, extraData2_, extraData3_, extraData4_,
-			pNetworkInterface()->intTcpAddr().ip, bhandler.epListen().addr().port);
-
-		ENGINE_COMPONENT_INFO cinfos = ServerConfig::getSingleton().getKBMachine();
-		std::vector< std::string >::iterator machine_addresses_iter = cinfos.machine_addresses.begin();
-		for (; machine_addresses_iter != cinfos.machine_addresses.end(); ++machine_addresses_iter)
-			bhandler.addBroadCastAddress((*machine_addresses_iter));
-
-		bhandler.broadcast();
-
-		int32 timeout = 100000;
-		MachineInterface::onBroadcastInterfaceArgs25 args;
-
-		if (bhandler.receive(&args, 0, timeout, false))
-		{
-		}
-
-		bhandler.close();
+	// åªæœ‰çœŸæ­£å–å›OKåº”ç­”æ‰è®¤ä¸ºå·²æ³¨å†Œ, å¦åˆ™ä¿ç•™åŸçŠ¶æ€(åç»­ç”±processé‡æ–°æ³¨å†Œ)
+	if(!clusterRegistered && resp.size() > 0 && (uint8_t)resp[0] == ClusterInterface::MSG_RESP_OK)
+	{
+		clusterRegistered = true;
 	}
 }
 
 //-------------------------------------------------------------------------------------
 bool Components::process()
 {
-	if(componentType_ == MACHINE_TYPE)
+	// machine/cluster ç»„ä»¶è‡ªèº«ä¸å‚ä¸é›†ç¾¤æ³¨å†Œä¸å‘ç°
+	if(componentType_ == MACHINE_TYPE || componentType_ == CLUSTER_TYPE)
 	{
 		onFoundAllComponents();
 		return false;
 	}
 
+	if(dispatcher().hasBreakProcessing() || dispatcher().waitingBreakProcessing())
+		return false;
+
+	uint64 now = timestamp();
+
+	// çŠ¶æ€0: æ³¨å†Œåˆ°clusterã€‚æ³¨å†ŒæˆåŠŸåæ‰å…è®¸å‘ç°å…¶å®ƒç»„ä»¶,
+	// ä¿è¯æœ¬ç»„ä»¶åœ¨é›†ç¾¤ä¸­"å¯è§"çš„æ—¶åºä¸machineå¹¿æ’­æäº¤èº«ä»½ä¸€è‡´ã€‚
 	if(state_ == 0)
 	{
-		uint64 cidex = 0;
-		uint32 errcount = 0;
-
-		DEBUG_MSG("Components::process(): Request for the process of identity...\n");
-
-		while(cidex++ < 2)
+		if(clusterRegistered)
 		{
-			if(dispatcher().hasBreakProcessing() || dispatcher().waitingBreakProcessing())
-				return false;
+			state_ = 1;
+			findIdx_ = 0;
+			return true;
+		}
 
-			srand(KBEngine::getSystemTime());
-			uint16 nport = KBE_PORT_START + (rand() % 1000);
+		if(clusterLastRegisterMS == 0 ||
+			now - clusterLastRegisterMS >= uint64(stampsPerSecond() / 2))
+		{
+			clusterLastRegisterMS = now;
 
-			// Ïò¾ÖÓòÍøÄÚ¹ã²¥UDP°ü£¬Ìá½»×Ô¼ºµÄÉí·İ
-			Network::BundleBroadcast bhandler(*pNetworkInterface(), nport);
+			DEBUG_MSG(fmt::format("Components::process: register self {}:{}(pid={}) to cluster...\n",
+				COMPONENT_NAME_EX(componentType_), componentID_, getProcessPID()));
 
-			if (!bhandler.good())
+			ClusterInterface::ComponentData cd;
+			cd.uid = getUserUID();
+			cd.username = getUsername();
+			cd.componentType = (int32_t)componentType_;
+			cd.componentID = (uint64_t)componentID_;
+			cd.componentIDEx = 0;
+			cd.globalOrder = g_componentGlobalOrder;
+			cd.groupOrder = g_componentGroupOrder;
+			cd.gus = g_genuuid_sections > 0 ? (uint16_t)g_genuuid_sections : (uint16_t)0;
+			cd.intaddr = pNetworkInterface()->intTcpAddr().ip;
+			cd.intport = pNetworkInterface()->intTcpAddr().port;
+			cd.extaddr = pNetworkInterface()->extTcpAddr().ip;
+			cd.extport = pNetworkInterface()->extTcpAddr().port;
+			cd.extaddrEx = g_kbeSrvConfig.getConfig().externalAddress;
+			cd.pid = getProcessPID();
+			cd.cpu = SystemInfo::getSingleton().getCPUPerByPID();
+			cd.mem = 0.f;
+			cd.usedmem = (uint32_t)SystemInfo::getSingleton().getMemUsedByPID();
+			cd.state = 1;
+			cd.machineID = (uint32_t)getMacMD5();
+			cd.extradata[0] = extraData1_;
+			cd.extradata[1] = extraData2_;
+			cd.extradata[2] = extraData3_;
+			cd.extradata[3] = extraData4_;
+
+			std::string resp;
+			if(clusterRequest(ClusterInterface::encodeMessage(ClusterInterface::MSG_REGISTER,
+					ClusterInterface::encodeComponentData(cd)), resp, 600) == 0 && resp.size() > 0)
 			{
-				if (errcount++ > 255)
+				uint8_t rt = (uint8_t)resp[0];
+				if(rt == ClusterInterface::MSG_RESP_OK)
 				{
-					ERROR_MSG(fmt::format("Components::process(): BundleBroadcast error! count > {}\n", (errcount - 1)));
-					dispatcher().breakProcessing();
+					INFO_MSG(fmt::format("Components::process: register self {}:{}(pid={}) success.\n",
+						COMPONENT_NAME_EX(componentType_), componentID_, getProcessPID()));
+
+					clusterRegistered = true;
+					clusterLastRenewMS = timestamp();
+					state_ = 1;
+					findIdx_ = 0;
+					return true;
+				}
+				else if(rt == ClusterInterface::MSG_RESP_IDENTITY_CONFLICT)
+				{
+					size_t off = 1;
+					ClusterInterface::ComponentData exist;
+					if(!ClusterInterface::decodeComponentData(resp.data(), resp.size(), off, exist))
+					{
+						ERROR_MSG("Components::process: register conflict, but conflict data invalid!\n");
+						return false;
+					}
+
+					// å†²çªä½“ä¸æœ¬æœºåŒæœºã€ä¸”å…¶è¿›ç¨‹å·²ç»ä¸å­˜åœ¨æ—¶, è§†ä¸ºå´©æºƒæ®‹ç•™,
+					// ç­‰å¾…clusterçš„ç§Ÿçº¦(TTL)è¿‡æœŸåè¢«è‡ªåŠ¨ç§»é™¤, ç„¶åé‡æ–°æ³¨å†Œå³å¯ã€‚
+					if(exist.machineID == (uint32_t)getMacMD5() && !clusterIsProcessRunning(exist.pid))
+					{
+						DEBUG_MSG(fmt::format("Components::process: register self conflict with {} {}:{} pid={} (process not exist), "
+							"wait lease expire then retry...\n",
+							COMPONENT_NAME_EX((COMPONENT_TYPE)exist.componentType), exist.componentID,
+							inet_ntoa((struct in_addr&)exist.intaddr), exist.pid));
+						return true;
+					}
+
+					ERROR_MSG(fmt::format("Components::process: found {}, addr:{}:{}\n",
+						COMPONENT_NAME_EX((COMPONENT_TYPE)exist.componentType),
+						inet_ntoa((struct in_addr&)exist.intaddr),
+						ntohs(exist.intport)));
+
+					// å­˜åœ¨ç›¸åŒèº«ä»½, ç¨‹åºè¯¥é€€å‡ºäº†
+					if(_pHandler)
+					{
+						_pHandler->onIdentityillegal((COMPONENT_TYPE)exist.componentType,
+							(COMPONENT_ID)exist.componentID, exist.pid,
+							inet_ntoa((struct in_addr&)exist.intaddr));
+					}
+
 					return false;
 				}
 
-				// Èç¹ûÊ§°ÜÔò¼ÌĞø¹ã²¥
-				--cidex;
-				KBEngine::sleep(10);
-				continue;
+				DEBUG_MSG(fmt::format("Components::process: register self return msgType={}.\n", (int)rt));
+				return true;
 			}
 
-			bhandler.newMessage(MachineInterface::onBroadcastInterface);
-			MachineInterface::onBroadcastInterfaceArgs25::staticAddToBundle(bhandler, getUserUID(), getUsername(), 
-				componentType_, componentID_, cidex, g_componentGlobalOrder, g_componentGroupOrder, g_genuuid_sections,
-				pNetworkInterface()->intTcpAddr().ip, pNetworkInterface()->intTcpAddr().port,
-				pNetworkInterface()->extTcpAddr().ip, pNetworkInterface()->extTcpAddr().port, g_kbeSrvConfig.getConfig().externalAddress, getProcessPID(),
-				SystemInfo::getSingleton().getCPUPerByPID(), 0.f, (uint32)SystemInfo::getSingleton().getMemUsedByPID(), 0, 0, extraData1_, extraData2_, extraData3_, extraData4_, 
-				pNetworkInterface()->intTcpAddr().ip, bhandler.epListen().addr().port);
-			
-			ENGINE_COMPONENT_INFO cinfos = ServerConfig::getSingleton().getKBMachine();
-			std::vector< std::string >::iterator machine_addresses_iter = cinfos.machine_addresses.begin();
-			for(; machine_addresses_iter != cinfos.machine_addresses.end(); ++machine_addresses_iter)
-				bhandler.addBroadCastAddress((*machine_addresses_iter));
-			
-			bhandler.broadcast();
-
-			// µÈ´ı·µ»ØĞÅÏ¢£¬Èç¹û´æÔÚ·µ»ØËµÃ÷Éí·İÒÑ¾­±»Ê¹ÓÃ£¬¸Ã½ø³Ì²»ºÏ·¨£¬³ÌĞò½ÓÏÂÀ´»áÍË³ö
-			// Èç¹ûÃ»ÓĞ·µ»ØËµÃ÷Ã»ÓĞmachine¶Ô´Ë½ø³ÌÓĞÒâ¼û£¬¿ÉÒÔ³É¹¦Æô¶¯
-			int32 timeout = 500000;
-			MachineInterface::onBroadcastInterfaceArgs25 args;
-
-			if(bhandler.receive(&args, 0, timeout, false))
+			// clusteræœªå°±ç»ª(é€‰ä¸¾ä¸­æˆ–ä¸å¯è¾¾), åŠç§’åç»§ç»­é‡è¯•
+			if(!clusterRegistered)
 			{
-				bool hasContinue = false;
-
-				do
-				{
-					if(hasContinue)
-					{
-						try
-						{
-							args.createFromStream(*bhandler.pCurrPacket());
-						}catch(MemoryStreamException &)
-						{
-							break;
-						}
-					}
-
-					hasContinue = true;
-
-					// Èç¹ûÊÇÎ´ÖªÀàĞÍÔò¼ÌĞøÒ»´Î
-					if(args.componentType == UNKNOWN_COMPONENT_TYPE)
-						continue;
-
-					if(args.componentID != componentID_)
-						continue;
-
-					ERROR_MSG(fmt::format("Components::process: found {}, addr:{}:{}\n",
-						COMPONENT_NAME_EX((COMPONENT_TYPE)args.componentType),
-						inet_ntoa((struct in_addr&)args.intaddr),
-						ntohs(args.intport)));
-
-					// ´æÔÚÏàÍ¬Éí·İ£¬ ³ÌĞò¸ÃÍË³öÁË
-					if(_pHandler)
-						_pHandler->onIdentityillegal((COMPONENT_TYPE)args.componentType, args.componentID, args.pid, inet_ntoa((struct in_addr&)args.intaddr));
-
-					return false;
-
-				} while(bhandler.pCurrPacket()->length() > 0);
+				DEBUG_MSG("Components::process: cluster not ready, will retry register self...\n");
 			}
-
-			bhandler.close();
 		}
-
-		state_ = 1;
 
 		return true;
 	}
-	else
-	{
-		static uint64 lastTime = timestamp();
-			
-		if(timestamp() - lastTime > uint64(stampsPerSecond()))
-		{
-			if(!findComponents())
-			{
-				if(state_ != 2)
-					lastTime = timestamp();
 
-				return true;
+	// æ¯1sæ¨è¿›: å‘ç°å…¶å®ƒç»„ä»¶å¹¶å‘å…¶æ³¨å†Œè‡ªå·±; å®ŒæˆåæŒ‰å¿ƒè·³é—´éš”ç»­ç§Ÿ
+	if(state_ == 1 || state_ == 2)
+	{
+		if(now - clusterLastTickMS >= uint64(stampsPerSecond()))
+		{
+			clusterLastTickMS = now;
+
+			if(state_ != 2 && findComponents())
+			{
+				// findComponentsè¿”å›trueè¡¨ç¤ºæ‰€æœ‰ç»„ä»¶å‡å·²è¿æ¥å®Œæˆ
+				INFO_MSG("Components::process: found all components success!\n");
+				onFoundAllComponents();
+				state_ = 2;
+				findIdx_ = 0;
+			}
+
+			// ç§Ÿçº¦ç»­æœŸ(å¿ƒè·³é—´éš”ä»<cluster>é…ç½®è¯»å–, é»˜è®¤5s)ã€‚
+			// ç»­æœŸä¸ä¾èµ–å‘ç°è¿›åº¦: å³ä½¿ä»åœ¨ç­‰å¾…æŸä¸ªç»„ä»¶ä¸Šçº¿, ä¹Ÿè¦æŒç»­ç»­ç§Ÿ,
+			// é¿å…è‡ªèº«æ³¨å†Œå› TTLè¢«æ¸…ç†ã€‚
+			// (å‘ç°ç»„ä»¶å¤±è´¥æ—¶findComponentsè¿”å›false, è¿™é‡Œç»§ç»­æ‰§è¡Œç»­ç§Ÿ)
+			uint32 heartbeatSec = (uint32_t)g_kbeSrvConfig.getKCluster().clusterComponentHeartbeatInterval;
+			if(clusterRegistered && heartbeatSec > 0 &&
+				now - clusterLastRenewMS >= uint64(stampsPerSecond()) * heartbeatSec)
+			{
+				clusterLastRenewMS = now;
+
+				std::string payload;
+				ClusterInterface::Wire::putI32(payload, getUserUID());
+				ClusterInterface::Wire::putI32(payload, (int32_t)componentType_);
+				ClusterInterface::Wire::putU64(payload, (uint64_t)componentID_);
+				ClusterInterface::Wire::putU32(payload, getProcessPID());
+
+				std::string resp;
+				if(clusterRequest(ClusterInterface::encodeMessage(ClusterInterface::MSG_RENEW, payload), resp, 400) != 0)
+				{
+					DEBUG_MSG("Components::process: renew lease failed, will retry later.\n");
+				}
+				else if(resp.size() > 0 && (uint8_t)resp[0] == ClusterInterface::MSG_RESP_NOT_FOUND)
+				{
+					// è‡ªèº«æ³¨å†Œå·²ä¸¢å¤±(ä¾‹å¦‚leaderåˆ‡æ¢/å¿«ç…§æ¢å¤), å›åˆ°çŠ¶æ€0é‡æ–°æ³¨å†Œ
+					DEBUG_MSG("Components::process: self component not found in cluster, re-register.\n");
+					clusterRegistered = false;
+					state_ = 0;
+				}
 			}
 		}
-		else
-			return true;
 	}
 
-	onFoundAllComponents();
-	return false;
+	return true;
 }
 
 //-------------------------------------------------------------------------------------		

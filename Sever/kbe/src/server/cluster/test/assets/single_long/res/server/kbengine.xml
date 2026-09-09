@@ -1,0 +1,17 @@
+<root>
+	<!-- 测试资产 single_long：单成员集群，长租约(300s)。
+		 供快照落盘/重启恢复等用例使用：避免解析/比对过程中注册条目因 TTL 过期而消失，
+		 从而保证回归验证的确定性(loadSnapshotFromDisk 4 字节偏移修复的回归验证)。 -->
+	<cluster>
+		<internalInterface> 127.0.0.1 </internalInterface>
+		<servicePort> 20193 </servicePort>
+		<peerPort> 20194 </peerPort>
+		<addresses>
+			<item> 127.0.0.1 </item>
+		</addresses>
+		<electionTimeout> 1200 </electionTimeout>
+		<heartbeatInterval> 400 </heartbeatInterval>
+		<componentHeartbeatInterval> 2 </componentHeartbeatInterval>
+		<componentLeaseSeconds> 300 </componentLeaseSeconds>
+	</cluster>
+</root>

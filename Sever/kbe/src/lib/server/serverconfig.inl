@@ -46,6 +46,12 @@ INLINE ENGINE_COMPONENT_INFO& ServerConfig::getKBMachine(void)
 }
 
 //-------------------------------------------------------------------------------------		
+INLINE ENGINE_COMPONENT_INFO& ServerConfig::getKCluster(void)
+{
+	return _clusterInfo;
+}
+
+//-------------------------------------------------------------------------------------		
 INLINE ENGINE_COMPONENT_INFO& ServerConfig::getBots(void)
 {
 	return _botsInfo;
@@ -88,6 +94,8 @@ INLINE ENGINE_COMPONENT_INFO& ServerConfig::getComponent(COMPONENT_TYPE componen
 		return getBaseApp();
 	case MACHINE_TYPE:
 		return getKBMachine();
+	case CLUSTER_TYPE:
+		return getKCluster();
 	case LOGGER_TYPE:
 		return getLogger();
 	default:

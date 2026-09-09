@@ -2,7 +2,6 @@ LIB =	network
 
 SRCS =					\
 	address				\
-	bundle_broadcast	\
 	bundle				\
 	channel				\
 	common				\

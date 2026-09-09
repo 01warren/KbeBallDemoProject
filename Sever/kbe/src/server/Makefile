@@ -21,7 +21,7 @@ endif
 	$(MAKE) -C cellappmgr $@
 	$(MAKE) -C dbmgr $@
 	$(MAKE) -C loginapp $@
-	$(MAKE) -C machine $@
+	$(MAKE) -C cluster $@
 	$(MAKE) -C tools $@
 
 ifdef KBE_CONFIG

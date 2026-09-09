@@ -21,6 +21,7 @@ public:
 
 	void loadLayouts();
 	void saveLayouts();
+	void setRunningRow(const std::string& componentName, const std::string& addr, bool running);
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 

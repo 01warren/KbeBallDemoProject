@@ -10,11 +10,6 @@
 #include "pyscript/py_platform.h"
 
 #undef DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
-#define DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
-
-#undef DEFINE_IN_INTERFACE
 #include "client_lib/client_interface.h"
 #define DEFINE_IN_INTERFACE
 #include "client_lib/client_interface.h"
@@ -167,7 +162,7 @@ int process_make_client_sdk(int argc, char* argv[], const std::string clientType
 
 		app.finalise();
 
-		// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+		// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 		DebugHelper::getSingleton().finalise();
 		return -1;
 	}
@@ -178,7 +173,7 @@ int process_make_client_sdk(int argc, char* argv[], const std::string clientType
 
 		app.finalise();
 
-		// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+		// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 		DebugHelper::getSingleton().finalise();
 		return -1;
 	}
@@ -191,7 +186,7 @@ int process_make_client_sdk(int argc, char* argv[], const std::string clientType
 		script::entitydef::uninstallModule();
 		app.finalise();
 
-		// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+		// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 		DebugHelper::getSingleton().finalise();
 		return -1;
 	}
@@ -221,7 +216,7 @@ int process_make_client_sdk(int argc, char* argv[], const std::string clientType
 		compressionType = 1;
 	}
 
-	// Èç¹û¼ì²âµ½ÉèÖÃÁËzipÎÄ¼ş£¬ÄÇÃ´´ÓzipÎÄ¼şµÃµ½path
+	// å¦‚æœæ£€æµ‹åˆ°è®¾ç½®äº†zipæ–‡ä»¶ï¼Œé‚£ä¹ˆä»zipæ–‡ä»¶å¾—åˆ°path
 	if (compressionfile.size() > 0)
 	{
 		std::vector<std::string> tmpvec;
@@ -258,7 +253,7 @@ int process_make_client_sdk(int argc, char* argv[], const std::string clientType
 		ret = -1;
 	}
 
-	// ¿ªÊ¼´ò°ü
+	// å¼€å§‹æ‰“åŒ…
 	if (compressionfile.size() > 0)
 	{
 		if (compressionType == 1)
@@ -289,7 +284,7 @@ int process_make_client_sdk(int argc, char* argv[], const std::string clientType
 	app.finalise();
 	INFO_MSG(fmt::format("{}({}) has shut down. ClientSDK={}\n", COMPONENT_NAME_EX(g_componentType), g_componentID, (pClientSDK ? pClientSDK->good() : false)));
 
-	// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+	// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 	DebugHelper::getSingleton().finalise();
 
 	if(pClientSDK)
@@ -300,7 +295,7 @@ int process_make_client_sdk(int argc, char* argv[], const std::string clientType
 
 int process_newassets(int argc, char* argv[], const std::string assetsType)
 {
-	// ¸ù¾İassetsTypeÉèÖÃKBE_RES_PATHµÄÏîÄ¿»·¾³±äÁ¿
+	// æ ¹æ®assetsTypeè®¾ç½®KBE_RES_PATHçš„é¡¹ç›®ç¯å¢ƒå˜é‡
 	std::string res_path = getenv("KBE_RES_PATH") == NULL ? "" : getenv("KBE_RES_PATH");
 	std::string root_path = getenv("KBE_ROOT") == NULL ? "" : getenv("KBE_ROOT");
 
@@ -352,7 +347,7 @@ int process_newassets(int argc, char* argv[], const std::string assetsType)
 
 		app.finalise();
 
-		// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+		// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 		DebugHelper::getSingleton().finalise();
 		return -1;
 	}
@@ -363,7 +358,7 @@ int process_newassets(int argc, char* argv[], const std::string assetsType)
 
 		app.finalise();
 
-		// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+		// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 		DebugHelper::getSingleton().finalise();
 		return -1;
 	}
@@ -376,7 +371,7 @@ int process_newassets(int argc, char* argv[], const std::string assetsType)
 		script::entitydef::uninstallModule();
 		app.finalise();
 
-		// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+		// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 		DebugHelper::getSingleton().finalise();
 		return -1;
 	}
@@ -415,7 +410,7 @@ int process_newassets(int argc, char* argv[], const std::string assetsType)
 	app.finalise();
 	INFO_MSG(fmt::format("{}({}) has shut down. ServerAssets={}\n", COMPONENT_NAME_EX(g_componentType), g_componentID, (pServerAssets ? pServerAssets->good() : false)));
 
-	// Èç¹û»¹ÓĞÈÕÖ¾Î´Í¬²½Íê³É£¬ ÕâÀï»á¼ÌĞøÍ¬²½Íê³É²Å½áÊø
+	// å¦‚æœè¿˜æœ‰æ—¥å¿—æœªåŒæ­¥å®Œæˆï¼Œ è¿™é‡Œä¼šç»§ç»­åŒæ­¥å®Œæˆæ‰ç»“æŸ
 	DebugHelper::getSingleton().finalise();
 
 	if (pServerAssets)

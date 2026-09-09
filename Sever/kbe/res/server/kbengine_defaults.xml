@@ -829,7 +829,46 @@
 			<!--<item> 192.168.10.18 </item>-->
 		</addresses>
 	</machine>
-	
+
+	<cluster>
+		<!-- 用于指定 cluster 绑定的内网网卡，可配置网卡名、MAC、IP（为空自动选择）
+			(The internal interface which cluster binds) 
+		-->
+		<internalInterface>  </internalInterface>
+
+		<!-- cluster 对服务器组件/工具提供的TCP服务端口
+			(The TCP service port which server components/tools connect to cluster)
+		 -->
+		<servicePort> 20093 </servicePort>						<!-- Type: Integer -->
+
+		<!-- cluster 副本之间通信的TCP端口（选举/日志复制）
+			(The TCP peer port used between cluster replicas)
+		 -->
+		<peerPort> 20094 </peerPort>							<!-- Type: Integer -->
+
+		<!-- 集群成员(副本)地址列表。
+			在每个部署了 cluster 副本的机器上填入所有副本所在机器的IP(本机也包含在内)。
+			引擎按列表顺序给副本分配稳定的成员序号(从0开始)，请保持所有副本上的列表一致。
+			(Members(hosts) of the cluster. Keep the same list on every replica) 
+		-->
+		<addresses>
+			<!--<item> 127.0.0.1 </item>-->
+			<!--<item> 192.168.10.18 </item>-->
+		</addresses>
+
+		<!-- 副本选举超时时间(毫秒)，随机化区间为 [value, value*1.66) -->
+		<electionTimeout> 3000 </electionTimeout>				<!-- Type: Integer -->
+		
+		<!-- leader 心跳间隔(毫秒) -->
+		<heartbeatInterval> 1000 </heartbeatInterval>			<!-- Type: Integer -->
+
+		<!-- 服务器组件向cluster续租心跳的间隔(秒) -->
+		<componentHeartbeatInterval> 5 </componentHeartbeatInterval>	<!-- Type: Integer -->
+
+		<!-- 服务器组件注册租约超时(秒)，超时未续租将被集群移除下线 -->
+		<componentLeaseSeconds> 15 </componentLeaseSeconds>		<!-- Type: Integer -->
+	</cluster>
+
 	<bots>
 		<!-- 脚本入口模块， 相当于main函数 
 			(Entry module, like the main-function)

@@ -35,11 +35,6 @@
 #include "dbmgr/dbmgr_interface.h"
 
 #undef DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
-#define DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
-
-#undef DEFINE_IN_INTERFACE
 #include "cellappmgr/cellappmgr_interface.h"
 #define DEFINE_IN_INTERFACE
 #include "cellappmgr/cellappmgr_interface.h"

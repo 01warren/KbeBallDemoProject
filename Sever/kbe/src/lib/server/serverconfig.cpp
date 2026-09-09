@@ -64,7 +64,7 @@ bool ServerConfig::loadConfig(std::string fileName)
 	
 	if(xml->getRootNode() == NULL)
 	{
-		// root½ÚµãÏÂÃ»ÓĞ×Ó½ÚµãÁË
+		// rootèŠ‚ç‚¹ä¸‹æ²¡æœ‰å­èŠ‚ç‚¹äº†
 		return true;
 	}
 
@@ -107,7 +107,7 @@ bool ServerConfig::loadConfig(std::string fileName)
 					{
 						Network::g_trace_packet_disables.push_back(c);
 						
-						// ²»debug¼ÓÃÜ°ü
+						// ä¸debugåŠ å¯†åŒ…
 						if(c == "Encrypted::packets")
 							Network::g_trace_encrypted_packet = false;
 					}
@@ -981,7 +981,7 @@ bool ServerConfig::loadConfig(std::string fileName)
 					else
 						missingFields.push_back("pure");
 
-					// Ä¬ÈÏ¿â²»ÔÊĞíÊÇ´¿¾»¿â£¬ÒıÇæĞèÒª´´½¨ÊµÌå±í
+					// é»˜è®¤åº“ä¸å…è®¸æ˜¯çº¯å‡€åº“ï¼Œå¼•æ“éœ€è¦åˆ›å»ºå®ä½“è¡¨
 					if (name == "default")
 						pDBInfo->isPure = false;
 
@@ -1094,7 +1094,7 @@ bool ServerConfig::loadConfig(std::string fileName)
 	
 					if (pDBInfo == &dbinfo)
 					{
-						// ¼ì²é²»ÄÜÔÚ²»Í¬µÄ½Ó¿ÚÖĞÊ¹ÓÃÏàÍ¬µÄÊı¾İ¿âÓëÏàÍ¬µÄ±í
+						// æ£€æŸ¥ä¸èƒ½åœ¨ä¸åŒçš„æ¥å£ä¸­ä½¿ç”¨ç›¸åŒçš„æ•°æ®åº“ä¸ç›¸åŒçš„è¡¨
 						std::vector<DBInterfaceInfo>::iterator dbinfo_iter = _dbmgrInfo.dbInterfaceInfos.begin();
 						for (; dbinfo_iter != _dbmgrInfo.dbInterfaceInfos.end(); ++dbinfo_iter)
 						{
@@ -1376,6 +1376,63 @@ bool ServerConfig::loadConfig(std::string fileName)
 		}
 	}
 	
+	rootNode = xml->getRootNode("cluster");
+	if(rootNode != NULL)
+	{
+		node = xml->enterNode(rootNode, "internalInterface");	
+		if(node != NULL)
+			strncpy((char*)&_clusterInfo.internalInterface, xml->getValStr(node).c_str(), MAX_NAME - 1);
+
+		node = xml->enterNode(rootNode, "servicePort");
+		if(node != NULL)
+			_clusterInfo.clusterServicePort = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "peerPort");
+		if(node != NULL)
+			_clusterInfo.clusterPeerPort = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "electionTimeout");
+		if(node != NULL)
+			_clusterInfo.clusterElectionTimeoutMS = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "heartbeatInterval");
+		if(node != NULL)
+			_clusterInfo.clusterHeartbeatIntervalMS = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "componentHeartbeatInterval");
+		if(node != NULL)
+			_clusterInfo.clusterComponentHeartbeatInterval = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "componentLeaseSeconds");
+		if(node != NULL)
+			_clusterInfo.clusterComponentLeaseSeconds = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "SOMAXCONN");
+		if(node != NULL){
+			_clusterInfo.tcp_SOMAXCONN = xml->getValInt(node);
+		}
+		
+		node = xml->enterNode(rootNode, "addresses");
+		if(node)
+		{
+			do
+			{
+				if (TiXmlNode::TINYXML_COMMENT == node->Type())
+					continue;
+
+				if(node->FirstChild() != NULL)
+				{
+					std::string c = node->FirstChild()->Value();
+					c = strutil::kbe_trim(c);
+					if(c.size() > 0)
+					{
+						_clusterInfo.cluster_addresses.push_back(c);
+					}
+				}
+			} while((node = node->NextSibling()));
+		}
+	}
+
 	rootNode = xml->getRootNode("bots");
 	if(rootNode != NULL)
 	{
@@ -1669,7 +1726,7 @@ uint32 ServerConfig::tcp_SOMAXCONN(COMPONENT_TYPE componentType)
 //-------------------------------------------------------------------------------------	
 void ServerConfig::_updateEmailInfos()
 {
-	// Èç¹ûĞ¡ÓÚ64Ôò±íÊ¾Ä¿Ç°»¹ÊÇÃ÷ÎÄÃÜÂë
+	// å¦‚æœå°äº64åˆ™è¡¨ç¤ºç›®å‰è¿˜æ˜¯æ˜æ–‡å¯†ç 
 	if(emailServerInfo_.password.size() < 64)
 	{
 		WARNING_MSG(fmt::format("ServerConfig::loadConfig: email password(email_service.xml) is not encrypted!\nplease use password(rsa):\n{}\n"
@@ -1917,6 +1974,23 @@ void ServerConfig::updateInfos(bool isPrint, COMPONENT_TYPE componentType, COMPO
 			INFO_MSG("server-configs:\n");
 			INFO_MSG(fmt::format("\tinternalTcpAddr : {}\n", internalTcpAddr.c_str()));
 			//INFO_MSG((fmt::format("\texternalTcpAddr : %s\n", externalTcpAddr.c_str())));
+			INFO_MSG(fmt::format("\tcomponentID : {}\n", info.componentID));
+
+			infostr += "server-configs:\n";
+			infostr += (fmt::format("\tinternalTcpAddr : {}\n", internalTcpAddr.c_str()));
+			infostr += (fmt::format("\tcomponentID : {}\n", info.componentID));
+		}
+	}
+	else if (componentType == CLUSTER_TYPE)
+	{
+		ENGINE_COMPONENT_INFO info = getKCluster();
+		info.internalTcpAddr = const_cast<Network::Address*>(&internalTcpAddr);
+		info.externalTcpAddr = const_cast<Network::Address*>(&externalTcpAddr);
+		info.componentID = componentID;
+		if(isPrint)
+		{
+			INFO_MSG("server-configs:\n");
+			INFO_MSG(fmt::format("\tinternalTcpAddr : {}\n", internalTcpAddr.c_str()));
 			INFO_MSG(fmt::format("\tcomponentID : {}\n", info.componentID));
 
 			infostr += "server-configs:\n";

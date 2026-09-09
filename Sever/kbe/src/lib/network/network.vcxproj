@@ -175,7 +175,6 @@
   <ItemGroup>
     <ClCompile Include="address.cpp" />
     <ClCompile Include="bundle.cpp" />
-    <ClCompile Include="bundle_broadcast.cpp" />
     <ClCompile Include="channel.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="delayed_channels.cpp" />
@@ -216,7 +215,6 @@
   <ItemGroup>
     <ClInclude Include="address.h" />
     <ClInclude Include="bundle.h" />
-    <ClInclude Include="bundle_broadcast.h" />
     <ClInclude Include="channel.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="delayed_channels.h" />
@@ -259,7 +257,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bundle.inl" />
-    <None Include="bundle_broadcast.inl" />
     <None Include="channel.inl" />
     <None Include="endpoint.inl" />
     <None Include="error_reporter.inl" />

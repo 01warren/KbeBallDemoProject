@@ -98,22 +98,22 @@ struct DBInterfaceInfo
 	}
 
 	int index;
-	bool isPure;											// ÊÇ·ñÎª´¿¾»¿â£¨Ã»ÓĞÒıÇæ´´½¨µÄÊµÌå±í£©
-	char name[MAX_BUF];										// Êı¾İ¿âµÄ½Ó¿ÚÃû³Æ
-	char db_type[MAX_BUF];									// Êı¾İ¿âµÄÀà±ğ
-	uint32 db_port;											// Êı¾İ¿âµÄ¶Ë¿Ú
-	char db_ip[MAX_BUF];									// Êı¾İ¿âµÄipµØÖ·
-	char db_username[MAX_NAME];								// Êı¾İ¿âµÄÓÃ»§Ãû
-	char db_password[MAX_BUF * 10];							// Êı¾İ¿âµÄÃÜÂë
-	bool db_passwordEncrypt;								// dbÃÜÂëÊÇ·ñÊÇ¼ÓÃÜµÄ
-	char db_name[MAX_NAME];									// Êı¾İ¿âÃû
-	uint16 db_numConnections;								// Êı¾İ¿â×î´óÁ¬½Ó
-	char db_autoIncrementInit[MAX_BUF];							// ×ÔÔöË÷ÒıÆğÊ¼
-	std::string db_unicodeString_characterSet;				// ÉèÖÃÊı¾İ¿â×Ö·û¼¯
+	bool isPure;											// æ˜¯å¦ä¸ºçº¯å‡€åº“ï¼ˆæ²¡æœ‰å¼•æ“åˆ›å»ºçš„å®ä½“è¡¨ï¼‰
+	char name[MAX_BUF];										// æ•°æ®åº“çš„æ¥å£åç§°
+	char db_type[MAX_BUF];									// æ•°æ®åº“çš„ç±»åˆ«
+	uint32 db_port;											// æ•°æ®åº“çš„ç«¯å£
+	char db_ip[MAX_BUF];									// æ•°æ®åº“çš„ipåœ°å€
+	char db_username[MAX_NAME];								// æ•°æ®åº“çš„ç”¨æˆ·å
+	char db_password[MAX_BUF * 10];							// æ•°æ®åº“çš„å¯†ç 
+	bool db_passwordEncrypt;								// dbå¯†ç æ˜¯å¦æ˜¯åŠ å¯†çš„
+	char db_name[MAX_NAME];									// æ•°æ®åº“å
+	uint16 db_numConnections;								// æ•°æ®åº“æœ€å¤§è¿æ¥
+	char db_autoIncrementInit[MAX_BUF];							// è‡ªå¢ç´¢å¼•èµ·å§‹
+	std::string db_unicodeString_characterSet;				// è®¾ç½®æ•°æ®åº“å­—ç¬¦é›†
 	std::string db_unicodeString_collation;
 };
 
-// ÒıÇæ×é¼şĞÅÏ¢½á¹¹Ìå
+// å¼•æ“ç»„ä»¶ä¿¡æ¯ç»“æ„ä½“
 typedef struct EngineComponentInfo
 {
 	EngineComponentInfo()
@@ -130,110 +130,126 @@ typedef struct EngineComponentInfo
 
 		isOnInitCallPropertysSetMethods = true;
 		forceInternalLogin = false;
+
+		clusterServicePort = 20093;
+		clusterPeerPort = 20094;
+		clusterElectionTimeoutMS = 3000;
+		clusterHeartbeatIntervalMS = 1000;
+		clusterComponentHeartbeatInterval = 5;
+		clusterComponentLeaseSeconds = 15;
 	}
 
 	~EngineComponentInfo()
 	{
 	}
 
-	uint32 port;											// ×é¼şµÄÔËĞĞºó¼àÌıµÄ¶Ë¿Ú
-	char ip[MAX_BUF];										// ×é¼şµÄÔËĞĞÆÚipµØÖ·
+	uint32 port;											// ç»„ä»¶çš„è¿è¡Œåç›‘å¬çš„ç«¯å£
+	char ip[MAX_BUF];										// ç»„ä»¶çš„è¿è¡ŒæœŸipåœ°å€
 
-	std::vector< std::string > machine_addresses;			// ÅäÖÃÖĞ¸ø³öµÄËùÓĞµÄmachineµÄµØÖ·
-	
-	char entryScriptFile[MAX_NAME];							// ×é¼şµÄÈë¿Ú½Å±¾ÎÄ¼ş
-	char dbAccountEntityScriptType[MAX_NAME];				// Êı¾İ¿âÕÊºÅ½Å±¾Àà±ğ
-	float defaultViewRadius;								// ÅäÖÃÔÚcellapp½ÚµãÖĞµÄplayerµÄview°ë¾¶´óĞ¡
-	float defaultViewHysteresisArea;						// ÅäÖÃÔÚcellapp½ÚµãÖĞµÄplayerµÄviewµÄÖÍºó·¶Î§
-	uint16 witness_timeout;									// ¹Û²ìÕßÄ¬ÈÏ³¬Ê±Ê±¼ä(Ãë)
-	const Network::Address* externalTcpAddr;				// Íâ²¿µØÖ·
-	const Network::Address* externalUdpAddr;				// Íâ²¿µØÖ·
-	const Network::Address* internalTcpAddr;				// ÄÚ²¿µØÖ·
+	std::vector< std::string > machine_addresses;			// é…ç½®ä¸­ç»™å‡ºçš„æ‰€æœ‰çš„machineçš„åœ°å€
+
+	// ---- cluster é›†ç¾¤ç»„ä»¶ä¸“å±é…ç½® ----
+	std::vector< std::string > cluster_addresses;			// é›†ç¾¤æˆå‘˜(å‰¯æœ¬)åœ°å€åˆ—è¡¨(ipï¼Œæœ¬æœºå¯åŒ…å«)
+	uint16 clusterServicePort;								// å¯¹ç»„ä»¶/å·¥å…·æä¾›çš„TCPæœåŠ¡ç«¯å£
+	uint16 clusterPeerPort;									// cluster å‰¯æœ¬é—´é€šä¿¡ç«¯å£
+	uint16 clusterElectionTimeoutMS;						// å‰¯æœ¬é€‰ä¸¾è¶…æ—¶(æ¯«ç§’)
+	uint16 clusterHeartbeatIntervalMS;						// leader å¿ƒè·³é—´éš”(æ¯«ç§’)
+	uint16 clusterComponentHeartbeatInterval;				// ç»„ä»¶å¿ƒè·³/ç»­ç§Ÿé—´éš”(ç§’)
+	uint16 clusterComponentLeaseSeconds;					// ç»„ä»¶ç§Ÿçº¦è¶…æ—¶(ç§’)
+
+	char entryScriptFile[MAX_NAME];							// ç»„ä»¶çš„å…¥å£è„šæœ¬æ–‡ä»¶
+	char dbAccountEntityScriptType[MAX_NAME];				// æ•°æ®åº“å¸å·è„šæœ¬ç±»åˆ«
+	float defaultViewRadius;								// é…ç½®åœ¨cellappèŠ‚ç‚¹ä¸­çš„playerçš„viewåŠå¾„å¤§å°
+	float defaultViewHysteresisArea;						// é…ç½®åœ¨cellappèŠ‚ç‚¹ä¸­çš„playerçš„viewçš„æ»åèŒƒå›´
+	uint16 witness_timeout;									// è§‚å¯Ÿè€…é»˜è®¤è¶…æ—¶æ—¶é—´(ç§’)
+	const Network::Address* externalTcpAddr;				// å¤–éƒ¨åœ°å€
+	const Network::Address* externalUdpAddr;				// å¤–éƒ¨åœ°å€
+	const Network::Address* internalTcpAddr;				// å†…éƒ¨åœ°å€
 	COMPONENT_ID componentID;
 
-	float ghostDistance;									// ghostÇøÓò¾àÀë
-	uint16 ghostingMaxPerCheck;								// Ã¿Ãë¼ì²éghost´ÎÊı
-	uint16 ghostUpdateHertz;								// ghost¸üĞÂhz
+	float ghostDistance;									// ghoståŒºåŸŸè·ç¦»
+	uint16 ghostingMaxPerCheck;								// æ¯ç§’æ£€æŸ¥ghostæ¬¡æ•°
+	uint16 ghostUpdateHertz;								// ghostæ›´æ–°hz
 	
-	bool use_coordinate_system;								// ÊÇ·ñÊ¹ÓÃ×ø±êÏµÍ³ Èç¹ûÎªfalse, view, trap, moveµÈ¹¦ÄÜ½«²»ÔÙÎ¬»¤
-	bool coordinateSystem_hasY;								// ·¶Î§¹ÜÀíÆ÷ÊÇ¹ÜÀíYÖá£¬ ×¢£ºÓĞyÖáÔòview¡¢trapµÈ¹¦ÄÜÓĞÁË¸ß¶È£¬ µ«yÖáµÄ¹ÜÀí»á´øÀ´Ò»¶¨µÄÏûºÄ
-	uint16 entity_posdir_additional_updates;				// ÊµÌåÎ»ÖÃÍ£Ö¹·¢Éú¸Ä±äºó£¬ÒıÇæ¼ÌĞøÏò¿Í»§¶Ë¸üĞÂtick´ÎµÄÎ»ÖÃĞÅÏ¢£¬Îª0Ôò×ÜÊÇ¸üĞÂ¡£
-	uint16 entity_posdir_updates_type;						// ÊµÌåÎ»ÖÃ¸üĞÂ·½Ê½£¬0£º·ÇÓÅ»¯¸ß¾«¶ÈÍ¬²½, 1:ÓÅ»¯Í¬²½, 2:ÖÇÄÜÑ¡ÔñÄ£Ê½
-	uint16 entity_posdir_updates_smart_threshold;			// ÊµÌåÎ»ÖÃ¸üĞÂÖÇÄÜÄ£Ê½ÏÂµÄÍ¬ÆÁÈËÊıãĞÖµ
+	bool use_coordinate_system;								// æ˜¯å¦ä½¿ç”¨åæ ‡ç³»ç»Ÿ å¦‚æœä¸ºfalse, view, trap, moveç­‰åŠŸèƒ½å°†ä¸å†ç»´æŠ¤
+	bool coordinateSystem_hasY;								// èŒƒå›´ç®¡ç†å™¨æ˜¯ç®¡ç†Yè½´ï¼Œ æ³¨ï¼šæœ‰yè½´åˆ™viewã€trapç­‰åŠŸèƒ½æœ‰äº†é«˜åº¦ï¼Œ ä½†yè½´çš„ç®¡ç†ä¼šå¸¦æ¥ä¸€å®šçš„æ¶ˆè€—
+	uint16 entity_posdir_additional_updates;				// å®ä½“ä½ç½®åœæ­¢å‘ç”Ÿæ”¹å˜åï¼Œå¼•æ“ç»§ç»­å‘å®¢æˆ·ç«¯æ›´æ–°tickæ¬¡çš„ä½ç½®ä¿¡æ¯ï¼Œä¸º0åˆ™æ€»æ˜¯æ›´æ–°ã€‚
+	uint16 entity_posdir_updates_type;						// å®ä½“ä½ç½®æ›´æ–°æ–¹å¼ï¼Œ0ï¼šéä¼˜åŒ–é«˜ç²¾åº¦åŒæ­¥, 1:ä¼˜åŒ–åŒæ­¥, 2:æ™ºèƒ½é€‰æ‹©æ¨¡å¼
+	uint16 entity_posdir_updates_smart_threshold;			// å®ä½“ä½ç½®æ›´æ–°æ™ºèƒ½æ¨¡å¼ä¸‹çš„åŒå±äººæ•°é˜ˆå€¼
 
-	bool aliasEntityID;										// ÓÅ»¯EntityID£¬view·¶Î§ÄÚĞ¡ÓÚ255¸öEntityID, ´«Êäµ½clientÊ±Ê¹ÓÃ1×Ö½ÚÎ±ID 
-	bool entitydefAliasID;									// ÓÅ»¯entityÊôĞÔºÍ·½·¨¹ã²¥Ê±Õ¼ÓÃµÄ´ø¿í£¬entity¿Í»§¶ËÊôĞÔ»òÕß¿Í»§¶Ë²»³¬¹ı255¸öÊ±£¬ ·½·¨uidºÍÊôĞÔuid´«Êäµ½clientÊ±Ê¹ÓÃ1×Ö½Ú±ğÃûID
+	bool aliasEntityID;										// ä¼˜åŒ–EntityIDï¼ŒviewèŒƒå›´å†…å°äº255ä¸ªEntityID, ä¼ è¾“åˆ°clientæ—¶ä½¿ç”¨1å­—èŠ‚ä¼ªID 
+	bool entitydefAliasID;									// ä¼˜åŒ–entityå±æ€§å’Œæ–¹æ³•å¹¿æ’­æ—¶å ç”¨çš„å¸¦å®½ï¼Œentityå®¢æˆ·ç«¯å±æ€§æˆ–è€…å®¢æˆ·ç«¯ä¸è¶…è¿‡255ä¸ªæ—¶ï¼Œ æ–¹æ³•uidå’Œå±æ€§uidä¼ è¾“åˆ°clientæ—¶ä½¿ç”¨1å­—èŠ‚åˆ«åID
 
-	char internalInterface[MAX_NAME];						// ÄÚ²¿Íø¿¨½Ó¿ÚÃû³Æ
-	char externalInterface[MAX_NAME];						// Íâ²¿Íø¿¨½Ó¿ÚÃû³Æ
-	char externalAddress[MAX_NAME];							// Íâ²¿IPµØÖ·
+	char internalInterface[MAX_NAME];						// å†…éƒ¨ç½‘å¡æ¥å£åç§°
+	char externalInterface[MAX_NAME];						// å¤–éƒ¨ç½‘å¡æ¥å£åç§°
+	char externalAddress[MAX_NAME];							// å¤–éƒ¨IPåœ°å€
 
-	int32 externalTcpPorts_min;								// ¶ÔÍâsocket TCP¶Ë¿ÚÊ¹ÓÃÖ¸¶¨·¶Î§
+	int32 externalTcpPorts_min;								// å¯¹å¤–socket TCPç«¯å£ä½¿ç”¨æŒ‡å®šèŒƒå›´
 	int32 externalTcpPorts_max;
 
-	int32 externalUdpPorts_min;								// ¶ÔÍâsocket UDP¶Ë¿ÚÊ¹ÓÃÖ¸¶¨·¶Î§
+	int32 externalUdpPorts_min;								// å¯¹å¤–socket UDPç«¯å£ä½¿ç”¨æŒ‡å®šèŒƒå›´
 	int32 externalUdpPorts_max;
 
-	std::vector<DBInterfaceInfo> dbInterfaceInfos;			// Êı¾İ¿â½Ó¿Ú
-	bool notFoundAccountAutoCreate;							// µÇÂ¼ºÏ·¨Ê±ÓÎÏ·Êı¾İ¿âÕÒ²»µ½ÓÎÏ·ÕËºÅÔò×Ô¶¯´´½¨
-	bool allowEmptyDigest;									// ÊÇ·ñ¼ì²édefs-MD5
-	bool account_registration_enable;						// ÊÇ·ñ¿ª·Å×¢²á
-	bool account_reset_password_enable;						// ÊÇ·ñ¿ª·ÅÖØÉèÃÜÂë¹¦ÄÜ
-	bool isShareDB;											// ÊÇ·ñ¹²ÏíÊı¾İ¿â
+	std::vector<DBInterfaceInfo> dbInterfaceInfos;			// æ•°æ®åº“æ¥å£
+	bool notFoundAccountAutoCreate;							// ç™»å½•åˆæ³•æ—¶æ¸¸æˆæ•°æ®åº“æ‰¾ä¸åˆ°æ¸¸æˆè´¦å·åˆ™è‡ªåŠ¨åˆ›å»º
+	bool allowEmptyDigest;									// æ˜¯å¦æ£€æŸ¥defs-MD5
+	bool account_registration_enable;						// æ˜¯å¦å¼€æ”¾æ³¨å†Œ
+	bool account_reset_password_enable;						// æ˜¯å¦å¼€æ”¾é‡è®¾å¯†ç åŠŸèƒ½
+	bool isShareDB;											// æ˜¯å¦å…±äº«æ•°æ®åº“
 
-	float archivePeriod;									// entity´æ´¢Êı¾İ¿âÖÜÆÚ
-	float backupPeriod;										// entity±¸·İÖÜÆÚ
-	bool backUpUndefinedProperties;							// entityÊÇ·ñ±¸·İÎ´¶¨ÒåÊôĞÔ
-	uint16 entityRestoreSize;								// entity restoreÃ¿tickÊıÁ¿ 
+	float archivePeriod;									// entityå­˜å‚¨æ•°æ®åº“å‘¨æœŸ
+	float backupPeriod;										// entityå¤‡ä»½å‘¨æœŸ
+	bool backUpUndefinedProperties;							// entityæ˜¯å¦å¤‡ä»½æœªå®šä¹‰å±æ€§
+	uint16 entityRestoreSize;								// entity restoreæ¯tickæ•°é‡ 
 
-	float loadSmoothingBias;								// baseapp¸ºÔØÂËÆ½ºâµ÷ÕûÖµ£¬ 
-	uint32 login_port;										// ·şÎñÆ÷µÇÂ¼¶Ë¿Ú Ä¿Ç°botsÔÚÓÃ
-	uint32 login_port_min;									// ·şÎñÆ÷µÇÂ¼¶Ë¿ÚÊ¹ÓÃÖ¸¶¨·¶Î§ Ä¿Ç°botsÔÚÓÃ
+	float loadSmoothingBias;								// baseappè´Ÿè½½æ»¤å¹³è¡¡è°ƒæ•´å€¼ï¼Œ 
+	uint32 login_port;										// æœåŠ¡å™¨ç™»å½•ç«¯å£ ç›®å‰botsåœ¨ç”¨
+	uint32 login_port_min;									// æœåŠ¡å™¨ç™»å½•ç«¯å£ä½¿ç”¨æŒ‡å®šèŒƒå›´ ç›®å‰botsåœ¨ç”¨
 	uint32 login_port_max;
-	char login_ip[MAX_BUF];									// ·şÎñÆ÷µÇÂ¼ipµØÖ·
+	char login_ip[MAX_BUF];									// æœåŠ¡å™¨ç™»å½•ipåœ°å€
 
-	ENTITY_ID ids_criticallyLowSize;						// idÊ£ÓàÕâÃ´¶à¸öÊ±ÏòdbmgrÉêÇëĞÂµÄid×ÊÔ´
-	ENTITY_ID ids_increasing_range;							// ÉêÇëIDÊ±idÃ¿´ÎµİÔö·¶Î§
+	ENTITY_ID ids_criticallyLowSize;						// idå‰©ä½™è¿™ä¹ˆå¤šä¸ªæ—¶å‘dbmgrç”³è¯·æ–°çš„idèµ„æº
+	ENTITY_ID ids_increasing_range;							// ç”³è¯·IDæ—¶idæ¯æ¬¡é€’å¢èŒƒå›´
 
-	uint32 downloadBitsPerSecondTotal;						// ËùÓĞ¿Í»§¶ËÃ¿ÃëÏÂÔØ´ø¿í×ÜÉÏÏŞ
-	uint32 downloadBitsPerSecondPerClient;					// Ã¿¸ö¿Í»§¶ËÃ¿ÃëµÄÏÂÔØ´ø¿í
+	uint32 downloadBitsPerSecondTotal;						// æ‰€æœ‰å®¢æˆ·ç«¯æ¯ç§’ä¸‹è½½å¸¦å®½æ€»ä¸Šé™
+	uint32 downloadBitsPerSecondPerClient;					// æ¯ä¸ªå®¢æˆ·ç«¯æ¯ç§’çš„ä¸‹è½½å¸¦å®½
 
 	Profiles_Config profiles;
 
-	uint32 defaultAddBots_totalCount;						// Ä¬ÈÏÆô¶¯½ø³Ìºó×Ô¶¯Ìí¼ÓÕâÃ´¶à¸öbots Ìí¼Ó×ÜÊıÁ¿
-	float defaultAddBots_tickTime;							// Ä¬ÈÏÆô¶¯½ø³Ìºó×Ô¶¯Ìí¼ÓÕâÃ´¶à¸öbots Ã¿´ÎÌí¼ÓËùÓÃÊ±¼ä(s)
-	uint32 defaultAddBots_tickCount;						// Ä¬ÈÏÆô¶¯½ø³Ìºó×Ô¶¯Ìí¼ÓÕâÃ´¶à¸öbots Ã¿´ÎÌí¼ÓÊıÁ¿
+	uint32 defaultAddBots_totalCount;						// é»˜è®¤å¯åŠ¨è¿›ç¨‹åè‡ªåŠ¨æ·»åŠ è¿™ä¹ˆå¤šä¸ªbots æ·»åŠ æ€»æ•°é‡
+	float defaultAddBots_tickTime;							// é»˜è®¤å¯åŠ¨è¿›ç¨‹åè‡ªåŠ¨æ·»åŠ è¿™ä¹ˆå¤šä¸ªbots æ¯æ¬¡æ·»åŠ æ‰€ç”¨æ—¶é—´(s)
+	uint32 defaultAddBots_tickCount;						// é»˜è®¤å¯åŠ¨è¿›ç¨‹åè‡ªåŠ¨æ·»åŠ è¿™ä¹ˆå¤šä¸ªbots æ¯æ¬¡æ·»åŠ æ•°é‡
 
-	bool forceInternalLogin;								// ¶ÔÓ¦baseappµÄexternalAddressµÄ½â¾ö·½°¸£¬µ±externalAddressÇ¿ÖÆÏÂ·¢¹«ÍøIPÌá¹©µÇÂ½Ê±£¬
-															// Èç¹û¾ÖÓòÍøÄÚ²¿Ê¹ÓÃ»úÆ÷ÈË²âÊÔÒ²×ß¹«ÍøIPºÍÁ÷Á¿¿ÉÄÜ»á²»ºÏÊÊ£¬´ËÊ±¿ÉÒÔÉèÖÃÎªtrue£¬µÇÂ½Ê±Ç¿ÖÆÖ±½ÓÊ¹ÓÃÄÚÍø»·¾³
+	bool forceInternalLogin;								// å¯¹åº”baseappçš„externalAddressçš„è§£å†³æ–¹æ¡ˆï¼Œå½“externalAddresså¼ºåˆ¶ä¸‹å‘å…¬ç½‘IPæä¾›ç™»é™†æ—¶ï¼Œ
+															// å¦‚æœå±€åŸŸç½‘å†…éƒ¨ä½¿ç”¨æœºå™¨äººæµ‹è¯•ä¹Ÿèµ°å…¬ç½‘IPå’Œæµé‡å¯èƒ½ä¼šä¸åˆé€‚ï¼Œæ­¤æ—¶å¯ä»¥è®¾ç½®ä¸ºtrueï¼Œç™»é™†æ—¶å¼ºåˆ¶ç›´æ¥ä½¿ç”¨å†…ç½‘ç¯å¢ƒ
 
-	std::string bots_account_name_prefix;					// »úÆ÷ÈËÕËºÅÃû³ÆµÄÇ°×º
-	uint32 bots_account_name_suffix_inc;					// »úÆ÷ÈËÕËºÅÃû³ÆµÄºó×ºµİÔö, 0Ê¹ÓÃËæ»úÊıµİÔö£¬ ·ñÔò°´ÕÕbaseNumÌîĞ´µÄÊıµİÔö
-	std::string bots_account_passwd;						// »úÆ÷ÈËÕËºÅµÄÃÜÂë
+	std::string bots_account_name_prefix;					// æœºå™¨äººè´¦å·åç§°çš„å‰ç¼€
+	uint32 bots_account_name_suffix_inc;					// æœºå™¨äººè´¦å·åç§°çš„åç¼€é€’å¢, 0ä½¿ç”¨éšæœºæ•°é€’å¢ï¼Œ å¦åˆ™æŒ‰ç…§baseNumå¡«å†™çš„æ•°é€’å¢
+	std::string bots_account_passwd;						// æœºå™¨äººè´¦å·çš„å¯†ç 
 
-	uint32 tcp_SOMAXCONN;									// listen¼àÌı¶ÓÁĞ×î´óÖµ
+	uint32 tcp_SOMAXCONN;									// listenç›‘å¬é˜Ÿåˆ—æœ€å¤§å€¼
 
-	int8 encrypt_login;										// ¼ÓÃÜµÇÂ¼ĞÅÏ¢
+	int8 encrypt_login;										// åŠ å¯†ç™»å½•ä¿¡æ¯
 
 	uint32 telnet_port;
 	std::string telnet_passwd;
 	std::string telnet_deflayer;
 
-	uint32 perSecsDestroyEntitySize;						// Ã¿ÃëÏú»ÙentityÊıÁ¿
+	uint32 perSecsDestroyEntitySize;						// æ¯ç§’é”€æ¯entityæ•°é‡
 
 	uint64 respool_timeout;
 	uint32 respool_buffersize;
 
-	uint8 account_type;										// 1: ÆÕÍ¨ÕËºÅ, 2: emailÕËºÅ(ĞèÒª¼¤»î), 3: ÖÇÄÜÕËºÅ(×Ô¶¯Ê¶±ğemail£¬ ÆÕÍ¨ºÅÂëµÈ) 
-	uint32 accountDefaultFlags;								// ĞÂÕËºÅÄ¬ÈÏ±ê¼Ç(ACCOUNT_FLAGS¿Éµş¼Ó£¬ ÌîĞ´Ê±°´Ê®½øÖÆ¸ñÊ½) 
-	uint64 accountDefaultDeadline;							// ĞÂÕËºÅÄ¬ÈÏ¹ıÆÚÊ±¼ä(Ãë, ÒıÇæ»á¼ÓÉÏµ±Ç°Ê±¼ä)
+	uint8 account_type;										// 1: æ™®é€šè´¦å·, 2: emailè´¦å·(éœ€è¦æ¿€æ´»), 3: æ™ºèƒ½è´¦å·(è‡ªåŠ¨è¯†åˆ«emailï¼Œ æ™®é€šå·ç ç­‰) 
+	uint32 accountDefaultFlags;								// æ–°è´¦å·é»˜è®¤æ ‡è®°(ACCOUNT_FLAGSå¯å åŠ ï¼Œ å¡«å†™æ—¶æŒ‰åè¿›åˆ¶æ ¼å¼) 
+	uint64 accountDefaultDeadline;							// æ–°è´¦å·é»˜è®¤è¿‡æœŸæ—¶é—´(ç§’, å¼•æ“ä¼šåŠ ä¸Šå½“å‰æ—¶é—´)
 	
 	std::string http_cbhost;
-	uint16 http_cbport;										// ÓÃ»§http»Øµ÷½Ó¿Ú£¬´¦ÀíÈÏÖ¤¡¢ÃÜÂëÖØÖÃµÈ
+	uint16 http_cbport;										// ç”¨æˆ·httpå›è°ƒæ¥å£ï¼Œå¤„ç†è®¤è¯ã€å¯†ç é‡ç½®ç­‰
 
-	bool debugDBMgr;										// debugÄ£Ê½ÏÂ¿ÉÊä³ö¶ÁĞ´²Ù×÷ĞÅÏ¢
+	bool debugDBMgr;										// debugæ¨¡å¼ä¸‹å¯è¾“å‡ºè¯»å†™æ“ä½œä¿¡æ¯
 
-	bool isOnInitCallPropertysSetMethods;					// »úÆ÷ÈË(bots)×¨ÓÃ£ºÔÚEntity³õÊ¼»¯Ê±ÊÇ·ñ´¥·¢ÊôĞÔµÄset_*ÊÂ¼ş
+	bool isOnInitCallPropertysSetMethods;					// æœºå™¨äºº(bots)ä¸“ç”¨ï¼šåœ¨Entityåˆå§‹åŒ–æ—¶æ˜¯å¦è§¦å‘å±æ€§çš„set_*äº‹ä»¶
 } ENGINE_COMPONENT_INFO;
 
 class ServerConfig : public Singleton<ServerConfig>
@@ -251,6 +267,7 @@ public:
 	INLINE ENGINE_COMPONENT_INFO& getCellAppMgr(void);
 	INLINE ENGINE_COMPONENT_INFO& getBaseAppMgr(void);
 	INLINE ENGINE_COMPONENT_INFO& getKBMachine(void);
+	INLINE ENGINE_COMPONENT_INFO& getKCluster(void);
 	INLINE ENGINE_COMPONENT_INFO& getBots(void);
 	INLINE ENGINE_COMPONENT_INFO& getLogger(void);
 	INLINE ENGINE_COMPONENT_INFO& getInterfaces(void);
@@ -298,6 +315,7 @@ private:
 	ENGINE_COMPONENT_INFO _cellAppMgrInfo;
 	ENGINE_COMPONENT_INFO _baseAppMgrInfo;
 	ENGINE_COMPONENT_INFO _kbMachineInfo;
+	ENGINE_COMPONENT_INFO _clusterInfo;
 	ENGINE_COMPONENT_INFO _botsInfo;
 	ENGINE_COMPONENT_INFO _loggerInfo;
 	ENGINE_COMPONENT_INFO _interfacesInfo;
@@ -309,7 +327,7 @@ public:
 
 	ChannelCommon channelCommon_;
 
-	// Ã¿¸ö¿Í»§¶ËÃ¿ÃëÕ¼ÓÃµÄ×î´ó´ø¿í
+	// æ¯ä¸ªå®¢æˆ·ç«¯æ¯ç§’å ç”¨çš„æœ€å¤§å¸¦å®½
 	uint32 bitsPerSecondToClient_;		
 
 	std::string interfacesAddress_;
@@ -321,8 +339,8 @@ public:
 	float shutdown_time_;
 	float shutdown_waitTickTime_;
 
-	float callback_timeout_;										// callbackÄ¬ÈÏ³¬Ê±Ê±¼ä(Ãë)
-	float thread_timeout_;											// Ä¬ÈÏ³¬Ê±Ê±¼ä(Ãë)
+	float callback_timeout_;										// callbacké»˜è®¤è¶…æ—¶æ—¶é—´(ç§’)
+	float thread_timeout_;											// é»˜è®¤è¶…æ—¶æ—¶é—´(ç§’)
 
 	uint32 thread_init_create_, thread_pre_create_, thread_max_create_;
 	

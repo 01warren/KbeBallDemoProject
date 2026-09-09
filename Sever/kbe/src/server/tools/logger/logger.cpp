@@ -7,7 +7,6 @@
 #include "network/tcp_packet.h"
 #include "network/udp_packet.h"
 #include "network/message_handler.h"
-#include "network/bundle_broadcast.h"
 #include "thread/threadpool.h"
 #include "server/components.h"
 #include <sstream>
@@ -117,7 +116,7 @@ bool Logger::initializeEnd()
 {
 	PythonApp::initializeEnd();
 
-	// ÓÉÓÚlogger½ÓÊÕÆäËûappµÄlog£¬Èç¹û¸ú×Ù°üÊä³ö½«»á·Ç³£¿¨¡£
+	// ç”±äºloggeræ¥æ”¶å…¶ä»–appçš„logï¼Œå¦‚æœè·Ÿè¸ªåŒ…è¾“å‡ºå°†ä¼šéå¸¸å¡ã€‚
 	Network::g_trace_packet = 0;
 
 	timer_ = this->dispatcher().addTimer(1000000 / 50, this,
@@ -125,7 +124,7 @@ bool Logger::initializeEnd()
 
 	SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-	// ËùÓĞ½Å±¾¶¼¼ÓÔØÍê±Ï
+	// æ‰€æœ‰è„šæœ¬éƒ½åŠ è½½å®Œæ¯•
 	if (getEntryScript().get())
 	{
 		PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(),
@@ -175,7 +174,7 @@ ShutdownHandler::CAN_SHUTDOWN_STATE Logger::canShutdown()
 {
 	if (getEntryScript().get() && PyObject_HasAttrString(getEntryScript().get(), "onReadyForShutDown") > 0)
 	{
-		// ËùÓĞ½Å±¾¶¼¼ÓÔØÍê±Ï
+		// æ‰€æœ‰è„šæœ¬éƒ½åŠ è½½å®Œæ¯•
 		PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(),
 			const_cast<char*>("onReadyForShutDown"),
 			const_cast<char*>(""));
@@ -211,7 +210,7 @@ void Logger::onShutdownBegin()
 {
 	PythonApp::onShutdownBegin();
 
-	// Í¨Öª½Å±¾
+	// é€šçŸ¥è„šæœ¬
 	if (getEntryScript().get())
 	{
 		SCOPED_PROFILE(SCRIPTCALL_PROFILE);
@@ -281,7 +280,7 @@ void Logger::writeLog(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 	pLogItem->logstream << "- ";
 	pLogItem->logstream << str;
 
-	// ¼ÇÂ¼ÏÂÍêÕûµÄÈÕÖ¾£¬ÒÔÔÚ½Å±¾»Øµ÷Ê±Ê¹ÓÃ
+	// è®°å½•ä¸‹å®Œæ•´çš„æ—¥å¿—ï¼Œä»¥åœ¨è„šæœ¬å›è°ƒæ—¶ä½¿ç”¨
 	std::string sLog = pLogItem->logstream.str();
 
 	static bool notificationScript = getEntryScript().get() && PyObject_HasAttrString(getEntryScript().get(), "onLogWrote") > 0;
@@ -345,7 +344,7 @@ void Logger::writeLog(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 		iter->second.onMessage(pLogItem);
 	}
 
-	// »º´æÒ»²¿·Ölog£¬Ìá¹©¹¤¾ß²é¿´logÊ±ÄÜ¿ìËÙ»ñÈ¡³õÊ¼ÉÏÏÂÎÄ
+	// ç¼“å­˜ä¸€éƒ¨åˆ†logï¼Œæä¾›å·¥å…·æŸ¥çœ‹logæ—¶èƒ½å¿«é€Ÿè·å–åˆå§‹ä¸Šä¸‹æ–‡
 	buffered_logs_.push_back(pLogItem);
 	if(buffered_logs_.size() > 64)
 	{

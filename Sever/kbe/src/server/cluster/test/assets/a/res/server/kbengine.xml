@@ -1,0 +1,21 @@
+<root>
+	<!-- 测试资产 A：副本绑定 127.0.0.1。B/C 仅 internalInterface 不同(127.0.0.2/127.0.0.3)。
+		 三份 <cluster> 其余字段必须完全一致(成员表顺序 = 副本序号)。
+		 测试用独立端口 20193/20194，避免与冒烟(20093/20094)并行冲突。
+		 副本 cid 由启动参数 --cid=31001/31002/31003 区分。
+		 lease=60s：三副本故障演练(杀 follower/杀 leader/重启追赶)期间注册条目不因 TTL 误过期。 -->
+	<cluster>
+		<internalInterface> 127.0.0.1 </internalInterface>
+		<servicePort> 20193 </servicePort>
+		<peerPort> 20194 </peerPort>
+		<addresses>
+			<item> 127.0.0.1 </item>
+			<item> 127.0.0.2 </item>
+			<item> 127.0.0.3 </item>
+		</addresses>
+		<electionTimeout> 1200 </electionTimeout>
+		<heartbeatInterval> 400 </heartbeatInterval>
+		<componentHeartbeatInterval> 2 </componentHeartbeatInterval>
+		<componentLeaseSeconds> 60 </componentLeaseSeconds>
+	</cluster>
+</root>

@@ -288,6 +288,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClusterClient.cpp" />
     <ClCompile Include="ColorListBox.cpp" />
     <ClCompile Include="ConnectRemoteMachineWindow.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
@@ -315,6 +316,7 @@
     <ClCompile Include="WatcherWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClusterClient.h" />
     <ClInclude Include="ColorListBox.h" />
     <ClInclude Include="ConnectRemoteMachineWindow.h" />
     <ClInclude Include="DebugWindow.h" />

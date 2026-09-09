@@ -5,7 +5,7 @@
 #include "guiconsole.h"
 #include "guiconsoleDlg.h"
 #include "ConnectRemoteMachineWindow.h"
-#include "machine/machine_interface.h"
+#include "ClusterClient.h"
 #include "server/components.h"
 #include "helper/console_helper.h"
 
@@ -48,7 +48,8 @@ BOOL CConnectRemoteMachineWindow::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
-	m_port.SetWindowTextW(L"20099");
+	// 集群模式：20093 为 cluster servicePort(可部署修改，此时需手动填写)
+	m_port.SetWindowTextW(L"20093");
 
 	loadHistory();
 	loadIpMapping();
@@ -106,92 +107,30 @@ void CConnectRemoteMachineWindow::OnBnClickedOk()
 	command += csport;
 	free(csport);
 
-	KBEngine::Network::EndPoint* endpoint = KBEngine::Network::EndPoint::createPoolObject(OBJECTPOOL_POINT);
-
-	KBEngine::u_int32_t address;
-	Network::Address::string2ip(strip, address);
-	KBEngine::Network::Address addr(address, htons(port));
-
-	if(addr.ip == 0)
+	// 集群模式：对该 ip:port(cluster servicePort) 副本发起 MSG_QUERY_ALL 取回注册表组件，
+	// 替代原连接 machine(20099) 逐类型广播查询。NOT_LEADER 由 ClusterClient 自动重定向。
+	std::vector<KBEngine::ClusterInterface::ComponentData> list;
+	if(!KBEngine::ClusterClient::queryAllComponents((KBEngine::int32)KBEngine::getUserUID(), strip, port, list))
 	{
-		::AfxMessageBox(L"address error!");
-		KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
+		AfxMessageBox(L"connect cluster replica error (timeout / unreachable / no leader)!");
 		return;
 	}
 
-	endpoint->socket(SOCK_STREAM);
-	if (!endpoint->good())
+	for(size_t i = 0; i < list.size(); i++)
 	{
-		AfxMessageBox(L"couldn't create a socket\n");
-		KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-		return;
+		KBEngine::ClusterInterface::ComponentData& cd = list[i];
+
+		INFO_MSG(fmt::format("CConnectRemoteMachineWindow::OnBnClickedOk: found {}, addr:{}:{}\n",
+			COMPONENT_NAME_EX((COMPONENT_TYPE)cd.componentType), inet_ntoa((struct in_addr&)cd.intaddr), ntohs(cd.intport)));
+
+		Components::getSingleton().addComponent(cd.uid, cd.username.c_str(),
+			(KBEngine::COMPONENT_TYPE)cd.componentType, cd.componentID, cd.globalOrder, cd.groupOrder, cd.gus,
+			cd.intaddr, cd.intport, cd.extaddr, cd.extport, cd.extaddrEx, cd.pid, cd.cpu, cd.mem, cd.usedmem,
+			cd.extradata[0], cd.extradata[1], cd.extradata[2], cd.extradata[3]);
 	}
 
-	endpoint->addr(addr);
-	if(endpoint->connect(addr.port, addr.ip) == -1)
-	{
-		CString err;
-		err.Format(L"connect server error! %d", ::WSAGetLastError());
-		AfxMessageBox(err);
-		KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-		return;
-	}
-
-	endpoint->setnonblocking(false);
-	int8 findComponentTypes[] = {LOGGER_TYPE, BASEAPP_TYPE, CELLAPP_TYPE, BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, LOGINAPP_TYPE, DBMGR_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
-	int ifind = 0;
-
-	while(true)
-	{
-		int8 findComponentType = findComponentTypes[ifind++];
-		if(findComponentType == UNKNOWN_COMPONENT_TYPE)
-		{
-			//INFO_MSG("Componentbridge::process: not found %s, try again...\n",
-			//	COMPONENT_NAME_EX(findComponentType));
-			break;
-		}
-
-		KBEngine::Network::Bundle bhandler;
-		bhandler.newMessage(KBEngine::MachineInterface::onFindInterfaceAddr);
-
-		KBEngine::MachineInterface::onFindInterfaceAddrArgs7::staticAddToBundle(bhandler, KBEngine::getUserUID(), KBEngine::getUsername(), 
-			CONSOLE_TYPE, g_componentID, (COMPONENT_TYPE)findComponentType, 0, 0);
-
-		endpoint->send(&bhandler);
-
-		KBEngine::Network::TCPPacket packet;
-		packet.resize(65535);
-
-		endpoint->setnonblocking(true);
-		KBEngine::sleep(300);
-		packet.wpos(endpoint->recv(packet.data(), 65535));
-
-		while(packet.length() > 0)
-		{
-			MachineInterface::onBroadcastInterfaceArgs25 args;
-			
-			try
-			{
-				args.createFromStream(packet);
-			}catch(MemoryStreamException &)
-			{
-				goto END;
-			}
-
-			INFO_MSG(fmt::format("CConnectRemoteMachineWindow::OnBnClickedOk: found {}, addr:{}:{}\n",
-				COMPONENT_NAME_EX((COMPONENT_TYPE)args.componentType), inet_ntoa((struct in_addr&)args.intaddr), ntohs(args.intport)));
-
-			Components::getSingleton().addComponent(args.uid, args.username.c_str(), 
-				(KBEngine::COMPONENT_TYPE)args.componentType, args.componentID, args.globalorderid, args.grouporderid, args.gus,
-				args.intaddr, args.intport, args.extaddr, args.extport, args.extaddrEx, args.pid, args.cpu, args.mem, args.usedmem, 
-				args.extradata, args.extradata1, args.extradata2, args.extradata3);
-
-		}
-	}
-END:
 	dlg->updateTree();
 
-	KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
 	wchar_t* wcommand = KBEngine::strutil::char2wchar(command.c_str());
 	bool found = false;
 	std::deque<CString>::iterator iter = m_historyCommand.begin();
@@ -221,7 +160,7 @@ END:
 
 void CConnectRemoteMachineWindow::saveHistory()
 {
-    //����һ��XML���ĵ�����
+    //创建一个XML的文档对象。
     TiXmlDocument *pDocument = new TiXmlDocument();
 
 	int i = 0;
@@ -275,7 +214,7 @@ void CConnectRemoteMachineWindow::saveIpMapping()
 	{
 		for (std::multimap<CString, CString>::iterator iter = m_ipMapping.begin(); iter != m_ipMapping.end();)
 		{
-			// ����Ѿ��������host�ļ�¼�����
+			// 如果已经存在这个host的记录则清空
 			if (iter->first == host)
 				iter = m_ipMapping.erase(iter);
 			else
