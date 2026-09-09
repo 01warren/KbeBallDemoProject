@@ -5,7 +5,7 @@
 #include "guiconsole.h"
 #include "StartServerWindow.h"
 #include "StartServerLayoutWindow.h"
-#include "machine/machine_interface.h"
+#include "ClusterClient.h"
 
 // CStartServerWindow dialog
 
@@ -46,16 +46,16 @@ BOOL CStartServerWindow::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	DWORD dwStyle = m_list.GetExtendedStyle();
-	dwStyle |= LVS_EX_FULLROWSELECT;					//Ñ¡ÖĞÄ³ĞĞÊ¹ÕûĞĞ¸ßÁÁ£¨Ö»ÊÊÓÃÓëreport·ç¸ñµÄlistctrl£©
-	dwStyle |= LVS_EX_GRIDLINES;						//Íø¸ñÏß£¨Ö»ÊÊÓÃÓëreport·ç¸ñµÄlistctrl£©
+	dwStyle |= LVS_EX_FULLROWSELECT;					//é€‰ä¸­æŸè¡Œä½¿æ•´è¡Œé«˜äº®ï¼ˆåªé€‚ç”¨ä¸reporté£æ ¼çš„listctrlï¼‰
+	dwStyle |= LVS_EX_GRIDLINES;						//ç½‘æ ¼çº¿ï¼ˆåªé€‚ç”¨ä¸reporté£æ ¼çš„listctrlï¼‰
 	//dwStyle |= LVS_EX_ONECLICKACTIVATE;
-	m_list.SetExtendedStyle(dwStyle);					//ÉèÖÃÀ©Õ¹·ç¸ñ
+	m_list.SetExtendedStyle(dwStyle);					//è®¾ç½®æ‰©å±•é£æ ¼
 
 	dwStyle = m_list1.GetExtendedStyle();
-	dwStyle |= LVS_EX_FULLROWSELECT;					//Ñ¡ÖĞÄ³ĞĞÊ¹ÕûĞĞ¸ßÁÁ£¨Ö»ÊÊÓÃÓëreport·ç¸ñµÄlistctrl£©
-	dwStyle |= LVS_EX_GRIDLINES;						//Íø¸ñÏß£¨Ö»ÊÊÓÃÓëreport·ç¸ñµÄlistctrl£©
+	dwStyle |= LVS_EX_FULLROWSELECT;					//é€‰ä¸­æŸè¡Œä½¿æ•´è¡Œé«˜äº®ï¼ˆåªé€‚ç”¨ä¸reporté£æ ¼çš„listctrlï¼‰
+	dwStyle |= LVS_EX_GRIDLINES;						//ç½‘æ ¼çº¿ï¼ˆåªé€‚ç”¨ä¸reporté£æ ¼çš„listctrlï¼‰
 	//dwStyle |= LVS_EX_ONECLICKACTIVATE;
-	m_list1.SetExtendedStyle(dwStyle);					//ÉèÖÃÀ©Õ¹·ç¸ñ
+	m_list1.SetExtendedStyle(dwStyle);					//è®¾ç½®æ‰©å±•é£æ ¼
 
 	int idx = 0;
 	m_list.InsertColumn(idx++, _T("componentType"),				LVCFMT_CENTER,	150);
@@ -101,114 +101,61 @@ void CStartServerWindow::OnBnClickedButton2()
 		return;
 	}
 
+	KBEngine::int32 uid = (KBEngine::int32)KBEngine::getUserUID();
+	std::vector<std::string> failed;
+
 	std::vector<CStartServerWindow::LAYOUT_ITEM>::iterator iter1 = iter->second.begin();
 	for(; iter1 != iter->second.end(); iter1++)
 	{
 		LAYOUT_ITEM& item = (*iter1);
 
 		KBEngine::COMPONENT_TYPE ctype = KBEngine::ComponentName2ComponentType(item.componentName.c_str());
+		if(ctype == KBEngine::UNKNOWN_COMPONENT_TYPE)
+			continue;
 
 		std::vector<std::string> vec;
 		KBEngine::strutil::kbe_split(item.addr, ':', vec);
-		if(vec.size() != 2)
+		if(vec.size() != 2 || (KBEngine::uint32)inet_addr(vec[0].c_str()) == 0)
 		{
+			failed.push_back(item.componentName + "@" + item.addr + ": bad address");
 			continue;
 		}
 
-		KBEngine::Network::EndPoint* endpoint = KBEngine::Network::EndPoint::createPoolObject(OBJECTPOOL_POINT);
-		
-		KBEngine::u_int32_t address;
-		KBEngine::Network::Address::string2ip(vec[0].c_str(), address);
-		KBEngine::Network::Address addr(address, htons(atoi(vec[1].c_str())));
-
-		if(addr.ip == 0)
+		// é›†ç¾¤èµ·åœï¼šç›®æ ‡ä¸ºè¯¥å¸ƒå±€ä¸»æœºä¸Šçš„ cluster å‰¯æœ¬ servicePortã€‚
+		// å¸ƒå±€é¡¹é‡Œçš„ç«¯å£åŸä¸º machine ç«¯å£ï¼Œé›†ç¾¤ä¸‹ä»¥é»˜è®¤ servicePort ä¸ºå‡†ï¼›
+		// targetHost è®© leader å°†æŒ‡ä»¤è·¯ç”±å›è¯¥ä¸»æœºå‰¯æœ¬çš„"æœ¬æœºä»£ç†"æ‰§è¡Œã€‚
+		KBEngine::ClusterClient::CtlResult result;
+		if(!KBEngine::ClusterClient::sendServerCommand(
+			KBEngine::ClusterInterface::MSG_START_SERVER, uid, (KBEngine::int32)ctype, 0, 0,
+			vec[0], vec[0],
+			KBEngine::ClusterInterface::DEFAULT_CLUSTER_SERVICE_PORT, result, 5000) ||
+			!result.reached)
 		{
-			::AfxMessageBox(L"address error!");
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
+			failed.push_back(item.componentName + "@" + vec[0] + ": cluster unreachable(no leader or timeout)");
 			continue;
 		}
 
-		endpoint->socket(SOCK_STREAM);
-		if (!endpoint->good())
+		if(result.code == 0)
 		{
-			AfxMessageBox(L"couldn't create a socket\n");
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;
-		}
-
-		endpoint->addr(addr);
-		if(endpoint->connect(addr.port, addr.ip) == -1)
-		{
-			CString err;
-			err.Format(L"connect server error! %d", ::WSAGetLastError());
-			AfxMessageBox(err);
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;
-		}
-		
-		endpoint->setnonblocking(true);
-
-		KBEngine::uint64 cid = KBEngine::genUUID64();
-		KBEngine::int16 gus = -1;
-
-		KBEngine::Network::Bundle bundle;
-		bundle.newMessage(KBEngine::MachineInterface::startserver);
-		bundle << KBEngine::getUserUID();
-		bundle << ctype;
-		endpoint->send(&bundle);
-		KBEngine::Network::TCPPacket packet;
-		packet.resize(1024);
-
-		fd_set	fds;
-		struct timeval tv = { 0, 1000000 }; // 1000ms
-
-		FD_ZERO( &fds );
-		FD_SET((int)(*endpoint), &fds);
-		
-		int selgot = select((*endpoint)+1, &fds, NULL, NULL, &tv);
-		if(selgot == 0)
-		{
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;	// ³¬Ê±¿ÉÄÜ¶Ô·½·±Ã¦
-		}
-		else if(selgot == -1)
-		{
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;
+			setRunningRow(item.componentName, item.addr, true);
 		}
 		else
 		{
-			endpoint->recv(packet.data(), 1024);
+			failed.push_back(item.componentName + "@" + vec[0] + ": " + result.message);
 		}
+	}
 
-		bool success = true;
-		packet << success;
+	if(failed.size() > 0)
+	{
+		std::string all = "start server failed:\n";
+		for(size_t i = 0; i < failed.size() && i < 6; i++)
+			all += "  " + failed[i] + "\n";
+		if(failed.size() > 6)
+			all += "  ...\n";
 
-		if(success)
-		{
-			for(int row = 0; row < m_list.GetItemCount(); row++)
-			{
-				CString name = m_list.GetItemText(row, 0);
-				CString addr = m_list.GetItemText(row, 1); 
-				CString running = m_list.GetItemText(row, 2); 
-
-				char* cs1 = KBEngine::strutil::wchar2char(name.GetBuffer(0));
-				char* cs2 = KBEngine::strutil::wchar2char(addr.GetBuffer(0));
-
-				if(item.componentName == cs1 && item.addr == cs2 && running == L"false")
-				{
-					free(cs1);
-					free(cs2);
-					m_list.SetItemText(row, 2, L"true");
-					break;
-				}
-
-				free(cs1);
-				free(cs2);
-			}
-		}
-
-		KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
+		wchar_t* ws = KBEngine::strutil::char2wchar(all.c_str());
+		::AfxMessageBox(ws);
+		free(ws);
 	}
 }
 
@@ -236,113 +183,84 @@ void CStartServerWindow::OnBnClickedButton3()
 		return;
 	}
 
+	KBEngine::int32 uid = (KBEngine::int32)KBEngine::getUserUID();
+	std::vector<std::string> failed;
+
 	std::vector<CStartServerWindow::LAYOUT_ITEM>::iterator iter1 = iter->second.begin();
 	for(; iter1 != iter->second.end(); iter1++)
 	{
 		LAYOUT_ITEM& item = (*iter1);
 
 		KBEngine::COMPONENT_TYPE ctype = KBEngine::ComponentName2ComponentType(item.componentName.c_str());
+		if(ctype == KBEngine::UNKNOWN_COMPONENT_TYPE)
+			continue;
 
 		std::vector<std::string> vec;
 		KBEngine::strutil::kbe_split(item.addr, ':', vec);
-		if(vec.size() != 2)
+		if(vec.size() != 2 || (KBEngine::uint32)inet_addr(vec[0].c_str()) == 0)
 		{
+			failed.push_back(item.componentName + "@" + item.addr + ": bad address");
 			continue;
 		}
 
-		KBEngine::Network::EndPoint* endpoint = KBEngine::Network::EndPoint::createPoolObject(OBJECTPOOL_POINT);
-		
-		KBEngine::u_int32_t address;
-		KBEngine::Network::Address::string2ip(vec[0].c_str(), address);
-		KBEngine::Network::Address addr(address, htons(atoi(vec[1].c_str())));
-
-		if(addr.ip == 0)
+		// é›†ç¾¤åœæ­¢ï¼šä»…åœæ­¢ç›®æ ‡ä¸»æœºä¸Šçš„è¯¥ç±»å‹ç»„ä»¶(cid=0 ç”± leader æŒ‰æ³¨å†Œè¡¨èšåˆ)ã€‚
+		KBEngine::ClusterClient::CtlResult result;
+		if(!KBEngine::ClusterClient::sendServerCommand(
+			KBEngine::ClusterInterface::MSG_STOP_SERVER, uid, (KBEngine::int32)ctype, 0, 0,
+			vec[0], vec[0],
+			KBEngine::ClusterInterface::DEFAULT_CLUSTER_SERVICE_PORT, result, 5000) ||
+			!result.reached)
 		{
-			::AfxMessageBox(L"address error!");
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
+			failed.push_back(item.componentName + "@" + vec[0] + ": cluster unreachable(no leader or timeout)");
 			continue;
 		}
 
-		endpoint->socket(SOCK_STREAM);
-		if (!endpoint->good())
+		if(result.code == 0)
 		{
-			AfxMessageBox(L"couldn't create a socket\n");
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;
-		}
-
-		endpoint->addr(addr);
-		if(endpoint->connect(addr.port, addr.ip) == -1)
-		{
-			CString err;
-			err.Format(L"connect server error! %d", ::WSAGetLastError());
-			AfxMessageBox(err);
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;
-		}
-		
-		endpoint->setnonblocking(true);
-
-		KBEngine::Network::Bundle bundle;
-		bundle.newMessage(KBEngine::MachineInterface::stopserver);
-		bundle << KBEngine::getUserUID();
-		bundle << ctype;
-		KBEngine::COMPONENT_ID cid = 0;
-		bundle << cid;
-		endpoint->send(&bundle);
-		KBEngine::Network::TCPPacket packet;
-		packet.resize(1024);
-
-		fd_set	fds;
-		struct timeval tv = { 0, 1000000 }; // 1000ms
-
-		FD_ZERO( &fds );
-		FD_SET((int)(*endpoint), &fds);
-		
-		int selgot = select((*endpoint)+1, &fds, NULL, NULL, &tv);
-		if(selgot == 0)
-		{
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;	// ³¬Ê±¿ÉÄÜ¶Ô·½·±Ã¦
-		}
-		else if(selgot == -1)
-		{
-			KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
-			continue;
+			setRunningRow(item.componentName, item.addr, false);
 		}
 		else
 		{
-			endpoint->recv(packet.data(), 1024);
+			failed.push_back(item.componentName + "@" + vec[0] + ": " + result.message);
 		}
+	}
 
-		bool success = true;
-		packet << success;
+	if(failed.size() > 0)
+	{
+		std::string all = "stop server failed:\n";
+		for(size_t i = 0; i < failed.size() && i < 6; i++)
+			all += "  " + failed[i] + "\n";
+		if(failed.size() > 6)
+			all += "  ...\n";
 
-		if(success)
+		wchar_t* ws = KBEngine::strutil::char2wchar(all.c_str());
+		::AfxMessageBox(ws);
+		free(ws);
+	}
+}
+
+void CStartServerWindow::setRunningRow(const std::string& componentName, const std::string& addr, bool running)
+{
+	for(int row = 0; row < m_list.GetItemCount(); row++)
+	{
+		CString name = m_list.GetItemText(row, 0);
+		CString raddr = m_list.GetItemText(row, 1);
+		CString rrunning = m_list.GetItemText(row, 2);
+
+		char* cs1 = KBEngine::strutil::wchar2char(name.GetBuffer(0));
+		char* cs2 = KBEngine::strutil::wchar2char(raddr.GetBuffer(0));
+
+		bool matched = (componentName == cs1) && (addr == cs2) &&
+			((running && rrunning == L"false") || (!running && rrunning == L"true"));
+
+		free(cs1);
+		free(cs2);
+
+		if(matched)
 		{
-			for(int row = 0; row < m_list.GetItemCount(); row++)
-			{
-				CString name = m_list.GetItemText(row, 0);
-				CString addr = m_list.GetItemText(row, 1); 
-				CString running = m_list.GetItemText(row, 2); 
-
-				char* cs1 = KBEngine::strutil::wchar2char(name.GetBuffer(0));
-				char* cs2 = KBEngine::strutil::wchar2char(addr.GetBuffer(0));
-
-				if(item.componentName == cs1 && item.addr == cs2 && running == L"true")
-				{
-					free(cs1);
-					free(cs2);
-					m_list.SetItemText(row, 2, L"false");
-					break;
-				}
-
-				free(cs1);
-				free(cs2);
-			}
+			m_list.SetItemText(row, 2, running ? L"true" : L"false");
+			break;
 		}
-
-		KBEngine::Network::EndPoint::reclaimPoolObject(endpoint);
 	}
 }
 
@@ -395,7 +313,7 @@ void CStartServerWindow::loadLayouts()
 
 void CStartServerWindow::saveLayouts()
 {
-    //´´½¨Ò»¸öXMLµÄÎÄµµ¶ÔÏó¡£
+    //åˆ›å»ºä¸€ä¸ªXMLçš„æ–‡æ¡£å¯¹è±¡ã€‚
     TiXmlDocument *pDocument = new TiXmlDocument();
 
 	int i = 0;

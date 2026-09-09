@@ -13,38 +13,38 @@ namespace Network
 const uint32 BROADCAST = 0xFFFFFFFF;
 const uint32 LOCALHOST = 0x0100007F;
 
-// ÏûÏ¢µÄID
+// æ¶ˆæ¯çš„ID
 typedef uint16	MessageID;
 
-// ÏûÏ¢³¤¶È£¬Ä¿Ç°³¤¶ÈÓĞ2ÖÖ£¬Ä¬ÈÏÏûÏ¢³¤¶È×î´óMessageLength
-// µ±³¬¹ıÕâ¸öÊıÊ±ĞèÒªÀ©Õ¹³¤¶È£¬µ×²ãÊ¹ÓÃMessageLength1
-typedef uint16	MessageLength;		// ×î´ó65535
-typedef uint32	MessageLength1;		// ×î´ó4294967295
+// æ¶ˆæ¯é•¿åº¦ï¼Œç›®å‰é•¿åº¦æœ‰2ç§ï¼Œé»˜è®¤æ¶ˆæ¯é•¿åº¦æœ€å¤§MessageLength
+// å½“è¶…è¿‡è¿™ä¸ªæ•°æ—¶éœ€è¦æ‰©å±•é•¿åº¦ï¼Œåº•å±‚ä½¿ç”¨MessageLength1
+typedef uint16	MessageLength;		// æœ€å¤§65535
+typedef uint32	MessageLength1;		// æœ€å¤§4294967295
 
 typedef int32	ChannelID;
 const ChannelID CHANNEL_ID_NULL = 0;
 
-// Í¨µÀ³¬Ê±Ê±¼ä
+// é€šé“è¶…æ—¶æ—¶é—´
 extern float g_channelInternalTimeout;
 extern float g_channelExternalTimeout;
 
-// Í¨µÀ·¢ËÍ³¬Ê±ÖØÊÔ
+// é€šé“å‘é€è¶…æ—¶é‡è¯•
 extern uint32 g_intReSendInterval;
 extern uint32 g_intReSendRetries;
 extern uint32 g_extReSendInterval;
 extern uint32 g_extReSendRetries;
 
-// Íâ²¿Í¨µÀ¼ÓÃÜÀà±ğ
+// å¤–éƒ¨é€šé“åŠ å¯†ç±»åˆ«
 extern int8 g_channelExternalEncryptType;
 
-// listen¼àÌı¶ÓÁĞ×î´óÖµ
+// listenç›‘å¬é˜Ÿåˆ—æœ€å¤§å€¼
 extern uint32 g_SOMAXCONN;
 
-// udpÎÕÊÖ°ü
+// udpæ¡æ‰‹åŒ…
 extern const char* UDP_HELLO;
 extern const char* UDP_HELLO_ACK;
 
-// UDP²ÎÊı
+// UDPå‚æ•°
 extern uint32 g_rudp_intWritePacketsQueueSize;
 extern uint32 g_rudp_intReadPacketsQueueSize;
 extern uint32 g_rudp_extWritePacketsQueueSize;
@@ -60,7 +60,7 @@ extern bool g_rudp_nodelay;
 extern std::string g_sslCertificate;
 extern std::string g_sslPrivateKey;
 
-// ²»×öÍ¨µÀ³¬Ê±¼ì²é
+// ä¸åšé€šé“è¶…æ—¶æ£€æŸ¥
 #define CLOSE_CHANNEL_INACTIVITIY_DETECTION()										\
 {																					\
 	Network::g_channelExternalTimeout = Network::g_channelInternalTimeout = -1.0f;	\
@@ -73,7 +73,7 @@ namespace udp{
 namespace tcp{
 }
 
-// ¼ÓÃÜ¶îÍâ´æ´¢µÄĞÅÏ¢Õ¼ÓÃ×Ö½Ú(³¤¶È+Ìî³ä)
+// åŠ å¯†é¢å¤–å­˜å‚¨çš„ä¿¡æ¯å ç”¨å­—èŠ‚(é•¿åº¦+å¡«å……)
 #define ENCRYPTTION_WASTAGE_SIZE			(1 + 7)
 
 #define PACKET_MAX_SIZE						1500
@@ -82,7 +82,7 @@ namespace tcp{
 #endif
 #define PACKET_MAX_SIZE_UDP					1472
 
-typedef uint16								PacketLength;				// ×î´ó65535
+typedef uint16								PacketLength;				// æœ€å¤§65535
 #define PACKET_LENGTH_SIZE					sizeof(PacketLength)
 
 #define NETWORK_MESSAGE_ID_SIZE				sizeof(Network::MessageID)
@@ -91,21 +91,18 @@ typedef uint16								PacketLength;				// ×î´ó65535
 #define NETWORK_MESSAGE_MAX_SIZE			65535
 #define NETWORK_MESSAGE_MAX_SIZE1			4294967295
 
-// ÓÎÏ·ÄÚÈİ¿ÉÓÃ°ü´óĞ¡
+// æ¸¸æˆå†…å®¹å¯ç”¨åŒ…å¤§å°
 #define GAME_PACKET_MAX_SIZE_TCP			PACKET_MAX_SIZE_TCP - NETWORK_MESSAGE_ID_SIZE - \
 											NETWORK_MESSAGE_LENGTH_SIZE - ENCRYPTTION_WASTAGE_SIZE
 
-/** kbe machine¶Ë¿Ú */
+/** kbe æœåŠ¡ç«¯å£åŸºå‡†(å…·ä½“å–å€¼è§ serverconfig ä¸­å„ç±»ç»„ä»¶/é›†ç¾¤çš„é…ç½®) */
 #define KBE_PORT_START						20000
-#define KBE_MACHINE_BROADCAST_SEND_PORT		KBE_PORT_START + 86			// machine½ÓÊÕ¹ã²¥µÄ¶Ë¿Ú
-#define KBE_PORT_BROADCAST_DISCOVERY		KBE_PORT_START + 87
-#define KBE_MACHINE_TCP_PORT				KBE_PORT_START + 88
 
 #define KBE_INTERFACES_TCP_PORT				30099
 
 /*
-	ÍøÂçÏûÏ¢ÀàĞÍ£¬ ¶¨³¤»òÕß±ä³¤¡£
-	Èç¹ûĞèÒª×Ô¶¨Òå³¤¶ÈÔòÔÚNETWORK_INTERFACE_DECLARE_BEGINÖĞÉùÃ÷Ê±ÌîÈë³¤¶È¼´¿É¡£
+	ç½‘ç»œæ¶ˆæ¯ç±»å‹ï¼Œ å®šé•¿æˆ–è€…å˜é•¿ã€‚
+	å¦‚æœéœ€è¦è‡ªå®šä¹‰é•¿åº¦åˆ™åœ¨NETWORK_INTERFACE_DECLARE_BEGINä¸­å£°æ˜æ—¶å¡«å…¥é•¿åº¦å³å¯ã€‚
 */
 #ifndef NETWORK_FIXED_MESSAGE
 #define NETWORK_FIXED_MESSAGE 0
@@ -115,11 +112,11 @@ typedef uint16								PacketLength;				// ×î´ó65535
 #define NETWORK_VARIABLE_MESSAGE -1
 #endif
 
-// ÍøÂçÏûÏ¢Àà±ğ
+// ç½‘ç»œæ¶ˆæ¯ç±»åˆ«
 enum NETWORK_MESSAGE_TYPE
 {
-	NETWORK_MESSAGE_TYPE_COMPONENT = 0,	// ×é¼şÏûÏ¢
-	NETWORK_MESSAGE_TYPE_ENTITY = 1,	// entityÏûÏ¢
+	NETWORK_MESSAGE_TYPE_COMPONENT = 0,	// ç»„ä»¶æ¶ˆæ¯
+	NETWORK_MESSAGE_TYPE_ENTITY = 1,	// entityæ¶ˆæ¯
 };
 
 enum ProtocolType
@@ -200,13 +197,13 @@ const char * reasonToString(Reason reason)
 		if(slen != (int)pPacket->totalSize())																\
 		{																									\
 			reason = Network::PacketSender::checkSocketErrors(ep, slen, pPacket->totalSize());				\
-			/* Èç¹û·¢ËÍ³öÏÖ´íÎóÄÇÃ´ÎÒÃÇ¿ÉÒÔ¼ÌĞø³¢ÊÔÒ»´Î£¬ ³¬¹ı3´ÎÍË³ö	*/										\
+			/* å¦‚æœå‘é€å‡ºç°é”™è¯¯é‚£ä¹ˆæˆ‘ä»¬å¯ä»¥ç»§ç»­å°è¯•ä¸€æ¬¡ï¼Œ è¶…è¿‡3æ¬¡é€€å‡º	*/										\
 			if (reason == Network::REASON_NO_SUCH_PORT && retries <= 3)										\
 			{																								\
 				continue;																					\
 			}																								\
 																											\
-			/* Èç¹ûÏµÍ³·¢ËÍ»º³åÒÑ¾­ÂúÁË£¬ÔòÎÒÃÇµÈ´ı10ms	*/													\
+			/* å¦‚æœç³»ç»Ÿå‘é€ç¼“å†²å·²ç»æ»¡äº†ï¼Œåˆ™æˆ‘ä»¬ç­‰å¾…10ms	*/													\
 			if ((reason == REASON_RESOURCE_UNAVAILABLE || reason == REASON_GENERAL_NETWORK)					\
 															&& retries <= 3)								\
 			{																								\
@@ -256,13 +253,13 @@ const char * reasonToString(Reason reason)
 			if(pPacket->sentSize != pPacket->length())														\
 			{																								\
 				reason = PacketSender::checkSocketErrors(&ep);												\
-				/* Èç¹û·¢ËÍ³öÏÖ´íÎóÄÇÃ´ÎÒÃÇ¿ÉÒÔ¼ÌĞø³¢ÊÔÒ»´Î£¬ ³¬¹ı60´ÎÍË³ö	*/									\
+				/* å¦‚æœå‘é€å‡ºç°é”™è¯¯é‚£ä¹ˆæˆ‘ä»¬å¯ä»¥ç»§ç»­å°è¯•ä¸€æ¬¡ï¼Œ è¶…è¿‡60æ¬¡é€€å‡º	*/									\
 				if (reason == REASON_NO_SUCH_PORT && retries <= 3)											\
 				{																							\
 					continue;																				\
 				}																							\
 																											\
-				/* Èç¹ûÏµÍ³·¢ËÍ»º³åÒÑ¾­ÂúÁË£¬ÔòÎÒÃÇµÈ´ı10ms	*/												\
+				/* å¦‚æœç³»ç»Ÿå‘é€ç¼“å†²å·²ç»æ»¡äº†ï¼Œåˆ™æˆ‘ä»¬ç­‰å¾…10ms	*/												\
 				if ((reason == REASON_RESOURCE_UNAVAILABLE || reason == REASON_GENERAL_NETWORK)				\
 																					&& retries <= 60)		\
 				{																							\
@@ -326,7 +323,7 @@ const char * reasonToString(Reason reason)
 }																											\
 
 
-// ÅäºÏ·şÎñ¶ËÅäÖÃÑ¡Ïîtrace_packetÊ¹ÓÃ£¬ÓÃÀ´¸ú×ÙÒ»Ìõ¼´½«Êä³öµÄÏûÏ¢°ü
+// é…åˆæœåŠ¡ç«¯é…ç½®é€‰é¡¹trace_packetä½¿ç”¨ï¼Œç”¨æ¥è·Ÿè¸ªä¸€æ¡å³å°†è¾“å‡ºçš„æ¶ˆæ¯åŒ…
 #define TRACE_MESSAGE_PACKET(isrecv, pPacket, pCurrMsgHandler, length, addr, readPacketHead)				\
 	if(Network::g_trace_packet > 0)																			\
 	{																										\
@@ -405,7 +402,7 @@ extern uint64						g_numPacketsReceived;
 extern uint64						g_numBytesSent;
 extern uint64						g_numBytesReceived;
 
-// °ü½ÓÊÕ´°¿ÚÒç³ö
+// åŒ…æ¥æ”¶çª—å£æº¢å‡º
 extern uint32						g_receiveWindowMessagesOverflowCritical;
 extern uint32						g_intReceiveWindowMessagesOverflow;
 extern uint32						g_extReceiveWindowMessagesOverflow;

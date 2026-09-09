@@ -10,7 +10,7 @@
 
 namespace KBEngine{
 
-/** °²È«µÄÊÍ·ÅÒ»¸öÖ¸ÕëÄÚ´æ */
+/** å®‰å…¨çš„é‡Šæ”¾ä¸€ä¸ªæŒ‡é’ˆå†…å­˜ */
 #define SAFE_RELEASE(i)										\
 	if (i)													\
 		{													\
@@ -18,7 +18,7 @@ namespace KBEngine{
 			i = NULL;										\
 		}
 
-/** °²È«µÄÊÍ·ÅÒ»¸öÖ¸ÕëÊı×éÄÚ´æ */
+/** å®‰å…¨çš„é‡Šæ”¾ä¸€ä¸ªæŒ‡é’ˆæ•°ç»„å†…å­˜ */
 #define SAFE_RELEASE_ARRAY(i)								\
 	if (i)													\
 		{													\
@@ -32,15 +32,15 @@ namespace KBEngine{
     #define INLINE
 #endif
 
-/** kbeÊ±¼ä */
+/** kbeæ—¶é—´ */
 extern GAME_TIME g_kbetime;
 
-/** ÕËºÅµÄÀà±ğ */
+/** è´¦å·çš„ç±»åˆ« */
 enum ACCOUNT_TYPE
 {
-	ACCOUNT_TYPE_NORMAL = 1,	// ÆÕÍ¨ÕËºÅ
-	ACCOUNT_TYPE_MAIL = 2,		// emailÕËºÅ(Ğè¼¤»î)
-	ACCOUNT_TYPE_SMART = 3		// ÖÇÄÜÊ¶±ğ
+	ACCOUNT_TYPE_NORMAL = 1,	// æ™®é€šè´¦å·
+	ACCOUNT_TYPE_MAIL = 2,		// emailè´¦å·(éœ€æ¿€æ´»)
+	ACCOUNT_TYPE_SMART = 3		// æ™ºèƒ½è¯†åˆ«
 };
 
 enum ACCOUNT_FLAGS
@@ -50,26 +50,26 @@ enum ACCOUNT_FLAGS
 	ACCOUNT_FLAG_NOT_ACTIVATED = 0x000000002
 };
 
-/** ¶¨Òå·şÎñÆ÷¸÷×é¼ş×´Ì¬ */
+/** å®šä¹‰æœåŠ¡å™¨å„ç»„ä»¶çŠ¶æ€ */
 enum COMPONENT_STATE
 {
-	// ³õÊ¼×´Ì¬
+	// åˆå§‹çŠ¶æ€
 	COMPONENT_STATE_INIT = 0,
 
-	// ½ø³ÌÕıÔÚÔËĞĞÖĞ
+	// è¿›ç¨‹æ­£åœ¨è¿è¡Œä¸­
 	COMPONENT_STATE_RUN = 1,
 
-	// ½ø³Ì¿ªÊ¼¹Ø±Õ
+	// è¿›ç¨‹å¼€å§‹å…³é—­
 	COMPONENT_STATE_SHUTTINGDOWN_BEGIN = 2,
 
-	// ½ø³ÌÕıÔÚ¹Ø±Õ
+	// è¿›ç¨‹æ­£åœ¨å…³é—­
 	COMPONENT_STATE_SHUTTINGDOWN_RUNNING = 3,
 
-	// ½ø³Ì¹Ø±ÕÍê³ÉÁË
+	// è¿›ç¨‹å…³é—­å®Œæˆäº†
 	COMPONENT_STATE_STOP = 4
 };
 
-/** ¶¨Òå·şÎñÆ÷¸÷×é¼şÀà±ğ */
+/** å®šä¹‰æœåŠ¡å™¨å„ç»„ä»¶ç±»åˆ« */
 enum COMPONENT_TYPE
 {
 	UNKNOWN_COMPONENT_TYPE	= 0,
@@ -87,14 +87,15 @@ enum COMPONENT_TYPE
 	WATCHER_TYPE			= 12,
 	INTERFACES_TYPE			= 13,
 	TOOL_TYPE				= 14,
-	COMPONENT_END_TYPE		= 15,
+	CLUSTER_TYPE			= 15,
+	COMPONENT_END_TYPE		= 16,
 };
 
-/** µ±Ç°·şÎñÆ÷×é¼şÀà±ğºÍID */
+/** å½“å‰æœåŠ¡å™¨ç»„ä»¶ç±»åˆ«å’ŒID */
 extern COMPONENT_TYPE g_componentType;
 extern COMPONENT_ID g_componentID;
 
-/** ¶¨Òå·şÎñÆ÷¸÷×é¼şÃû³Æ */
+/** å®šä¹‰æœåŠ¡å™¨å„ç»„ä»¶åç§° */
 const char COMPONENT_NAME[][255] = {
 	"unknown",
 	"dbmgr",
@@ -111,6 +112,7 @@ const char COMPONENT_NAME[][255] = {
 	"watcher",
 	"interfaces",
 	"tool",
+	"cluster",
 };
 
 const char COMPONENT_NAME_1[][255] = {
@@ -129,6 +131,7 @@ const char COMPONENT_NAME_1[][255] = {
 	"watcher   ",
 	"interfaces",
 	"tool      ",
+	"cluster   ",
 };
 
 const char COMPONENT_NAME_2[][255] = {
@@ -147,6 +150,7 @@ const char COMPONENT_NAME_2[][255] = {
 	"   watcher",
 	"interfaces",
 	"      tool",
+	"   cluster",
 };
 
 inline const char* COMPONENT_NAME_EX(COMPONENT_TYPE CTYPE)
@@ -190,27 +194,27 @@ inline COMPONENT_TYPE ComponentName2ComponentType(const char* name)
 	return UNKNOWN_COMPONENT_TYPE;
 }
 
-// ËùÓĞµÄ×é¼şÁĞ±í
+// æ‰€æœ‰çš„ç»„ä»¶åˆ—è¡¨
 const COMPONENT_TYPE ALL_COMPONENT_TYPES[] = {BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, DBMGR_TYPE, CELLAPP_TYPE, 
 						BASEAPP_TYPE, LOGINAPP_TYPE, MACHINE_TYPE, CONSOLE_TYPE, TOOL_TYPE, LOGGER_TYPE,
 						WATCHER_TYPE, INTERFACES_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// ËùÓĞµÄºó¶Ë×é¼şÁĞ±í
+// æ‰€æœ‰çš„åç«¯ç»„ä»¶åˆ—è¡¨
 const COMPONENT_TYPE ALL_SERVER_COMPONENT_TYPES[] = {BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, DBMGR_TYPE, CELLAPP_TYPE, 
 						BASEAPP_TYPE, LOGINAPP_TYPE, MACHINE_TYPE, LOGGER_TYPE, 
 						WATCHER_TYPE, INTERFACES_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// ËùÓĞµÄºó¶Ë×é¼şÁĞ±í
+// æ‰€æœ‰çš„åç«¯ç»„ä»¶åˆ—è¡¨
 const COMPONENT_TYPE ALL_GAME_SERVER_COMPONENT_TYPES[] = {BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, DBMGR_TYPE, CELLAPP_TYPE, 
 						BASEAPP_TYPE, LOGINAPP_TYPE, INTERFACES_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// ËùÓĞµÄ¸¨ÖúĞÔ×é¼ş
+// æ‰€æœ‰çš„è¾…åŠ©æ€§ç»„ä»¶
 const COMPONENT_TYPE ALL_HELPER_COMPONENT_TYPE[] = {LOGGER_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// ·µ»ØÊÇ·ñÊÇÒ»¸öÓĞĞ§µÄ×é¼ş
+// è¿”å›æ˜¯å¦æ˜¯ä¸€ä¸ªæœ‰æ•ˆçš„ç»„ä»¶
 #define VALID_COMPONENT(C_TYPE) ((C_TYPE) > 0 && (C_TYPE) < COMPONENT_END_TYPE)
 
-/** ¼ì²éÊÇ·ñÎªÒ»¸öÓÎÏ··şÎñ¶Ë×é¼şÀà±ğ */
+/** æ£€æŸ¥æ˜¯å¦ä¸ºä¸€ä¸ªæ¸¸æˆæœåŠ¡ç«¯ç»„ä»¶ç±»åˆ« */
 inline bool isGameServerComponentType(COMPONENT_TYPE componentType)
 {
 	int i = 0;
@@ -227,24 +231,24 @@ inline bool isGameServerComponentType(COMPONENT_TYPE componentType)
 	return false;
 }
 
-// Ç°¶ËÓ¦ÓÃµÄÀà±ğ, All client type
+// å‰ç«¯åº”ç”¨çš„ç±»åˆ«, All client type
 enum COMPONENT_CLIENT_TYPE
 {
 	UNKNOWN_CLIENT_COMPONENT_TYPE	= 0,
 
-	// ÒÆ¶¯Àà£¬ÊÖ»ú£¬Æ½°åµçÄÔ
+	// ç§»åŠ¨ç±»ï¼Œæ‰‹æœºï¼Œå¹³æ¿ç”µè„‘
 	// Mobile, Phone, Pad
 	CLIENT_TYPE_MOBILE				= 1,
 
-	// ¶ÀÁ¢µÄWindowsÓ¦ÓÃ³ÌĞò
+	// ç‹¬ç«‹çš„Windowsåº”ç”¨ç¨‹åº
 	// Windows Application program
 	CLIENT_TYPE_WIN					= 2,
 
-	// ¶ÀÁ¢µÄLinuxÓ¦ÓÃ³ÌĞò
+	// ç‹¬ç«‹çš„Linuxåº”ç”¨ç¨‹åº
 	// Linux Application program
 	CLIENT_TYPE_LINUX				= 3,
 		
-	// MacÓ¦ÓÃ³ÌĞò
+	// Macåº”ç”¨ç¨‹åº
 	// Mac Application program
 	CLIENT_TYPE_MAC					= 4,
 				
@@ -254,14 +258,14 @@ enum COMPONENT_CLIENT_TYPE
 	// bots
 	CLIENT_TYPE_BOTS				= 6,
 
-	// Çá¶ËÀà
+	// è½»ç«¯ç±»
 	CLIENT_TYPE_MINI				= 7,
 
 	// End
 	CLIENT_TYPE_END					= 8
 };
 
-/** ¶¨ÒåÇ°¶ËÓ¦ÓÃµÄÀà±ğÃû³Æ */
+/** å®šä¹‰å‰ç«¯åº”ç”¨çš„ç±»åˆ«åç§° */
 const char COMPONENT_CLIENT_NAME[][255] = {
 	"UNKNOWN_CLIENT_COMPONENT_TYPE",
 	"CLIENT_TYPE_MOBILE",
@@ -273,13 +277,13 @@ const char COMPONENT_CLIENT_NAME[][255] = {
 	"CLIENT_TYPE_MINI",
 };
 
-// ËùÓĞÇ°¶ËÓ¦ÓÃµÄÀà±ğ
+// æ‰€æœ‰å‰ç«¯åº”ç”¨çš„ç±»åˆ«
 const COMPONENT_CLIENT_TYPE ALL_CLIENT_TYPES[] = {CLIENT_TYPE_MOBILE, CLIENT_TYPE_WIN, CLIENT_TYPE_LINUX, CLIENT_TYPE_MAC, 
 												CLIENT_TYPE_BROWSER, CLIENT_TYPE_BOTS, CLIENT_TYPE_MINI, UNKNOWN_CLIENT_COMPONENT_TYPE};
 
 typedef int8 CLIENT_CTYPE;
 
-/** entityµÄentityCallÀà±ğ */
+/** entityçš„entityCallç±»åˆ« */
 enum ENTITYCALL_TYPE
 {
 	ENTITYCALL_TYPE_CELL = 0,
@@ -291,7 +295,7 @@ enum ENTITYCALL_TYPE
 	ENTITYCALL_TYPE_CLIENT_VIA_BASE = 6,
 };
 
-/** Í¨¹ıentityCallµÄÀà±ğ»ñµÃ¸Ãentity¶ÔÓ¦µÄ×é¼şÀàĞÍ */
+/** é€šè¿‡entityCallçš„ç±»åˆ«è·å¾—è¯¥entityå¯¹åº”çš„ç»„ä»¶ç±»å‹ */
 inline COMPONENT_TYPE entityCallType2ComponentType(ENTITYCALL_TYPE type)
 {
 	switch (type)
@@ -317,7 +321,7 @@ inline COMPONENT_TYPE entityCallType2ComponentType(ENTITYCALL_TYPE type)
 	return UNKNOWN_COMPONENT_TYPE;
 };
 
-/** entityCallµÄÀà±ğ¶Ô»»Îª×Ö·û´®Ãû³Æ ÑÏ¸ñºÍENTITYCALL_TYPEË÷ÒıÆ¥Åä */
+/** entityCallçš„ç±»åˆ«å¯¹æ¢ä¸ºå­—ç¬¦ä¸²åç§° ä¸¥æ ¼å’ŒENTITYCALL_TYPEç´¢å¼•åŒ¹é… */
 const char ENTITYCALL_TYPE_TO_NAME_TABLE[][8] =
 {
 	"cell",
@@ -329,7 +333,7 @@ const char ENTITYCALL_TYPE_TO_NAME_TABLE[][8] =
 	"client",
 };
 
-/** entityCallµÄÀà±ğ¶Ô»»Îª×Ö·û´®Ãû³Æ ÑÏ¸ñºÍENTITYCALL_TYPEË÷ÒıÆ¥Åä */
+/** entityCallçš„ç±»åˆ«å¯¹æ¢ä¸ºå­—ç¬¦ä¸²åç§° ä¸¥æ ¼å’ŒENTITYCALL_TYPEç´¢å¼•åŒ¹é… */
 const char ENTITYCALL_TYPE_TO_NAME_TABLE_EX[][14] =
 {
 	"cell",
@@ -342,14 +346,14 @@ const char ENTITYCALL_TYPE_TO_NAME_TABLE_EX[][14] =
 };
 
 /*
- APPÉèÖÃµÄ±êÖ¾
+ APPè®¾ç½®çš„æ ‡å¿—
 */
-// Ä¬ÈÏµÄ(Î´ÉèÖÃ±ê¼Ç)
+// é»˜è®¤çš„(æœªè®¾ç½®æ ‡è®°)
 #define APP_FLAGS_NONE								0x00000000
-// ²»²ÎÓë¸ºÔØ¾ùºâ
+// ä¸å‚ä¸è´Ÿè½½å‡è¡¡
 #define APP_FLAGS_NOT_PARTCIPATING_LOAD_BALANCING	0x00000001
 
-// ½¨Á¢Ò»¸öÍ¨¹ı±ê¼ÇÖµµÃµ½Ãû³ÆµÄmap£¬Ìá¹©³õÊ¼»¯python±©Â¶¸ø½Å±¾Ê¹ÓÃ
+// å»ºç«‹ä¸€ä¸ªé€šè¿‡æ ‡è®°å€¼å¾—åˆ°åç§°çš„mapï¼Œæä¾›åˆå§‹åŒ–pythonæš´éœ²ç»™è„šæœ¬ä½¿ç”¨
 inline std::map<uint32, std::string> createAppFlagsMaps()
 {
 	std::map<uint32, std::string> datas;
@@ -358,17 +362,17 @@ inline std::map<uint32, std::string> createAppFlagsMaps()
 	return datas;
 }
 
-// Ç°¶ËÊÇ·ñÖ§³Ö¸¡µãÊı
+// å‰ç«¯æ˜¯å¦æ”¯æŒæµ®ç‚¹æ•°
 // #define CLIENT_NO_FLOAT
 
-// Ò»¸öcellµÄÄ¬ÈÏµÄ±ß½ç»òÕß×îĞ¡´óĞ¡
+// ä¸€ä¸ªcellçš„é»˜è®¤çš„è¾¹ç•Œæˆ–è€…æœ€å°å¤§å°
 #define CELL_DEF_MIN_AREA_SIZE						500.0f
 
-/** Ò»¸ö¿Õ¼äµÄÒ»¸öchunk´óĞ¡ */
+/** ä¸€ä¸ªç©ºé—´çš„ä¸€ä¸ªchunkå¤§å° */
 #define SPACE_CHUNK_SIZE							100
 
 
-/** ¼ì²éÓÃ»§ÃûºÏ·¨ĞÔ */
+/** æ£€æŸ¥ç”¨æˆ·ååˆæ³•æ€§ */
 inline bool validName(const char* name, int size)
 {
 	if(size >= 256)
@@ -391,8 +395,8 @@ inline bool validName(const std::string& name)
 	return validName(name.c_str(), (int)name.size());
 }
 
-/** ¼ì²éemailµØÖ·ºÏ·¨ĞÔ 
-ÑÏ¸ñÆ¥ÅäÇëÓÃÈçÏÂ±í´ïÊ½
+/** æ£€æŸ¥emailåœ°å€åˆæ³•æ€§ 
+ä¸¥æ ¼åŒ¹é…è¯·ç”¨å¦‚ä¸‹è¡¨è¾¾å¼
 [a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
 */
 #ifdef USE_REGEX
@@ -451,7 +455,7 @@ inline bool email_isvalid(const char *address)
 	return (count >= 1);
 }
 
-//×é¼şIDµÄÀ©Õ¹±¶Êı
+//ç»„ä»¶IDçš„æ‰©å±•å€æ•°
 #define COMPONENT_ID_MULTIPLE	1000000000 
 
 }

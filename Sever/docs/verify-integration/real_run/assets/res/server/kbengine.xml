@@ -1,0 +1,11 @@
+<root>
+	<!-- ????????????: ????????cluster, ?????127.0.0.1:20093 ???/??? -->
+	<cluster>
+		<internalInterface> 127.0.0.1 </internalInterface>
+		<servicePort> 20093 </servicePort>
+		<dataPort> 20094 </dataPort>
+		<componentData>
+			<leaseSeconds> 6 </leaseSeconds>
+		</componentData>
+	</cluster>
+</root>

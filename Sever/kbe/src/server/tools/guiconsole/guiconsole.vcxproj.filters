@@ -21,6 +21,9 @@
     <ClCompile Include="ColorListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClusterClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ConnectRemoteMachineWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorListBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClusterClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConnectRemoteMachineWindow.h">

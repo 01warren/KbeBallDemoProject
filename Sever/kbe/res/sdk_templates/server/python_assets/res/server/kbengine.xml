@@ -67,4 +67,27 @@
 	<baseapp>
 		<backupPeriod> 500 </backupPeriod>
 	</baseapp>
+
+	<!-- 集群(cluster, 可选)：默认直接使用引擎 kbengine_defaults.xml 的 <cluster> 段(单成员自举)。
+		多副本高可用部署时，在所有服务器资产的该文件中填写相同的集群成员列表；
+		列表顺序即副本成员序号(从0开始)，全部副本必须一致。示例：
+	<cluster>
+		<addresses>
+			<item> 192.168.10.11 </item>
+			<item> 192.168.10.12 </item>
+			<item> 192.168.10.13 </item>
+		</addresses>
+	</cluster>
+
+		单机三副本本地冒烟也可使用回环地址 127.0.0.1/127.0.0.2/127.0.0.3
+		(Windows 需管理员执行 netsh interface ipv4 add address Loopback 127.0.0.2 255.0.0.0 等，
+		 参见 kbe/src/server/cluster/smoke/assets_a/res/server/kbengine.xml):
+	<cluster>
+		<addresses>
+			<item> 127.0.0.1 </item>
+			<item> 127.0.0.2 </item>
+			<item> 127.0.0.3 </item>
+		</addresses>
+	</cluster>
+	-->
 </root>

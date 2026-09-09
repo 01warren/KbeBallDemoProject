@@ -1,6 +1,6 @@
 // Copyright 2008-2018 Yolo Technologies, Inc. All Rights Reserved. https://www.comblockengine.com
 
-// logger需要增加吞吐量
+// logger闇�瑕佸鍔犲悶鍚愰噺
 #define PACKET_MAX_SIZE_TCP 65535
 
 #include "common/common.h"
@@ -36,11 +36,6 @@
 #include "loginapp/loginapp_interface.h"
 #define DEFINE_IN_INTERFACE
 #include "loginapp/loginapp_interface.h"
-
-#undef DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
-#define DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
 
 #undef DEFINE_IN_INTERFACE
 #include "tools/bots/bots_interface.h"

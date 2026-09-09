@@ -503,10 +503,10 @@ void DebugHelper::sync()
 		return;
 	}
 
-	// ½«×ÓÏß³ÌÈÕÖ¾·ÅÈëbufferedLogPackets_
+	// å°†å­çº¿ç¨‹æ—¥å¿—æ”¾å…¥bufferedLogPackets_
 	while (childThreadBufferedLogPackets_.size() > 0)
 	{
-		// ´ÓÖ÷¶ÔÏó³ØÈ¡³öÒ»¸ö¶ÔÏó£¬½«×ÓÏß³ÌÖĞ¶ÔÏóvectorÄÚ´æ½»»»½øÈ¥
+		// ä»ä¸»å¯¹è±¡æ± å–å‡ºä¸€ä¸ªå¯¹è±¡ï¼Œå°†å­çº¿ç¨‹ä¸­å¯¹è±¡vectorå†…å­˜äº¤æ¢è¿›å»
 		MemoryStream* pMemoryStream = childThreadBufferedLogPackets_.front();
 		childThreadBufferedLogPackets_.pop();
 
@@ -517,17 +517,17 @@ void DebugHelper::sync()
 		pBundle->finiCurrPacket();
 		pBundle->newPacket();
 
-		// ½«ËûÃÇµÄÄÚ´æ½»»»½øÈ¥
+		// å°†ä»–ä»¬çš„å†…å­˜äº¤æ¢è¿›å»
 		pBundle->pCurrPacket()->swap(*pMemoryStream);
 		pBundle->currMsgLength(pBundle->currMsgLength() + pBundle->pCurrPacket()->length());
 
-		// ½«ËùÓĞ¶ÔÏó½»»¹¸ø¶ÔÏó³Ø
+		// å°†æ‰€æœ‰å¯¹è±¡äº¤è¿˜ç»™å¯¹è±¡æ± 
 		memoryStreamPool_.reclaimObject(pMemoryStream);
 	}
 
 	if (Network::Address::NONE == loggerAddr_)
 	{
-		// Èç¹û³¬¹ı300ÃëÃ»ÓĞÕÒµ½logger£¬ÄÇÃ´Ç¿ÖÆÇåÀíÄÚ´æ
+		// å¦‚æœè¶…è¿‡300ç§’æ²¡æœ‰æ‰¾åˆ°loggerï¼Œé‚£ä¹ˆå¼ºåˆ¶æ¸…ç†å†…å­˜
 		if (timestamp() - loseLoggerTime_ > uint64(300 * stampsPerSecond()))
 		{
 			clearBufferedLog();
@@ -605,7 +605,7 @@ void DebugHelper::sync()
 		--hasBufferedLogPackets_;
 	}
 
-	// ÕâÀïĞèÒªÑÓÊ±·¢ËÍ£¬·ñÔòÔÚ·¢ËÍ¹ı³ÌÖĞ²úÉú´íÎó£¬µ¼ÖÂÈÕÖ¾Êä³ö»á³öÏÖËÀËø
+	// è¿™é‡Œéœ€è¦å»¶æ—¶å‘é€ï¼Œå¦åˆ™åœ¨å‘é€è¿‡ç¨‹ä¸­äº§ç”Ÿé”™è¯¯ï¼Œå¯¼è‡´æ—¥å¿—è¾“å‡ºä¼šå‡ºç°æ­»é”
 	if(bundles.size() > 0 && !pLoggerChannel->sending())
 		pLoggerChannel->delayedSend();
 
@@ -667,6 +667,7 @@ void DebugHelper::onMessage(uint32 logType, const char * str, uint32 length)
 		return;
 
 	if(g_componentType == MACHINE_TYPE || 
+		g_componentType == CLUSTER_TYPE ||
 		g_componentType == CONSOLE_TYPE || 
 		g_componentType == LOGGER_TYPE || 
 		g_componentType == CLIENT_TYPE)
@@ -778,10 +779,10 @@ void DebugHelper::printBufferedLogs()
 	KBE_LOG4CXX_PRINT(g_logger, std::string("The following logs sent to logger failed:\n"));
 #endif
 
-	// ½«×ÓÏß³ÌÈÕÖ¾·ÅÈëbufferedLogPackets_
+	// å°†å­çº¿ç¨‹æ—¥å¿—æ”¾å…¥bufferedLogPackets_
 	while (childThreadBufferedLogPackets_.size() > 0)
 	{
-		// ´ÓÖ÷¶ÔÏó³ØÈ¡³öÒ»¸ö¶ÔÏó£¬½«×ÓÏß³ÌÖĞ¶ÔÏóvectorÄÚ´æ½»»»½øÈ¥
+		// ä»ä¸»å¯¹è±¡æ± å–å‡ºä¸€ä¸ªå¯¹è±¡ï¼Œå°†å­çº¿ç¨‹ä¸­å¯¹è±¡vectorå†…å­˜äº¤æ¢è¿›å»
 		MemoryStream* pMemoryStream = childThreadBufferedLogPackets_.front();
 		childThreadBufferedLogPackets_.pop();
 
@@ -792,11 +793,11 @@ void DebugHelper::printBufferedLogs()
 		pBundle->finiCurrPacket();
 		pBundle->newPacket();
 
-		// ½«ËûÃÇµÄÄÚ´æ½»»»½øÈ¥
+		// å°†ä»–ä»¬çš„å†…å­˜äº¤æ¢è¿›å»
 		pBundle->pCurrPacket()->swap(*pMemoryStream);
 		pBundle->currMsgLength(pBundle->currMsgLength() + pBundle->pCurrPacket()->length());
 
-		// ½«ËùÓĞ¶ÔÏó½»»¹¸ø¶ÔÏó³Ø
+		// å°†æ‰€æœ‰å¯¹è±¡äº¤è¿˜ç»™å¯¹è±¡æ± 
 		memoryStreamPool_.reclaimObject(pMemoryStream);
 	}
 
@@ -996,7 +997,7 @@ void DebugHelper::script_info_msg(const std::string& s)
 
 	onMessage(KBELOG_TYPE_MAPPING(scriptMsgType_), s.c_str(), (uint32)s.size());
 
-	// Èç¹ûÊÇÓÃ»§ÊÖ¶¯ÉèÖÃµÄÒ²Êä³öÎª´íÎóĞÅÏ¢
+	// å¦‚æœæ˜¯ç”¨æˆ·æ‰‹åŠ¨è®¾ç½®çš„ä¹Ÿè¾“å‡ºä¸ºé”™è¯¯ä¿¡æ¯
 	if(log4cxx::ScriptLevel::SCRIPT_ERR == scriptMsgType_)
 	{
 		set_errorcolor();

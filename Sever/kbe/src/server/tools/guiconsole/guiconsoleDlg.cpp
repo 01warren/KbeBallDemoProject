@@ -6,11 +6,11 @@
 #include "guiconsole.h"
 #include "guiconsoleDlg.h"
 #include "StartServerWindow.h"
-#include "network/bundle_broadcast.h"
 #include "network/message_handler.h"
 #include "server/components.h"
 #include "helper/console_helper.h"
 #include "xml/xml.h"
+#include "ClusterClient.h"
 
 #undef DEFINE_IN_INTERFACE
 #include "client_lib/client_interface.h"
@@ -41,11 +41,6 @@
 #include "dbmgr/dbmgr_interface.h"
 #define DEFINE_IN_INTERFACE
 #include "dbmgr/dbmgr_interface.h"
-
-#undef DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
-#define DEFINE_IN_INTERFACE
-#include "machine/machine_interface.h"
 
 #undef DEFINE_IN_INTERFACE
 #include "cellappmgr/cellappmgr_interface.h"
@@ -123,27 +118,17 @@ public:
 	};
 };
 
+// è§æœ¬æ–‡ä»¶ getClusterHostsFromLayouts å®šä¹‰ï¼šè§£æ layouts.xml æ”¶é›† cluster å‰¯æœ¬ä¸»æœºIP
+static void getClusterHostsFromLayouts(std::vector<std::string>& hosts);
+
 class FindServersTask : public thread::TPTask
 {
 public:
-	std::vector<COMPONENT_TYPE> findComponentTypes;
-
 	FindServersTask():
-	thread::TPTask(),
-	findComponentTypes()
+	thread::TPTask()
 	{
 		CguiconsoleDlg* dlg = static_cast<CguiconsoleDlg*>(theApp.m_pMainWnd);
 		dlg->clearTree();
-	}
-
-	FindServersTask(COMPONENT_TYPE findComponentType):
-	thread::TPTask(),
-	findComponentTypes()
-	{
-		CguiconsoleDlg* dlg = static_cast<CguiconsoleDlg*>(theApp.m_pMainWnd);
-		dlg->clearTree();
-
-		findComponentTypes.push_back(findComponentType);
 	}
 
 	virtual ~FindServersTask()
@@ -152,121 +137,48 @@ public:
 
 	virtual bool process()
 	{
-		//COMPONENT_TYPE findComponentTypes[] = {LOGGER_TYPE, BASEAPP_TYPE, CELLAPP_TYPE, BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, LOGINAPP_TYPE, DBMGR_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
-		int ifind = 0;
-
 		if(g_isDestroyed)
 			return false;
 
 		CguiconsoleDlg* dlg = static_cast<CguiconsoleDlg*>(theApp.m_pMainWnd);
+		dlg->updateFindTreeStatus();
 
-		while(true)
+		// é›†ç¾¤æ¨¡å¼ï¼šä¸€æ¬¡ MSG_QUERY_ALL ä» cluster æ³¨å†Œè¡¨å–å›å…¨éƒ¨ç»„ä»¶ï¼Œæ›¿ä»£åŸ machine UDP å¹¿æ’­æ¢æµ‹ã€‚
+		std::vector<std::string> hosts;
+		getClusterHostsFromLayouts(hosts);
+		if(hosts.size() == 0)
+			hosts.push_back("127.0.0.1");
+
+		for(size_t h = 0; h < hosts.size(); h++)
 		{
-			if(ifind >= (int)findComponentTypes.size() || g_isDestroyed)
-			{
-				//INFO_MSG("Componentbridge::process: not found %s, try again...\n",
-				//	COMPONENT_NAME_EX(findComponentType));
+			if(g_isDestroyed)
 				return false;
-			}
 
-			COMPONENT_TYPE findComponentType = findComponentTypes[ifind];
-
-			dlg->updateFindTreeStatus();
-			srand(KBEngine::getSystemTime());
-			uint16 nport = KBE_PORT_START + (rand() % 1000);
-			Network::BundleBroadcast bhandler(dlg->networkInterface(), nport);
-
-			if(!bhandler.good())
+			std::vector<ClusterInterface::ComponentData> list;
+			if(!ClusterClient::queryAllComponents((int32)getUserUID(), hosts[h],
+				ClusterInterface::DEFAULT_CLUSTER_SERVICE_PORT, list))
 			{
-				KBEngine::sleep(10);
-				nport = KBE_PORT_START + (rand() % 1000);
 				continue;
 			}
 
-			if(bhandler.pCurrPacket() != NULL)
+			for(size_t i = 0; i < list.size(); i++)
 			{
-				bhandler.pCurrPacket()->resetPacket();
+				ClusterInterface::ComponentData& cd = list[i];
+
+				INFO_MSG(fmt::format("CguiconsoleDlg::FindServersTask: found {}, addr:{}:{}\n",
+					COMPONENT_NAME_EX((COMPONENT_TYPE)cd.componentType), inet_ntoa((struct in_addr&)cd.intaddr), ntohs(cd.intport)));
+
+				Components::getSingleton().addComponent(cd.uid, cd.username.c_str(),
+					(KBEngine::COMPONENT_TYPE)cd.componentType, cd.componentID, cd.globalOrder, cd.groupOrder, cd.gus,
+					cd.intaddr, cd.intport, cd.extaddr, cd.extport, cd.extaddrEx, cd.pid, cd.cpu, cd.mem, cd.usedmem,
+					cd.extradata[0], cd.extradata[1], cd.extradata[2], cd.extradata[3]);
 			}
 
-			bhandler.newMessage(MachineInterface::onFindInterfaceAddr);
-			MachineInterface::onFindInterfaceAddrArgs7::staticAddToBundle(bhandler, getUserUID(), getUsername(), 
-				dlg->componentType(), dlg->componentID(), (COMPONENT_TYPE)findComponentType, dlg->networkInterface().intTcpAddr().ip,
-				bhandler.epListen().addr().port);
-
-			if(!bhandler.broadcast())
-			{
-				ERROR_MSG("CguiconsoleDlg::OnTimer: broadcast error!\n");
-				::AfxMessageBox(L"³õÊ¼»¯´íÎó£º²»ÄÜ·¢ËÍ·şÎñÆ÷Ì½²â°ü¡£");
+			if(g_isDestroyed)
 				return false;
-			}
 
-			MachineInterface::onBroadcastInterfaceArgs25 args;
-			int32 timeout = 1000000;
-
-RESTART_RECV:
-			if(bhandler.receive(&args, 0, timeout))
-			{
-				bool isContinue = false;
-
-				do
-				{
-					if(g_isDestroyed)
-						return false;
-
-					if(isContinue)
-					{
-						try
-						{
-							args.createFromStream(*bhandler.pCurrPacket());
-						}catch(MemoryStreamException &)
-						{
-							break;
-						}
-					}
-
-					if(args.componentType == UNKNOWN_COMPONENT_TYPE)
-					{
-						//INFO_MSG("Componentbridge::process: not found %s, try again...\n",
-						//	COMPONENT_NAME_EX(findComponentType));
-						//ifind++;
-						isContinue = true;
-						continue;
-					}
-
-					INFO_MSG(fmt::format("CguiconsoleDlg::OnTimer: found {}, addr:{}:{}\n",
-						COMPONENT_NAME_EX((COMPONENT_TYPE)args.componentType), inet_ntoa((struct in_addr&)args.intaddr), ntohs(args.intport)));
-
-					Components::getSingleton().addComponent(args.uid, args.username.c_str(), 
-						(KBEngine::COMPONENT_TYPE)args.componentType, args.componentID, args.globalorderid, args.grouporderid, args.gus,
-						args.intaddr, args.intport, args.extaddr, args.extport, args.extaddrEx, args.pid, args.cpu, args.mem, args.usedmem, 
-						args.extradata, args.extradata1, args.extradata2, args.extradata3);
-					
-					isContinue = true;
-				}while(bhandler.pCurrPacket()->length() > 0);
-
-				// ·ÀÖ¹½ÓÊÕµ½µÄÊı¾İ²»ÊÇÏëÒªµÄÊı¾İ
-				if(findComponentType == args.componentType)
-				{
-					//ifind++;
-					if(g_isDestroyed)
-						return false;
-
-					dlg->updateTree();
-				}
-				else
-				{
-					ERROR_MSG(fmt::format("CguiconsoleDlg::OnTimer: {} not found. receive data error!\n",
-						COMPONENT_NAME_EX((COMPONENT_TYPE)findComponentType)));
-				}
-
-				//timeout = 10000;
-				goto RESTART_RECV;
-			}
-			else
-			{
-				ifind++;
-				continue;
-			}
+			dlg->updateTree();
+			return true;
 		}
 
 		return false;
@@ -569,7 +481,7 @@ void CguiconsoleDlg::commitPythonCommand(CString strCommand)
 	CString strCommand1 = strCommand;
 
 	/*
-	// ¶ÔÆÕÍ¨µÄÊäÈë¼ÓÈëprint ÈÃ·şÎñÆ÷»ØÏÔĞÅÏ¢
+	// å¯¹æ™®é€šçš„è¾“å…¥åŠ å…¥print è®©æœåŠ¡å™¨å›æ˜¾ä¿¡æ¯
     if((strCommand.Find(L"=")) == -1 &&
 		(strCommand.Find(L"print(")) == -1 &&
 		(strCommand.Find(L"import ")) == -1 &&
@@ -619,7 +531,7 @@ void CguiconsoleDlg::commitPythonCommand(CString strCommand)
 
 void CguiconsoleDlg::saveHistory()
 {
-    //´´½¨Ò»¸öXMLµÄÎÄµµ¶ÔÏó¡£
+    //åˆ›å»ºä¸€ä¸ªXMLçš„æ–‡æ¡£å¯¹è±¡ã€‚
     TiXmlDocument *pDocument = new TiXmlDocument();
 
 	int i = 0;
@@ -866,14 +778,8 @@ void CguiconsoleDlg::OnTimer(UINT_PTR nIDEvent)
 		break;
 	case 2:
 		{
-			threadPool_.addTask(new FindServersTask(LOGGER_TYPE));
-			threadPool_.addTask(new FindServersTask(BASEAPP_TYPE));
-			threadPool_.addTask(new FindServersTask(CELLAPP_TYPE));
-			threadPool_.addTask(new FindServersTask(BASEAPPMGR_TYPE));
-			threadPool_.addTask(new FindServersTask(CELLAPPMGR_TYPE));
-			threadPool_.addTask(new FindServersTask(LOGINAPP_TYPE));
-			threadPool_.addTask(new FindServersTask(DBMGR_TYPE));
-			threadPool_.addTask(new FindServersTask(BOTS_TYPE));
+			// é›†ç¾¤æ¨¡å¼ï¼šä¸€æ¬¡ MSG_QUERY_ALL å–å›å…¨éƒ¨æ³¨å†Œç»„ä»¶ï¼Œä¸å†æŒ‰ç±»å‹å¹¿æ’­æ¢æµ‹
+			threadPool_.addTask(new FindServersTask());
 			::KillTimer(m_hWnd, nIDEvent);
 		}
 		break;
@@ -1188,7 +1094,7 @@ void CguiconsoleDlg::OnNMRClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
     CMenu* pPopup = menu.GetSubMenu(0);
 	
 	CPoint point;
-	GetCursorPos(&point); //Êó±êÎ»ÖÃ
+	GetCursorPos(&point); //é¼ æ ‡ä½ç½®
     pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
 }
 
@@ -1572,7 +1478,7 @@ void CguiconsoleDlg::OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
 
 	bool changeToChecked = false;
 
-	// ¸´Ñ¡¿ò±»Ñ¡ÖĞ¾ÍÁ¬½Ó·ñÔò¶Ï¿ªÁ¬½Ó
+	// å¤é€‰æ¡†è¢«é€‰ä¸­å°±è¿æ¥å¦åˆ™æ–­å¼€è¿æ¥
 	if(TVHT_ONITEMSTATEICON & hittestInfo.flags)
 	{
 		m_tree.SelectItem(hItem);
@@ -1601,7 +1507,7 @@ void CguiconsoleDlg::OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
 		m_debugWnd.displaybufferWnd()->GetWindowTextW(s);
 		
 		if(s.GetLength() <= 0)
-			s += L">>>ÇëÔÚÏÂÃæµÄ´°¿ÚĞ´python´úÂëÀ´µ÷ÊÔ·şÎñ¶Ë¡£\r\n>>>ctrl+enter ·¢ËÍ\r\n>>>¡ü¡ıÊ¹ÓÃÀúÊ·ÃüÁî\r\n\r\n";
+			s += L">>>è¯·åœ¨ä¸‹é¢çš„çª—å£å†™pythonä»£ç æ¥è°ƒè¯•æœåŠ¡ç«¯ã€‚\r\n>>>ctrl+enter å‘é€\r\n>>>â†‘â†“ä½¿ç”¨å†å²å‘½ä»¤\r\n\r\n";
 		else
 			s += L">>>";
 
@@ -1650,125 +1556,127 @@ void CguiconsoleDlg::OnToolBar_Find()
 
 void CguiconsoleDlg::OnToolBar_StartServer()
 {
-	/*
-	COMPONENT_TYPE startComponentTypes[] = {BASEAPP_TYPE, CELLAPP_TYPE, BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, LOGINAPP_TYPE, DBMGR_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
-	
-	int i = 0;
-
-	while(1)
-	{
-		srand(KBEngine::getSystemTime());
-		uint16 nport = KBE_PORT_START + (rand() % 1000);
-		Network::BundleBroadcast bhandler(_networkInterface, nport);
-
-		if(!bhandler.good())
-		{
-			KBEngine::sleep(10);
-			nport = KBE_PORT_START + (rand() % 1000);
-			continue;
-		}
-
-		if(bhandler.pCurrPacket() != NULL)
-		{
-			bhandler.pCurrPacket()->resetPacket();
-		}
-
-		COMPONENT_TYPE componentType = startComponentTypes[i++];
-		if(componentType == UNKNOWN_COMPONENT_TYPE)
-			break;
-
-		bhandler.newMessage(MachineInterface::startserver);
-		bhandler << KBEngine::getUserUID();
-		bhandler << componentType;
-
-		uint32 ip = _networkInterface.intaddr().ip;
-		uint16 port = bhandler.epListen().addr().port;
-		bhandler << ip << port;
-
-		if(!bhandler.broadcast())
-		{
-			ERROR_MSG("CguiconsoleDlg::OnToolBar_StartServer: broadcast error!\n");
-			//::AfxMessageBox(L"²»ÄÜ·¢ËÍ·şÎñÆ÷Æô¶¯°ü¡£");
-			break;
-		}
-
-		if(!bhandler.receive(NULL, 0, 1000000))
-		{
-			ERROR_MSG("CguiconsoleDlg::OnToolBar_StartServer: recv error!\n");
-			//::AfxMessageBox(L"½ÓÊÕ·şÎñÆ÷Æô¶¯°ü´íÎó¡£");
-			break;
-		}
-		
-		bool success;
-		bhandler >> success;
-	}
-
-	_networkInterface.deregisterAllChannels();
-	Components::getSingleton().clear();
-	Components::getSingleton().delComponent(Components::ANY_UID, LOGGER_TYPE, 0, true, false);
-	Components::getSingleton().delComponent(Components::ANY_UID, BOTS_TYPE, 0, true, false);
-	::SetTimer(m_hWnd, 2, 1000, NULL);
-	*/
-
-
+	// é›†ç¾¤æ¨¡å¼ï¼šå¯åŠ¨/åœæ­¢é€šè¿‡ cluster å‰¯æœ¬æ‰§è¡Œ(è§ CStartServerWindow), ä¸å†ä½¿ç”¨ machine UDP å¹¿æ’­ã€‚
 	CStartServerWindow dlg;
 	dlg.DoModal();
+}
+
+// ä» guiconsole ç›®å½•ä¸‹çš„ layouts.xml(ä¸"å¯åŠ¨æœåŠ¡å™¨"å¯¹è¯æ¡†åŒä¸€ä»½å¸ƒå±€)æ”¶é›†éƒ¨ç½²ä¸»æœº ipã€‚
+// é›†ç¾¤æ²¡æœ‰ UDP å¹¿æ’­, å·¥å…·æ "åœæ­¢æœåŠ¡å™¨"ç›´æ¥è¿è¿™äº›ä¸»æœºä¸Šçš„ cluster å‰¯æœ¬ã€‚
+static void getClusterHostsFromLayouts(std::vector<std::string>& hosts)
+{
+	CString appPath = GetAppPath();
+	CString fullPath = appPath + L"\\layouts.xml";
+
+	char fname[4096] = {0};
+	int len = WideCharToMultiByte(CP_ACP, 0, fullPath, fullPath.GetLength(), NULL, 0, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, fullPath, fullPath.GetLength(), fname, len, NULL, NULL);
+	fname[len + 1] = '\0';
+
+	TiXmlDocument *pDocument = new TiXmlDocument(fname);
+	if(pDocument == NULL || !pDocument->LoadFile(TIXML_ENCODING_UTF8))
+	{
+		delete pDocument;
+		return;
+	}
+
+	TiXmlElement* rootElement = pDocument->RootElement();
+	if(rootElement)
+	{
+		for(TiXmlElement* layoutElem = rootElement->FirstChildElement(); layoutElem != NULL;
+			layoutElem = layoutElem->NextSiblingElement())
+		{
+			for(TiXmlElement* compElem = layoutElem->FirstChildElement(); compElem != NULL;
+				compElem = compElem->NextSiblingElement())
+			{
+				if(compElem->FirstChild() == NULL || compElem->FirstChild()->Value() == NULL)
+					continue;
+
+				// å¸ƒå±€é¡¹æ–‡æœ¬æ ¼å¼: "ip:port"(port ä¸ºåŸ machine ç«¯å£, é›†ç¾¤ä¸‹å¿½ç•¥)
+				std::string addr = compElem->FirstChild()->Value();
+				size_t pos = addr.find(':');
+				if(pos == std::string::npos || pos == 0)
+					continue;
+
+				std::string ip = addr.substr(0, pos);
+				if((uint32)inet_addr(ip.c_str()) == 0)
+					continue;
+
+				bool found = false;
+				for(size_t i = 0; i < hosts.size(); ++i)
+				{
+					if(hosts[i] == ip)
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if(!found)
+					hosts.push_back(ip);
+			}
+		}
+	}
+
+	pDocument->Clear();
+	delete pDocument;
 }
 
 void CguiconsoleDlg::OnToolBar_StopServer()
 {
 	COMPONENT_TYPE startComponentTypes[] = {BASEAPP_TYPE, CELLAPP_TYPE, BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, LOGINAPP_TYPE, DBMGR_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
-	
-	int i = 0;
 
-	while(1)
+	std::vector<std::string> hosts;
+	getClusterHostsFromLayouts(hosts);
+	if(hosts.size() == 0)
+		hosts.push_back("127.0.0.1");
+
+	int32 uid = (int32)KBEngine::getUserUID();
+	std::vector<std::string> failed;
+
+	for(int i = 0; startComponentTypes[i] != UNKNOWN_COMPONENT_TYPE; i++)
 	{
-		srand(KBEngine::getSystemTime());
-		uint16 nport = KBE_PORT_START + (rand() % 1000);
-		Network::BundleBroadcast bhandler(_networkInterface, nport);
+		COMPONENT_TYPE componentType = startComponentTypes[i];
 
-		if(!bhandler.good())
+		bool ok = false;
+		std::string lastErr;
+
+		// æ¯ç±»ç»„ä»¶å‘ç»™ä»»ä¸€å¯è¾¾å‰¯æœ¬; NOT_LEADER ç”± ClusterClient è‡ªåŠ¨é‡å®šå‘ã€‚
+		// ä¸æŒ‡å®š targetHost: leader ä¾æ®æ³¨å†Œè¡¨åœ¨é›†ç¾¤æ‰€æœ‰ä¸»æœºä¸Šåœæ­¢è¯¥ç±»å‹ç»„ä»¶ã€‚
+		for(size_t h = 0; h < hosts.size(); ++h)
 		{
-			KBEngine::sleep(10);
-			nport = KBE_PORT_START + (rand() % 1000);
-			continue;
+			KBEngine::ClusterClient::CtlResult result;
+			if(!KBEngine::ClusterClient::sendServerCommand(
+				KBEngine::ClusterInterface::MSG_STOP_SERVER, uid, (int32)componentType, 0, 0,
+				"", hosts[h],
+				KBEngine::ClusterInterface::DEFAULT_CLUSTER_SERVICE_PORT, result, 8000) ||
+				!result.reached)
+			{
+				lastErr = hosts[h] + ": cluster unreachable";
+				continue;
+			}
+
+			lastErr = hosts[h] + ": " + result.message;
+			if(result.code == 0)
+			{
+				ok = true;
+				break;
+			}
 		}
 
-		if(bhandler.pCurrPacket() != NULL)
-		{
-			bhandler.pCurrPacket()->resetPacket();
-		}
+		if(!ok)
+			failed.push_back(std::string(COMPONENT_NAME_EX(componentType)) + " @ " + lastErr);
+	}
 
-		COMPONENT_TYPE componentType = startComponentTypes[i++];
-		if(componentType == UNKNOWN_COMPONENT_TYPE)
-			break;
+	if(failed.size() > 0)
+	{
+		std::string all = "stop server failed:\n";
+		for(size_t i = 0; i < failed.size(); i++)
+			all += "  " + failed[i] + "\n";
 
-		bhandler.newMessage(MachineInterface::stopserver);
-		bhandler << KBEngine::getUserUID();
-		bhandler << componentType;
-		KBEngine::COMPONENT_ID cid = 0;
-		bhandler << cid;
-		
-		uint32 ip = _networkInterface.intTcpAddr().ip;
-		uint16 port = bhandler.epListen().addr().port;
-		bhandler << ip << port;
-
-		if(!bhandler.broadcast())
-		{
-			ERROR_MSG("CguiconsoleDlg::OnToolBar_StartServer: broadcast error!\n");
-			//::AfxMessageBox(L"²»ÄÜ·¢ËÍ·şÎñÆ÷Æô¶¯°ü¡£");
-			break;
-		}
-
-		if(!bhandler.receive(NULL, 0, 3000000))
-		{
-			ERROR_MSG("CguiconsoleDlg::OnToolBar_StartServer: recv error!\n");
-			//::AfxMessageBox(L"½ÓÊÕ·şÎñÆ÷Æô¶¯°ü´íÎó¡£");
-			break;
-		}
-		
-		bool success;
-		bhandler >> success;
+		wchar_t* ws = KBEngine::strutil::char2wchar(all.c_str());
+		::AfxMessageBox(ws);
+		free(ws);
 	}
 }
 

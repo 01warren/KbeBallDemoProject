@@ -16,7 +16,6 @@
 #include "network/network_interface.h"
 #include "server/components.h"
 #include "server/machine_infos.h"
-#include "server/id_component_querier.h"
 #include "resmgr/resmgr.h"
 
 #if KBE_PLATFORM == PLATFORM_WIN32
@@ -108,31 +107,19 @@ inline bool checkComponentID(COMPONENT_TYPE componentType)
 		autoFixUserDigestUID();
 
 	int32 uid = getUserUID();
-	if ((componentType == MACHINE_TYPE || componentType == LOGGER_TYPE) && g_componentID == (COMPONENT_ID)-1)
+
+	// 集群模式下不再依赖machine/IDComponentQuerier做中央ID分配:
+	// 未显式指定--cid时, 一律在本机按(uid, 本机macMD5, 组件类型)确定性生成。
+	// 同一主机上多开同类组件实例时, 需通过 --cid(或 --gus) 显式区分;
+	// 重复身份会在向cluster注册时被冲突检测拦截。
+	if (g_componentID == (COMPONENT_ID)-1)
 	{
 		int macMD5 = getMacMD5();
-		
+
 		COMPONENT_ID cid1 = (COMPONENT_ID)uid * COMPONENT_ID_MULTIPLE;
 		COMPONENT_ID cid2 = (COMPONENT_ID)macMD5 * 10000;
 		COMPONENT_ID cid3 = (COMPONENT_ID)componentType * 100;
 		g_componentID = cid1 + cid2 + cid3 + 1;
-	}
-	else
-	{
-		if (g_componentID == (COMPONENT_ID)-1)
-		{
-			IDComponentQuerier cidQuerier;
-			if (cidQuerier.good())
-			{
-				g_componentID = cidQuerier.query(componentType, uid);
-				if (g_componentID <= 0)
-					return false;
-			}
-			else
-			{
-				return false;
-			}
-		}
 	}
 
 	return true;
@@ -208,11 +195,11 @@ int kbeMainT(int argc, char * argv[], COMPONENT_TYPE componentType,
 		Components::getSingleton().finalise();
 		app.finalise();
 
-		// ���������־δͬ����ɣ� ��������ͬ����ɲŽ���
+		// 如果还有日志未同步完成， 这里会继续同步完成才结束
 		DebugHelper::getSingleton().finalise();
 
 #if KBE_PLATFORM == PLATFORM_WIN32
-		// �ȴ����룬���û��ܹ��ڴ����Ͽ�����Ϣ
+		// 等待几秒，让用户能够在窗口上看到信息
 		Beep(587, 500);
 		KBEngine::sleep(5000);
 #endif
@@ -230,7 +217,7 @@ int kbeMainT(int argc, char * argv[], COMPONENT_TYPE componentType,
 	app.finalise();
 	INFO_MSG(fmt::format("{}({}) has shut down.\n", COMPONENT_NAME_EX(componentType), g_componentID));
 
-	// ���������־δͬ����ɣ� ��������ͬ����ɲŽ���
+	// 如果还有日志未同步完成， 这里会继续同步完成才结束
 	DebugHelper::getSingleton().finalise();
 	return ret;
 }

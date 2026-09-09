@@ -1,0 +1,17 @@
+<root>
+	<!-- 测试资产 C：副本绑定 127.0.0.3。成员表顺序与 A 一致。lease=60s 理由见 A。 -->
+	<cluster>
+		<internalInterface> 127.0.0.3 </internalInterface>
+		<servicePort> 20193 </servicePort>
+		<peerPort> 20194 </peerPort>
+		<addresses>
+			<item> 127.0.0.1 </item>
+			<item> 127.0.0.2 </item>
+			<item> 127.0.0.3 </item>
+		</addresses>
+		<electionTimeout> 1200 </electionTimeout>
+		<heartbeatInterval> 400 </heartbeatInterval>
+		<componentHeartbeatInterval> 2 </componentHeartbeatInterval>
+		<componentLeaseSeconds> 60 </componentLeaseSeconds>
+	</cluster>
+</root>
