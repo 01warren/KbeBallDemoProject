@@ -869,6 +869,53 @@
 		<componentLeaseSeconds> 15 </componentLeaseSeconds>		<!-- Type: Integer -->
 	</cluster>
 
+	<router>
+		<!-- 用于指定 router 绑定的内网网卡，可配置网卡名、MAC、IP（为空自动选择）
+			(The internal interface which router binds) 
+		-->
+		<internalInterface>  </internalInterface>
+
+		<!-- 客户端接入端口（客户端只连 router，不再直连业务进程）
+			(The TCP port which game clients connect to router)
+		 -->
+		<clientPort> 20095 </clientPort>						<!-- Type: Integer -->
+
+		<!-- 服务器组件接入端口（各进程只连 router，进程/实体间通信经 router 转发）
+			(The TCP port which server components connect to router)
+		 -->
+		<serverPort> 20096 </serverPort>						<!-- Type: Integer -->
+
+		<!-- Actor 迁移挂起超时(毫秒)：SUSPEND 后若在此时间内未收到 RESUME，router 自动回滚到原宿主，
+			避免后续投往该 Actor 的消息被永久缓冲。（详见 docs/kbe_router_design.md §6.3）
+		 -->
+		<suspendTimeout> 30000 </suspendTimeout>				<!-- Type: Integer -->
+
+		<!-- 单个挂起 Actor 的缓冲上限(条)，溢出时丢弃最旧的一条并向发送方回
+			MSG_DELIVERY_FAILED(DELIVERY_DROPPED_SUSPENDED)。
+		 -->
+		<actorBufferMax> 512 </actorBufferMax>					<!-- Type: Integer -->
+
+		<!-- 目标 Actor 尚未注册(组件未连接 / 实体 cell 部分尚未创建)时的待定缓冲超时(毫秒)：
+			超时目标仍未注册则丢弃缓冲并向发送方回 MSG_DELIVERY_FAILED(DELIVERY_DROPPED_PENDING)。
+			这是旧通路 ForwardComponent_MessageBuffer / entity_messages_forward_handler 的等价能力。
+			（详见 docs/kbe_router_design.md §6.2 / §14.4）
+		 -->
+		<pendingTimeout> 30000 </pendingTimeout>					<!-- Type: Integer -->
+
+		<!-- 单个未注册 Actor 的待定缓冲上限(条)，溢出时丢弃最旧的一条并回失败。
+			设为 0 表示关闭待定缓冲：未注册目标立即回 TARGET_NOT_FOUND。
+		 -->
+		<pendingBufferMax> 512 </pendingBufferMax>				<!-- Type: Integer -->
+
+		<!-- router 地址列表：peer(客户端/组件)依次尝试连接，直到成功。
+			单机部署可留空（默认 127.0.0.1）。
+		 -->
+		<addresses>
+			<!--<item> 127.0.0.1 </item>-->
+			<!--<item> 192.168.10.18 </item>-->
+		</addresses>
+	</router>
+
 	<bots>
 		<!-- 脚本入口模块， 相当于main函数 
 			(Entry module, like the main-function)

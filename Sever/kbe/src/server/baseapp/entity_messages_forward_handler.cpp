@@ -5,6 +5,7 @@
 #include "entity_messages_forward_handler.h"
 #include "network/bundle.h"
 #include "network/channel.h"
+#include "server/router_mail.h"
 
 namespace KBEngine{	
 
@@ -95,7 +96,11 @@ bool EntityMessagesForwardCellappHandler::process()
 		return false;
 	}
 
-	if(pEntity_->cellEntityCall() == NULL || pEntity_->cellEntityCall()->getChannel() == NULL)
+	// 注意：Router 模式下 cellEntityCall()->getChannel() 恒为 NULL，不能据此判定"没有 cell"
+	// 而丢弃缓冲(该类的 flush 走 Entity::sendToCellapp，Router 模式下由 router 投递)。
+	// 注：本类当前在代码中已无实例化点，此处仅为保持两条旧缓冲通路的语义一致。
+	if(!RouterMail::isEnabled() &&
+		(pEntity_->cellEntityCall() == NULL || pEntity_->cellEntityCall()->getChannel() == NULL))
 	{
 		WARNING_MSG(fmt::format("EntityMessagesForwardCellappHandler::process(): no cell! size={}, entityID={}\n", 
 			bufferedSendToCellappMessages_.size(), (pEntity_ ? pEntity_->id() : 0)));
@@ -208,7 +213,11 @@ bool BaseMessagesForwardClientHandler::process()
 		return false;
 	}
 
-	if(pEntity_->clientEntityCall() == NULL || pEntity_->clientEntityCall()->getChannel() == NULL)
+	// 注意：Router 模式下 clientEntityCall()->getChannel() 恒为 NULL(客户端投递改由
+	// Proxy::sendToClient 经 router 完成)，不能据此判定"客户端不存在"而丢弃缓冲，
+	// 否则跨 cell 跳转期间缓存的客户端消息会被整批丢掉。
+	if(!RouterMail::isEnabled() &&
+		(pEntity_->clientEntityCall() == NULL || pEntity_->clientEntityCall()->getChannel() == NULL))
 	{
 		WARNING_MSG(fmt::format("BaseMessagesForwardClientHandler::process(): no client! size={}, entityID={}\n", 
 			bufferedSendToClientMessages_.size(), (pEntity_ ? pEntity_->id() : 0)));

@@ -88,7 +88,8 @@ enum COMPONENT_TYPE
 	INTERFACES_TYPE			= 13,
 	TOOL_TYPE				= 14,
 	CLUSTER_TYPE			= 15,
-	COMPONENT_END_TYPE		= 16,
+	ROUTER_TYPE				= 16,
+	COMPONENT_END_TYPE		= 17,
 };
 
 /** 当前服务器组件类别和ID */
@@ -113,6 +114,7 @@ const char COMPONENT_NAME[][255] = {
 	"interfaces",
 	"tool",
 	"cluster",
+	"router",
 };
 
 const char COMPONENT_NAME_1[][255] = {
@@ -132,6 +134,7 @@ const char COMPONENT_NAME_1[][255] = {
 	"interfaces",
 	"tool      ",
 	"cluster   ",
+	"router    ",
 };
 
 const char COMPONENT_NAME_2[][255] = {
@@ -151,6 +154,7 @@ const char COMPONENT_NAME_2[][255] = {
 	"interfaces",
 	"      tool",
 	"   cluster",
+	"    router",
 };
 
 inline const char* COMPONENT_NAME_EX(COMPONENT_TYPE CTYPE)

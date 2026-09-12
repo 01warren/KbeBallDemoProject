@@ -1433,6 +1433,60 @@ bool ServerConfig::loadConfig(std::string fileName)
 		}
 	}
 
+	rootNode = xml->getRootNode("router");
+	if(rootNode != NULL)
+	{
+		node = xml->enterNode(rootNode, "internalInterface");	
+		if(node != NULL)
+			strncpy((char*)&_routerInfo.internalInterface, xml->getValStr(node).c_str(), MAX_NAME - 1);
+
+		node = xml->enterNode(rootNode, "clientPort");
+		if(node != NULL)
+			_routerInfo.routerClientPort = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "serverPort");
+		if(node != NULL)
+			_routerInfo.routerServerPort = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "suspendTimeout");
+		if(node != NULL)
+			_routerInfo.routerSuspendTimeoutMS = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "actorBufferMax");
+		if(node != NULL)
+			_routerInfo.routerActorBufferMax = xml->getValInt(node);
+
+		// 目标未注册(组件未连接 / 实体 cell 部分尚未创建)时的待定缓冲：
+		// 有界 + 超时，避免"目标不存在"导致内存无界增长。0 = 关闭(直接回 TARGET_NOT_FOUND)。
+		node = xml->enterNode(rootNode, "pendingTimeout");
+		if(node != NULL)
+			_routerInfo.routerPendingTimeoutMS = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "pendingBufferMax");
+		if(node != NULL)
+			_routerInfo.routerPendingBufferMax = xml->getValInt(node);
+
+		node = xml->enterNode(rootNode, "addresses");
+		if(node)
+		{
+			do
+			{
+				if (TiXmlNode::TINYXML_COMMENT == node->Type())
+					continue;
+
+				if(node->FirstChild() != NULL)
+				{
+					std::string c = node->FirstChild()->Value();
+					c = strutil::kbe_trim(c);
+					if(c.size() > 0)
+					{
+						_routerInfo.router_addresses.push_back(c);
+					}
+				}
+			} while((node = node->NextSibling()));
+		}
+	}
+
 	rootNode = xml->getRootNode("bots");
 	if(rootNode != NULL)
 	{
@@ -1996,6 +2050,31 @@ void ServerConfig::updateInfos(bool isPrint, COMPONENT_TYPE componentType, COMPO
 			infostr += "server-configs:\n";
 			infostr += (fmt::format("\tinternalTcpAddr : {}\n", internalTcpAddr.c_str()));
 			infostr += (fmt::format("\tcomponentID : {}\n", info.componentID));
+		}
+	}
+	else if (componentType == ROUTER_TYPE)
+	{
+		ENGINE_COMPONENT_INFO info = getKRouter();
+		info.internalTcpAddr = const_cast<Network::Address*>(&internalTcpAddr);
+		info.externalTcpAddr = const_cast<Network::Address*>(&externalTcpAddr);
+		info.componentID = componentID;
+		if(isPrint)
+		{
+			INFO_MSG("server-configs:\n");
+			INFO_MSG(fmt::format("\tinternalTcpAddr : {}\n", internalTcpAddr.c_str()));
+			INFO_MSG(fmt::format("\tcomponentID : {}\n", info.componentID));
+			INFO_MSG(fmt::format("\tclientPort : {}\n", info.routerClientPort));
+			INFO_MSG(fmt::format("\tserverPort : {}\n", info.routerServerPort));
+			INFO_MSG(fmt::format("\tsuspendTimeout : {}\n", info.routerSuspendTimeoutMS));
+			INFO_MSG(fmt::format("\tactorBufferMax : {}\n", info.routerActorBufferMax));
+			INFO_MSG(fmt::format("\tpendingTimeout : {}\n", info.routerPendingTimeoutMS));
+			INFO_MSG(fmt::format("\tpendingBufferMax : {}\n", info.routerPendingBufferMax));
+
+			infostr += "server-configs:\n";
+			infostr += (fmt::format("\tinternalTcpAddr : {}\n", internalTcpAddr.c_str()));
+			infostr += (fmt::format("\tcomponentID : {}\n", info.componentID));
+			infostr += (fmt::format("\tclientPort : {}\n", info.routerClientPort));
+			infostr += (fmt::format("\tserverPort : {}\n", info.routerServerPort));
 		}
 	}
 	else if (componentType == INTERFACES_TYPE)

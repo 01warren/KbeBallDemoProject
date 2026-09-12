@@ -32,7 +32,7 @@ class Channel;
 
 class Entity : public script::ScriptObject
 {
-	/** ×ÓÀà»¯ ½«Ò»Ğ©py²Ù×÷Ìî³ä½øÅÉÉúÀà */
+	/** å­ç±»åŒ– å°†ä¸€äº›pyæ“ä½œå¡«å……è¿›æ´¾ç”Ÿç±» */
 	BASE_SCRIPT_HREADER(Entity, ScriptObject)
 	ENTITY_HEADER(Entity)
 public:
@@ -41,33 +41,33 @@ public:
 	~Entity();
 
 	/** 
-		ÊÇ·ñ´æ´¢Êı¾İ¿â 
+		æ˜¯å¦å­˜å‚¨æ•°æ®åº“ 
 	*/
 	INLINE bool hasDB() const;
 	INLINE void hasDB(bool has);
 
 	/** 
-		Êı¾İ¿â¹ØÁªID
+		æ•°æ®åº“å…³è”ID
 	*/
 	INLINE DBID dbid() const;
 	INLINE void dbid(uint16 dbInterfaceIndex, DBID id);
 	DECLARE_PY_GET_MOTHOD(pyGetDBID);
 
 	/**
-	Êı¾İ¿â¹ØÁªÃû³Æ
+	æ•°æ®åº“å…³è”åç§°
 	*/
 	INLINE uint16 dbInterfaceIndex() const;
 	DECLARE_PY_GET_MOTHOD(pyGetDBInterfaceName);
 
 	/** 
-		Ïú»Ùcell²¿·ÖµÄÊµÌå 
+		é”€æ¯celléƒ¨åˆ†çš„å®ä½“ 
 	*/
 	bool destroyCellEntity(void);
 
 	DECLARE_PY_MOTHOD_ARG0(pyDestroyCellEntity);
 	
 	/** 
-		½Å±¾»ñÈ¡entityCall 
+		è„šæœ¬è·å–entityCall 
 	*/
 	DECLARE_PY_GET_MOTHOD(pyGetCellEntityCall);
 
@@ -76,7 +76,7 @@ public:
 	void cellEntityCall(EntityCall* entityCall);
 	
 	/** 
-		½Å±¾»ñÈ¡entityCall 
+		è„šæœ¬è·å–entityCall 
 	*/
 	DECLARE_PY_GET_MOTHOD(pyGetClientEntityCall);
 
@@ -85,12 +85,12 @@ public:
 	void clientEntityCall(EntityCall* entityCall);
 
 	/**
-		ÊÇ·ñ´´½¨¹ıspace
+		æ˜¯å¦åˆ›å»ºè¿‡space
 	*/
 	INLINE bool isCreatedSpace();
 
 	/** 
-		cellData²¿·Ö 
+		cellDataéƒ¨åˆ† 
 	*/
 	bool installCellDataAttr(PyObject* dictData = NULL, bool installpy = true);
 
@@ -107,142 +107,148 @@ public:
 	INLINE bool creatingCell(void) const;
 
 	/**
-		ÇëÇócell²¿·Ö½«entityµÄcelldata¸üĞÂÒ»·İ¹ıÀ´
+		è¯·æ±‚celléƒ¨åˆ†å°†entityçš„celldataæ›´æ–°ä¸€ä»½è¿‡æ¥
 	*/
 	void reqBackupCellData();
 	
 	/** 
-		Ğ´±¸·İĞÅÏ¢µ½Á÷
+		å†™å¤‡ä»½ä¿¡æ¯åˆ°æµ
 	*/
 	void writeBackupData(MemoryStream* s);
 	void onBackup();
 
 	/** 
-		Ğ´´æµµĞÅÏ¢µ½Á÷
+		å†™å­˜æ¡£ä¿¡æ¯åˆ°æµ
 	*/
 	void writeArchiveData(MemoryStream* s);
 
 	/** 
-		½«Òª±£´æµ½Êı¾İ¿âÖ®Ç°µÄÍ¨Öª 
+		å°†è¦ä¿å­˜åˆ°æ•°æ®åº“ä¹‹å‰çš„é€šçŸ¥ 
 	*/
 	void onWriteToDB();
 	void onCellWriteToDBCompleted(CALLBACK_ID callbackID, int8 shouldAutoLoad, int dbInterfaceIndex);
 	void onWriteToDBCallback(ENTITY_ID eid, DBID entityDBID, uint16 dbInterfaceIndex,
 		CALLBACK_ID callbackID, int8 shouldAutoLoad, bool success);
 
-	/** ÍøÂç½Ó¿Ú
-		entityµÚÒ»´ÎĞ´Êı¾İ¿âÓÉdbmgr·µ»ØµÄdbid
+	/** ç½‘ç»œæ¥å£
+		entityç¬¬ä¸€æ¬¡å†™æ•°æ®åº“ç”±dbmgrè¿”å›çš„dbid
 	*/
 	void onGetDBID(Network::Channel* pChannel, DBID dbid);
 
 	/** 
-		´´½¨cellÊ§°Ü»Øµ÷ 
+		åˆ›å»ºcellå¤±è´¥å›è°ƒ 
 	*/
 	void onCreateCellFailure(void);
 
 	/** 
-		´´½¨cell³É¹¦»Øµ÷ 
+		åˆ›å»ºcellæˆåŠŸå›è°ƒ 
 	*/
 	void onGetCell(Network::Channel* pChannel, COMPONENT_ID componentID);
 
 	/** 
-		¶ªÊ§cellÁËµÄÍ¨Öª 
+		ä¸¢å¤±celläº†çš„é€šçŸ¥ 
 	*/
 	void onLoseCell(Network::Channel* pChannel, MemoryStream& s);
 
 	/** 
-		µ±cellappÒâÍâÖÕÖ¹ºó£¬ baseappÈç¹ûÄÜÕÒµ½ºÏÊÊµÄcellappÔò½«Æä»Ö¸´ºó
-		»áµ÷ÓÃ´Ë·½·¨
+		å½“cellappæ„å¤–ç»ˆæ­¢åï¼Œ baseappå¦‚æœèƒ½æ‰¾åˆ°åˆé€‚çš„cellappåˆ™å°†å…¶æ¢å¤å
+		ä¼šè°ƒç”¨æ­¤æ–¹æ³•
 	*/
 	void onRestore();
 
 	/** 
-		±¸·İcellÊı¾İ
+		å¤‡ä»½cellæ•°æ®
 	*/
 	void onBackupCellData(Network::Channel* pChannel, MemoryStream& s);
 
 	/** 
-		¿Í»§¶Ë¶ªÊ§ 
+		å®¢æˆ·ç«¯ä¸¢å¤± 
 	*/
 	void onClientDeath();
 
-	/** ÍøÂç½Ó¿Ú
-		Ô¶³Ìºô½Ğ±¾entityµÄ·½·¨ 
+	/** ç½‘ç»œæ¥å£
+		è¿œç¨‹å‘¼å«æœ¬entityçš„æ–¹æ³• 
 	*/
-	void onRemoteMethodCall(Network::Channel* pChannel, MemoryStream& s);
+	/**
+		@param fromExternal: Router æ¨¡å¼ä¸‹æ²¡æœ‰ Channelï¼Œç”±æ´¾å‘æ–¹æ˜¾å¼å£°æ˜è°ƒç”¨æ¥è‡ªå®¢æˆ·ç«¯(å¤–éƒ¨)ã€‚
+		@param externalSrcEntityID: å½“ fromExternal ä¸º true ä¸”æ—  Channel æ—¶ï¼Œè°ƒç”¨æ–¹çš„å®ä½“ id
+			(å–è‡ª Mail.src)ã€‚è€è·¯å¾„ä¸‹ç”± pChannel->proxyID() å¾—åˆ°ï¼ŒäºŒè€…è¯­ä¹‰ä¸€è‡´ã€‚
+	*/
+	void onRemoteMethodCall(Network::Channel* pChannel, MemoryStream& s,
+		bool fromExternal = false, ENTITY_ID externalSrcEntityID = 0);
 
 	/** 
-		Ïú»ÙÕâ¸öentity 
+		é”€æ¯è¿™ä¸ªentity 
 	*/
 	void onDestroy(bool callScript);
 
 	/**
-		Ïú»ÙbaseÄÚ²¿Í¨Öª
+		é”€æ¯baseå†…éƒ¨é€šçŸ¥
 	*/
 	void onDestroyEntity(bool deleteFromDB, bool writeToDB);
 
 	/** 
-		ÎªÒ»¸öbaseEntityÔÚÖ¸¶¨µÄcellÉÏ´´½¨Ò»¸öcellEntity 
+		ä¸ºä¸€ä¸ªbaseEntityåœ¨æŒ‡å®šçš„cellä¸Šåˆ›å»ºä¸€ä¸ªcellEntity 
 	*/
 	DECLARE_PY_MOTHOD_ARG1(createCellEntity, PyObject_ptr);
 	
 	/** 
-		ÎªÒ»¸öbaseEntityÔÚÖ¸¶¨µÄcellÉÏ»¹Ô­Ò»¸öcellEntity 
+		ä¸ºä¸€ä¸ªbaseEntityåœ¨æŒ‡å®šçš„cellä¸Šè¿˜åŸä¸€ä¸ªcellEntity 
 	*/
 	void restoreCell(EntityCallAbstract* cellEntityCall);
 	INLINE bool inRestore();
 
 	/** 
-		´´½¨Ò»¸öcellEntityÔÚÒ»¸öĞÂµÄspaceÉÏ 
+		åˆ›å»ºä¸€ä¸ªcellEntityåœ¨ä¸€ä¸ªæ–°çš„spaceä¸Š 
 	*/
 	DECLARE_PY_MOTHOD_ARG1(createCellEntityInNewSpace, PyObject_ptr);
 
-	/** ÍøÂç½Ó¿Ú
-		¿Í»§¶ËÖ±½Ó·¢ËÍÏûÏ¢¸øcellÊµÌå
+	/** ç½‘ç»œæ¥å£
+		å®¢æˆ·ç«¯ç›´æ¥å‘é€æ¶ˆæ¯ç»™cellå®ä½“
 	*/
 	void forwardEntityMessageToCellappFromClient(Network::Channel* pChannel, MemoryStream& s);
 	
 	/**
-		·¢ËÍÏûÏ¢µ½cellappÉÏ
+		å‘é€æ¶ˆæ¯åˆ°cellappä¸Š
 	*/
 	void sendToCellapp(Network::Bundle* pBundle);
 	void sendToCellapp(Network::Channel* pChannel, Network::Bundle* pBundle);
 
 	/**
-		´«ËÍ»Øµ÷
+		ä¼ é€å›è°ƒ
 	*/
 	void onTeleportCB(Network::Channel* pChannel, SPACE_ID spaceID, bool fromCellTeleport);  
 	void onTeleportFailure();  
 	void onTeleportSuccess(SPACE_ID spaceID);
 
-	/** ÍøÂç½Ó¿Ú
-		entityÇëÇóÇ¨ÒÆµ½ÁíÒ»¸öcellappÉÏµÄ¹ı³Ì¿ªÊ¼ºÍ½áÊø¡£
+	/** ç½‘ç»œæ¥å£
+		entityè¯·æ±‚è¿ç§»åˆ°å¦ä¸€ä¸ªcellappä¸Šçš„è¿‡ç¨‹å¼€å§‹å’Œç»“æŸã€‚
 	*/
 	void onMigrationCellappStart(Network::Channel* pChannel, COMPONENT_ID sourceCellAppID, COMPONENT_ID targetCellAppID);
 	void onMigrationCellappEnd(Network::Channel* pChannel, COMPONENT_ID sourceCellAppID, COMPONENT_ID targetCellAppID);
 	void onMigrationCellappOver(COMPONENT_ID targetCellAppID);
 	
 	/**
-		ÉèÖÃ»ñÈ¡ÊÇ·ñ×Ô¶¯´æµµ
+		è®¾ç½®è·å–æ˜¯å¦è‡ªåŠ¨å­˜æ¡£
 	*/
 	INLINE int8 shouldAutoArchive() const;
 	INLINE void shouldAutoArchive(int8 v);
 	DECLARE_PY_GETSET_MOTHOD(pyGetShouldAutoArchive, pySetShouldAutoArchive);
 
 	/**
-		ÉèÖÃ»ñÈ¡ÊÇ·ñ×Ô¶¯±¸·İ
+		è®¾ç½®è·å–æ˜¯å¦è‡ªåŠ¨å¤‡ä»½
 	*/
 	INLINE int8 shouldAutoBackup() const;
 	INLINE void shouldAutoBackup(int8 v);
 	DECLARE_PY_GETSET_MOTHOD(pyGetShouldAutoBackup, pySetShouldAutoBackup);
 
 	/**
-		cellappå´ÁË
+		cellappå®•äº†
 	*/
 	void onCellAppDeath();
 
 	/** 
-		×ª·¢ÏûÏ¢Íê³É 
+		è½¬å‘æ¶ˆæ¯å®Œæˆ 
 	*/
 	void onBufferedForwardToCellappMessagesOver();
 	void onBufferedForwardToClientMessagesOver();
@@ -250,66 +256,66 @@ public:
 	INLINE BaseMessagesForwardClientHandler* pBufferedSendToClientMessages();
 	
 	/** 
-		ÉèÖÃÊµÌå³Ö¾Ã»¯Êı¾İÊÇ·ñÒÑÔà£¬ÔàÁË»á×Ô¶¯´æµµ 
+		è®¾ç½®å®ä½“æŒä¹…åŒ–æ•°æ®æ˜¯å¦å·²è„ï¼Œè„äº†ä¼šè‡ªåŠ¨å­˜æ¡£ 
 	*/
 	INLINE void setDirty(uint32* digest = NULL);
 	INLINE bool isDirty() const;
 	
 protected:
 	/** 
-		¶¨ÒåÊôĞÔÊı¾İ±»¸Ä±äÁË 
+		å®šä¹‰å±æ€§æ•°æ®è¢«æ”¹å˜äº† 
 	*/
 	void onDefDataChanged(EntityComponent* pEntityComponent, const PropertyDescription* propertyDescription,
 			PyObject* pyData);
 
 	/**
-		´Ódb²Á³ıÔÚÏßlog
+		ä»dbæ“¦é™¤åœ¨çº¿log
 	*/
 	void eraseEntityLog();
 
 protected:
-	// Õâ¸öentityµÄ¿Í»§¶ËentityCall cellapp entityCall
+	// è¿™ä¸ªentityçš„å®¢æˆ·ç«¯entityCall cellapp entityCall
 	EntityCall*								clientEntityCall_;
 	EntityCall*								cellEntityCall_;
 
-	// entity´´½¨ºó£¬ÔÚcell²¿·ÖÎ´´´½¨Ê±£¬½«Ò»Ğ©cellÊôĞÔÊı¾İ±£´æÔÚÕâÀï
+	// entityåˆ›å»ºåï¼Œåœ¨celléƒ¨åˆ†æœªåˆ›å»ºæ—¶ï¼Œå°†ä¸€äº›cellå±æ€§æ•°æ®ä¿å­˜åœ¨è¿™é‡Œ
 	PyObject*								cellDataDict_;
 
-	// ÊÇ·ñÊÇ´æ´¢µ½Êı¾İ¿âÖĞµÄentity
+	// æ˜¯å¦æ˜¯å­˜å‚¨åˆ°æ•°æ®åº“ä¸­çš„entity
 	bool									hasDB_;
 	DBID									DBID_;
 
-	// ÊÇ·ñÕıÔÚ»ñÈ¡celldataÖĞ
+	// æ˜¯å¦æ­£åœ¨è·å–celldataä¸­
 	bool									isGetingCellData_;
 
-	// ÊÇ·ñÕıÔÚ´æµµÖĞ
+	// æ˜¯å¦æ­£åœ¨å­˜æ¡£ä¸­
 	bool									isArchiveing_;
 
-	// ÊÇ·ñ½øĞĞ×Ô¶¯´æµµ <= 0Îªfalse, 1Îªtrue, KBE_NEXT_ONLYÎªÖ´ĞĞÒ»´Îºó×Ô¶¯Îªfalse
+	// æ˜¯å¦è¿›è¡Œè‡ªåŠ¨å­˜æ¡£ <= 0ä¸ºfalse, 1ä¸ºtrue, KBE_NEXT_ONLYä¸ºæ‰§è¡Œä¸€æ¬¡åè‡ªåŠ¨ä¸ºfalse
 	int8									shouldAutoArchive_;
 	
-	// ÊÇ·ñ½øĞĞ×Ô¶¯±¸·İ <= 0Îªfalse, 1Îªtrue, KBE_NEXT_ONLYÎªÖ´ĞĞÒ»´Îºó×Ô¶¯Îªfalse
+	// æ˜¯å¦è¿›è¡Œè‡ªåŠ¨å¤‡ä»½ <= 0ä¸ºfalse, 1ä¸ºtrue, KBE_NEXT_ONLYä¸ºæ‰§è¡Œä¸€æ¬¡åè‡ªåŠ¨ä¸ºfalse
 	int8									shouldAutoBackup_;
 
-	// ÊÇ·ñÕıÔÚ´´½¨cellÖĞ
+	// æ˜¯å¦æ­£åœ¨åˆ›å»ºcellä¸­
 	bool									creatingCell_;
 
-	// ÊÇ·ñÒÑ¾­´´½¨ÁËÒ»¸öspace
+	// æ˜¯å¦å·²ç»åˆ›å»ºäº†ä¸€ä¸ªspace
 	bool									createdSpace_;
 
-	// ÊÇ·ñÕıÔÚ»Ö¸´
+	// æ˜¯å¦æ­£åœ¨æ¢å¤
 	bool									inRestore_;
 	
-	// Èç¹û´ËÊ±ÊµÌå»¹Ã»ÓĞ±»ÉèÖÃÎªENTITY_FLAGS_TELEPORT_START,  ËµÃ÷onMigrationCellappArrived°üÓÅÏÈÓÚ
-	// onMigrationCellappStartµ½´ï(Ä³Ğ©Ñ¹Á¦ËùÖÂµÄÇé¿öÏÂ»áµ¼ÖÂÊµÌå¿ç½ø³ÌÌø×ªÊ±£¨ÓÉcell1Ìø×ªµ½cell2£©£¬
-	// Ìø×ªÇ°Ëù²úÉúµÄ°ü»á±Ècell2µÄenterSpace°üÂıµ½´ï)£¬Òò´Ë·¢ÉúÕâÖÖÇé¿öÊ±ĞèÒª½«cell2µÄ°üÏÈ»º´æ
-	// µÈcell1µÄ°üµ½´ïºóÖ´ĞĞÍê±ÏÔÙÖ´ĞĞcell2µÄ°ü
+	// å¦‚æœæ­¤æ—¶å®ä½“è¿˜æ²¡æœ‰è¢«è®¾ç½®ä¸ºENTITY_FLAGS_TELEPORT_START,  è¯´æ˜onMigrationCellappArrivedåŒ…ä¼˜å…ˆäº
+	// onMigrationCellappStartåˆ°è¾¾(æŸäº›å‹åŠ›æ‰€è‡´çš„æƒ…å†µä¸‹ä¼šå¯¼è‡´å®ä½“è·¨è¿›ç¨‹è·³è½¬æ—¶ï¼ˆç”±cell1è·³è½¬åˆ°cell2ï¼‰ï¼Œ
+	// è·³è½¬å‰æ‰€äº§ç”Ÿçš„åŒ…ä¼šæ¯”cell2çš„enterSpaceåŒ…æ…¢åˆ°è¾¾)ï¼Œå› æ­¤å‘ç”Ÿè¿™ç§æƒ…å†µæ—¶éœ€è¦å°†cell2çš„åŒ…å…ˆç¼“å­˜
+	// ç­‰cell1çš„åŒ…åˆ°è¾¾åæ‰§è¡Œå®Œæ¯•å†æ‰§è¡Œcell2çš„åŒ…
 	BaseMessagesForwardClientHandler*		pBufferedSendToClientMessages_;
 	
-	// ĞèÒª³Ö¾Ã»¯µÄÊı¾İÊÇ·ñ±äÔà£¨ÄÚ´æsha1£©£¬Èç¹ûÃ»ÓĞ±äÔà²»ĞèÒª³Ö¾Ã»¯
+	// éœ€è¦æŒä¹…åŒ–çš„æ•°æ®æ˜¯å¦å˜è„ï¼ˆå†…å­˜sha1ï¼‰ï¼Œå¦‚æœæ²¡æœ‰å˜è„ä¸éœ€è¦æŒä¹…åŒ–
 	uint32									persistentDigest_[5];
 
-	// Èç¹ûÕâ¸öÊµÌåÒÑ¾­Ğ´µ½Êı¾İ¿â£¬ÄÇÃ´Õâ¸öÊôĞÔ¾ÍÊÇ¶ÔÓ¦µÄÊı¾İ¿â½Ó¿ÚµÄË÷Òı
+	// å¦‚æœè¿™ä¸ªå®ä½“å·²ç»å†™åˆ°æ•°æ®åº“ï¼Œé‚£ä¹ˆè¿™ä¸ªå±æ€§å°±æ˜¯å¯¹åº”çš„æ•°æ®åº“æ¥å£çš„ç´¢å¼•
 	uint16									dbInterfaceIndex_;
 };
 

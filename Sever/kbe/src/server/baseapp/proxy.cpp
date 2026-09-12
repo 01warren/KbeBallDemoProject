@@ -8,6 +8,7 @@
 #include "client_lib/client_interface.h"
 #include "network/fixed_messages.h"
 #include "network/channel.h"
+#include "server/router_mail.h"
 
 #include "../../server/cellapp/cellapp_interface.h"
 #include "../../server/dbmgr/dbmgr_interface.h"
@@ -63,6 +64,19 @@ Proxy::~Proxy()
 {
 	Baseapp::getSingleton().decProxicesCount();
 	kick();
+
+	// Router 模式下必须在实体销毁时注销 client Actor，
+	// 否则 router 路由表会残留指向已死 proxyId 的映射。
+	if(RouterMail::isEnabled())
+		Baseapp::getSingleton().unbindClientProxyActor(this->id());
+
+	// 释放尚未 flush 的 Bundle(kick() 未能 flush 时的兜底)，避免内存池泄漏
+	for(Bundles::const_iterator iter = routerBundles_.begin(); iter != routerBundles_.end(); ++iter)
+	{
+		Network::Bundle::reclaimPoolObject(*iter);
+	}
+
+	routerBundles_.clear();
 	SAFE_RELEASE(pProxyForwarder_);
 }
 
@@ -81,7 +95,23 @@ PyObject* Proxy::pyDisconnect()
 //-------------------------------------------------------------------------------------
 void Proxy::kick()
 {
-	// ���������Ƶ����Ȼ�������ر�
+	// Router 模式：客户端不直连 baseapp，没有可 condemn 的 Channel。
+	// 改为经 Router 推一条 onKicked 给客户端，再注销 client Actor；
+	// 客户端收到 onKicked 后自行断开与 Router 的连接。
+	if(RouterMail::isEnabled())
+	{
+		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
+		(*pBundle).newMessage(ClientInterface::onKicked);
+		ClientInterface::onKickedArgs1::staticAddToBundle(*pBundle, SERVER_ERR_PROXY_DESTROYED);
+
+		this->sendToClient(ClientInterface::onKicked, pBundle);
+		this->sendToClient();
+
+		Baseapp::getSingleton().unbindClientProxyActor(this->id());
+		return;
+	}
+
+	// 如果被销毁频道仍然存活则将其关闭
 	Network::Channel* pChannel = Baseapp::getSingleton().networkInterface().findChannel(addr_);
 	if(pChannel && !pChannel->isDestroyed())
 	{
@@ -149,7 +179,7 @@ void Proxy::initClientCellPropertys()
 
 	MemoryStream* s = MemoryStream::createPoolObject(OBJECTPOOL_POINT);
 
-	// celldata��ȡ�ͻ��˸���Ȥ�����ݳ�ʼ���ͻ��� ��:ALL_CLIENTS
+	// celldata获取客户端感兴趣的数据初始化客户端 如:ALL_CLIENTS
 	try
 	{
 		addCellDataToStream(CLIENT_TYPE, ED_FLAG_ALL_CLIENTS|ED_FLAG_CELL_PUBLIC_AND_OWN|ED_FLAG_OWN_CLIENT, s, true);
@@ -234,13 +264,27 @@ void Proxy::onClientDeath(void)
 	addr(Network::Address::NONE);
 
 	clientEnabled_ = false;
+
+	// Router 模式：客户端断线，注销其 client Actor 并丢弃未发送的 Bundle
+	if(RouterMail::isEnabled())
+	{
+		Baseapp::getSingleton().unbindClientProxyActor(this->id());
+
+		for(Bundles::const_iterator iter = routerBundles_.begin(); iter != routerBundles_.end(); ++iter)
+		{
+			Network::Bundle::reclaimPoolObject(*iter);
+		}
+
+		routerBundles_.clear();
+	}
+
 	CALL_ENTITY_AND_COMPONENTS_METHOD(this, SCRIPT_OBJECT_CALL_ARGS0(pyTempObj, const_cast<char*>("onClientDeath"), GETERR));
 }
 
 //-------------------------------------------------------------------------------------
 void Proxy::onClientGetCell(Network::Channel* pChannel, COMPONENT_ID componentID)
 {	
-	// �ص����ű��������cell
+	// 回调给脚本，获得了cell
 	if(cellEntityCall_ == NULL)
 		cellEntityCall_ = new EntityCall(pScriptModule_, NULL, componentID, id_, ENTITYCALL_TYPE_CELL);
 
@@ -291,7 +335,7 @@ PyObject* Proxy::pyGiveClientTo(PyObject* pyOterProxy)
 		return 0;
 	}
 
-	// ���ΪNone ������ΪNULL
+	// 如果为None 则设置为NULL
 	Proxy* oterProxy = NULL;
 	if(pyOterProxy != Py_None)
 		oterProxy = static_cast<Proxy*>(pyOterProxy);
@@ -376,22 +420,22 @@ void Proxy::giveClientTo(Proxy* proxy)
 
 		if(cellEntityCall())
 		{
-			// ��ǰ���entity�����cell��˵���Ѿ�����witness�� ��ô��Ȼ���ǽ�����Ȩ
-			// ����������һ��entity�� ���entity��Ҫ���witness��
-			// ֪ͨcell��ʧwitness
+			// 当前这个entity如果有cell，说明已经绑定了witness， 那么既然我们将控制权
+			// 交换给了另一个entity， 这个entity需要解绑定witness。
+			// 通知cell丢失witness
 			Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 			(*pBundle).newMessage(CellappInterface::onLoseWitness);
 			(*pBundle) << this->id();
 			sendToCellapp(pBundle);
 		}
 
-		// ��Ȼ�ͻ���ʧȥ����Ŀ���, ��ô֪ͨclient�������entity
+		// 既然客户端失去对其的控制, 那么通知client销毁这个entity
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		(*pBundle).newMessage(ClientInterface::onEntityDestroyed);
 		(*pBundle) << this->id();
 		sendToClient(ClientInterface::onEntityDestroyed, pBundle);
 
-		// ������Ȩ����
+		// 将控制权交换
 		clientEnabled_ = false;
 		clientEntityCall()->addr(Network::Address::NONE);
 		Py_DECREF(clientEntityCall());
@@ -400,6 +444,12 @@ void Proxy::giveClientTo(Proxy* proxy)
 		this->setClientType(UNKNOWN_CLIENT_COMPONENT_TYPE);
 		this->setLoginDatas("");
 		clientEntityCall(NULL);
+
+		// Router 模式：客户端 Actor 的所有权转移给目标 proxy。
+		// 先注销本实体，目标 proxy 的绑定由登录/转移流程以同一个 router connId 重新注册。
+		if(RouterMail::isEnabled())
+			Baseapp::getSingleton().unbindClientProxyActor(this->id());
+
 		proxy->onGiveClientTo(lpChannel);
 		addr(Network::Address::NONE);
 	}
@@ -414,8 +464,8 @@ void Proxy::onGiveClientTo(Network::Channel* lpChannel)
 	addr(lpChannel->addr());
 	Baseapp::getSingleton().createClientProxies(this);
 
-	// �����cell, ��Ҫ֪ͨ����witness�� ��Ϊ����ͻ��˸ոհ󶨵����proxy
-	// ��ʱ���entity��ʹ��cell�������������û��witness�ġ�
+	// 如果有cell, 需要通知其获得witness， 因为这个客户端刚刚绑定到这个proxy
+	// 此时这个entity即使有cell正常情况必须是没有witness的。
 	onGetWitness();
 }
 
@@ -424,7 +474,7 @@ void Proxy::onGetWitness()
 {
 	if(cellEntityCall())
 	{
-		// ֪ͨcell��ÿͻ���
+		// 通知cell获得客户端
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		(*pBundle).newMessage(CellappInterface::onGetWitnessFromBase);
 		(*pBundle) << this->id();
@@ -482,7 +532,15 @@ PyObject* Proxy::pyGetTimeSinceHeardFromClient()
 //-------------------------------------------------------------------------------------
 bool Proxy::hasClient() const
 {
-	if(clientEntityCall() == NULL || clientEntityCall()->getChannel() == NULL || 
+	if(clientEntityCall() == NULL)
+		return false;
+
+	// Router 模式：客户端连接由 Router 持有，baseapp 侧没有 Channel，
+	// 只要 clientEntityCall 存在即表示客户端已绑定到本 proxy。
+	if(RouterMail::isEnabled())
+		return true;
+
+	if(clientEntityCall()->getChannel() == NULL || 
 		clientEntityCall()->getChannel()->pEndPoint() == NULL)
 		return false;
 
@@ -758,6 +816,16 @@ bool Proxy::pushBundle(Network::Bundle* pBundle)
 	if(!clientEntityCall())
 		return false;
 
+	// Router 模式：客户端不与 baseapp 直连，把 Bundle 暂存在 proxy 本地，
+	// 由 sendToClient(bool) 统一拍平成 Mail 经 Router 投递。
+	// 仍然走"入队 -> flush"两步，以保留原有的发包节流(proxy_forwarder)语义。
+	if(RouterMail::isEnabled())
+	{
+		pBundle->finiMessage(true);
+		routerBundles_.push_back(pBundle);
+		return true;
+	}
+
 	Network::Channel* pChannel = clientEntityCall()->getChannel();
 	if(!pChannel)
 		return false;
@@ -767,7 +835,7 @@ bool Proxy::pushBundle(Network::Bundle* pBundle)
 	pChannel->pushBundle(pBundle);
 
 	{
-		// ������ݴ�������������ȥ���ᱨ��
+		// 如果数据大量阻塞发不出去将会报警
 		//AUTO_SCOPED_PROFILE("pushBundleAndSendToClient");
 		//pChannel->send(pBundle);
 	}
@@ -803,6 +871,42 @@ bool Proxy::sendToClient(bool expectData)
 	if(!clientEntityCall())
 		return false;
 
+	// Router 模式：把本地缓存的 Bundle 逐条拍平后经 Router 投给本实体的 client Actor。
+	// 至此"baseapp -> client"彻底不再经过 Channel。
+	if(RouterMail::isEnabled())
+	{
+		if(routerBundles_.empty())
+		{
+			if(expectData)
+				WARNING_MSG("Proxy::sendToClient: no data!\n");
+
+			return !expectData;
+		}
+
+		AUTO_SCOPED_PROFILE("sendToClient");
+
+		bool allOk = true;
+		Bundles::iterator iter = routerBundles_.begin();
+
+		for(; iter != routerBundles_.end(); ++iter)
+		{
+			Network::Bundle* pBundle = (*iter);
+
+			if(pBundle == NULL)
+				continue;
+
+			const std::string body = RouterMail::bundleToBody(*pBundle);
+
+			if(!Baseapp::getSingleton().sendMailToClientActor(this->id(), body))
+				allOk = false;
+
+			Network::Bundle::reclaimPoolObject(pBundle);
+		}
+
+		routerBundles_.clear();
+		return allOk;
+	}
+
 	Network::Channel* pChannel = clientEntityCall()->getChannel();
 	if(!pChannel)
 		return false;
@@ -817,7 +921,7 @@ bool Proxy::sendToClient(bool expectData)
 	}
 
 	{
-		// ������ݴ�������������ȥ���ᱨ��
+		// 如果数据大量阻塞发不出去将会报警
 		AUTO_SCOPED_PROFILE("sendToClient");
 		pChannel->send();
 	}

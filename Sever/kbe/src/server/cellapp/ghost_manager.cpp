@@ -5,6 +5,7 @@
 #include "entitydef/scriptdef_module.h"
 #include "network/bundle.h"
 #include "network/channel.h"
+#include "server/router_mail.h"
 
 namespace KBEngine{	
 
@@ -44,7 +45,7 @@ Network::Bundle* GhostManager::createSendBundle(COMPONENT_ID componentID)
 			Network::Bundle* pBundle = iter->second.back();
 			if (pBundle->packetHaveSpace())
 			{
-				// �ȴӶ���ɾ��
+				// 先从队列删除
 				iter->second.pop_back();
 				pBundle->pChannel(NULL);
 				pBundle->pCurrMsgHandler(NULL);
@@ -141,6 +142,29 @@ void GhostManager::syncMessages()
 	std::map<COMPONENT_ID, std::vector< Network::Bundle* > >::iterator iter = messages_.begin();
 	for(; iter != messages_.end(); ++iter)
 	{
+		// Router 模式：把每个待发 Bundle 原样投递给目标 cellapp 的**组件 Actor**，
+		// 由对端 onRouterMail(BODY_COMPONENT_MESSAGE) 按 msgId 派发回原来的
+		// CellappInterface handler。这样 ghost 属性同步 / 远程调用 / volatile 数据 /
+		// 销毁通知 等全部高频路径一次性收敛到 Router，各调用点无需逐个改动。
+		//
+		// 目标 cellapp 尚未注册(正在启动/重连)时由 router 的待定缓冲兜底，
+		// 因此这里不再需要 Components 直连通道，也不应再报 "not found cellapp"。
+		if(RouterMail::isEnabled())
+		{
+			const RouterInterface::MailboxAddress dst =
+				RouterMail::componentMailbox(iter->first, CELLAPP_TYPE);
+
+			std::vector< Network::Bundle* >::iterator iter1 = iter->second.begin();
+			for(; iter1 != iter->second.end(); ++iter1)
+			{
+				// sendMailToComponent 内部会 finiMessage/拍平/投递并回收 Bundle
+				Cellapp::getSingleton().sendMailToComponent(dst, (*iter1));
+			}
+
+			iter->second.clear();
+			continue;
+		}
+
 		Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(iter->first);
 		std::vector< Network::Bundle* >::iterator iter1 = iter->second.begin();
 
@@ -157,7 +181,7 @@ void GhostManager::syncMessages()
 
 		for(; iter1 != iter->second.end(); ++iter1)
 		{
-			// ����Ϣͬ����ghost
+			// 将消息同步到ghost
 			cinfos->pChannel->send((*iter1));
 		}
 			
@@ -176,13 +200,20 @@ void GhostManager::syncGhosts()
 		COMPONENT_ID ghostCell = iter->second->ghostCell();
 		if(ghostCell > 0)
 		{
-			// ��λ�õ���Ϣͬ����ghost
-			Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(ghostCell);
-			if(cinfos == NULL || cinfos->pChannel == NULL)
+			// 将位置等信息同步到ghost
+			//
+			// Router 模式下投递不再依赖 Components 直连通道(真正的同步由
+			// syncMessages() 经 router 发出，失败由 router 回 DELIVERY_* 暴露)，
+			// 因此这里只保留 ghost 路由登记，不再因"找不到 cellapp 通道"而报错。
+			if(!RouterMail::isEnabled())
 			{
-				ERROR_MSG(fmt::format("GhostManager::syncGhosts: not found cellapp({})!\n", iter->first));
-				++iter;
-				continue;
+				Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(ghostCell);
+				if(cinfos == NULL || cinfos->pChannel == NULL)
+				{
+					ERROR_MSG(fmt::format("GhostManager::syncGhosts: not found cellapp({})!\n", iter->first));
+					++iter;
+					continue;
+				}
 			}
 
 			++iter;

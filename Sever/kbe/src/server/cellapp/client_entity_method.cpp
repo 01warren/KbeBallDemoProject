@@ -7,6 +7,7 @@
 #include "network/bundle.h"
 #include "helper/eventhistory_stats.h"
 #include "network/network_stats.h"
+#include "server/router_mail.h"
 
 #include "client_lib/client_interface.h"
 #include "../../server/baseapp/baseapp_interface.h"
@@ -86,8 +87,10 @@ PyObject* ClientEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 		return 0;
 	}
 
+	// Router æ¨¡å¼ä¸‹å®¢æˆ·ç«¯ä¸å†ä¸Ž cellapp ç›´è¿ž(pChannel æ’ä¸º NULL)ï¼Œ
+	// æ­¤æ—¶ä¸è§†ä¸ºé”™è¯¯ï¼ŒåŽç»­ç» Router ç›´æŠ• client Actorã€‚
 	Network::Channel* pChannel = srcEntity->pWitness()->pChannel();
-	if(!pChannel)
+	if(!pChannel && !RouterMail::isEnabled())
 	{
 		PyErr_Format(PyExc_AssertionError, "%s::clientEntity(%s): no client, srcEntityID(%d).\n",
 			srcEntity->scriptName(), methodDescription_->getName(), srcEntity->id());		
@@ -114,7 +117,7 @@ PyObject* ClientEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 	{
 		MemoryStream* mstream = MemoryStream::createPoolObject(OBJECTPOOL_POINT);
 
-		// Èç¹ûÊÇ¹ã²¥¸ø×é¼þµÄÏûÏ¢
+		// å¦‚æžœæ˜¯å¹¿æ’­ç»™ç»„ä»¶çš„æ¶ˆæ¯
 		if (pComponentPropertyDescription_)
 		{
 			if (pScriptModule_->usePropertyDescrAlias())
@@ -144,7 +147,8 @@ PyObject* ClientEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 			S_Return;
 		}
 
-		Network::Bundle* pSendBundle = pChannel->createSendBundle();
+		Network::Bundle* pSendBundle = (pChannel != NULL) ? pChannel->createSendBundle()
+			: Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(srcEntity->id(), (*pSendBundle));
 
 		int ialiasID = -1;
@@ -195,7 +199,7 @@ PyObject* ClientEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 
 		ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, msgHandler, viewEntityMessage);
 
-		// ¼ÇÂ¼Õâ¸öÊÂ¼þ²úÉúµÄÊý¾ÝÁ¿´óÐ¡
+		// è®°å½•è¿™ä¸ªäº‹ä»¶äº§ç”Ÿçš„æ•°æ®é‡å¤§å°
 		g_publicClientEventHistoryStats.trackEvent(srcEntity->scriptName(), 
 			(std::string(e->scriptName()) + "." + methodDescription->getName()), 
 			pSendBundle->currMsgLength(), 

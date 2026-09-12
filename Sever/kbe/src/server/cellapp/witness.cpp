@@ -9,6 +9,8 @@
 #include "network/bundle.h"
 #include "network/network_stats.h"
 #include "math/math.h"
+
+#include "server/router_mail.h"
 #include "client_lib/client_interface.h"
 
 #include "../../server/baseapp/baseapp_interface.h"
@@ -58,14 +60,14 @@ Witness::~Witness()
 void Witness::addToStream(KBEngine::MemoryStream& s)
 {
 	/**
-	 * @TODO(phw): 注释下面的原始代码，简单修正如下的问题：
-	 * 想象一下：A、B、C三个玩家互相能看见对方，那么它们的viewEntities_里面必须会互相记录着对方的entityID，
-	 * 那么假如三个玩家都在同一时间传送到另一个cellapp的地图的同一点上，
-	 * 这时三个玩家还原的时候都会为另两个玩家生成一个flags_ == ENTITYREF_FLAG_UNKONWN的EntityRef实例，
-	 * 把它们记录在自己的viewEntities_，
-	 * 但是，Witness::update()并没有针对flags_ == ENTITYREF_FLAG_UNKONWN的情况做特殊处理——把玩家entity数据发送给客户端，
-	 * 所以进入了默认的updateVolatileData()流程，
-	 * 使得客户端在没有别的玩家entity的情况下就收到了别的玩家的坐标更新的信息，导致客户端错误发生。
+	 * @TODO(phw): ???????????????????????μ?????
+	 * ??????￡?A??B??C????????????????????????????viewEntities_??????????????????entityID??
+	 * ??????????????????????????????cellapp?????????????
+	 * ????????????????????????????????????flags_ == ENTITYREF_FLAG_UNKONWN??EntityRef?????
+	 * ???????????????viewEntities_??
+	 * ?????Witness::update()????????flags_ == ENTITYREF_FLAG_UNKONWN?????????????????????entity??????????????
+	 * ?????????????updateVolatileData()?????
+	 * ???????????б?????entity?????????????????????????μ?????????????????????
 	
 	s << viewRadius_ << viewHysteresisArea_ << clientViewSize_;	
 	
@@ -79,7 +81,7 @@ void Witness::addToStream(KBEngine::MemoryStream& s)
 	}
 	*/
 
-	// 当前这么做能解决问题，但是在space多cell分割的情况下将会出现问题
+	// ??????????????????????space??cell???????????????????
 	s << viewRadius_ << viewHysteresisArea_ << (uint16)0;	
 	s << (uint32)0; // viewEntities_map_.size();
 }
@@ -121,7 +123,7 @@ void Witness::attach(Entity* pEntity)
 
 	if(g_kbeSrvConfig.getCellApp().use_coordinate_system)
 	{
-		// 初始化默认View范围
+		// ????????View??Χ
 		ENGINE_COMPONENT_INFO& ecinfo = ServerConfig::getSingleton().getCellApp();
 		setViewRadius(ecinfo.defaultViewRadius, ecinfo.defaultViewHysteresisArea);
 	}
@@ -137,7 +139,7 @@ void Witness::onAttach(Entity* pEntity)
 	lastBasePos_.z = -FLT_MAX;
 	lastBaseDir_.yaw(-FLT_MAX);
 
-	// 通知客户端enterworld
+	// ???????enterworld
 	Network::Bundle* pSendBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 	NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pEntity_->id(), (*pSendBundle));
 	
@@ -157,7 +159,11 @@ void Witness::onAttach(Entity* pEntity)
 		(*pSendBundle) << pEntity_->isOnGround();
 
 	ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, ClientInterface::onEntityEnterWorld, entityEnterWorld);
-	pEntity_->clientEntityCall()->sendCall(pSendBundle);
+
+	// Router mode: deliver to the client Actor directly, otherwise fall back
+	// to the legacy sendCall (Router disabled).
+	if(!Cellapp::getSingleton().sendBundleToClientActor(pEntity_->id(), pSendBundle))
+		pEntity_->clientEntityCall()->sendCall(pSendBundle);
 }
 
 //-------------------------------------------------------------------------------------
@@ -170,18 +176,24 @@ void Witness::detach(Entity* pEntity)
 	if(pClientMB)
 	{
 		Network::Channel* pChannel = pClientMB->getChannel();
-		if(pChannel)
-		{
-			pChannel->send();
 
-			// 通知客户端leaveworld
+		// Router mode: pChannel is always NULL here, but the leaveworld
+		// notification still has to be delivered through the router.
+		if(RouterMail::isEnabled() || pChannel)
+		{
+			if(pChannel)
+				pChannel->send();
+
+			// ???????leaveworld
 			Network::Bundle* pSendBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 			NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pEntity_->id(), (*pSendBundle));
 
 			ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pSendBundle, ClientInterface::onEntityLeaveWorld, entityLeaveWorld);
 			(*pSendBundle) << pEntity->id();
 			ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, ClientInterface::onEntityLeaveWorld, entityLeaveWorld);
-			pClientMB->sendCall(pSendBundle);
+
+			if(!Cellapp::getSingleton().sendBundleToClientActor(pEntity_->id(), pSendBundle))
+				pClientMB->sendCall(pSendBundle);
 		}
 	}
 
@@ -210,9 +222,9 @@ void Witness::clear(Entity* pEntity)
 	viewHysteresisArea_ = 5.0f;
 	clientViewSize_ = 0;
 
-	// 不需要销毁，后面还可以重用
-	// 此处销毁可能会产生错误，因为enterview过程中可能导致实体销毁
-	// 在pViewTrigger_流程没走完之前这里销毁了pViewTrigger_就crash
+	// ?????????????滹????????
+	// ?????????????????????enterview?????п?????????????
+	// ??pViewTrigger_?????????????????????pViewTrigger_??crash
 	//SAFE_RELEASE(pViewTrigger_);
 	//SAFE_RELEASE(pViewHysteresisAreaTrigger_);
 
@@ -282,9 +294,9 @@ void Witness::setViewRadius(float radius, float hyst)
 	viewRadius_ = radius;
 	viewHysteresisArea_ = hyst;
 
-	// 由于位置同步使用了相对位置压缩传输，可用范围为-512~512之间，因此超过范围将出现同步错误
-	// 这里做一个限制，如果需要过大的数值客户端应该调整坐标单位比例，将其放大使用。
-	// 参考: MemoryStream::appendPackXZ
+	// ????λ?????????????λ????????????÷?Χ?-512~512???????????Χ?????????????
+	// ???????????????????????????????????????????λ??????????????á?
+	// ?ο?: MemoryStream::appendPackXZ
 	if(viewRadius_ + viewHysteresisArea_ > 512)
 	{
 		if (g_kbeSrvConfig.getCellApp().entity_posdir_updates_type > 0)
@@ -295,7 +307,7 @@ void Witness::setViewRadius(float radius, float hyst)
 			ERROR_MSG(fmt::format("Witness::setViewRadius({}): viewRadius({}) cannot be greater than 512! Beyond 512, please set kbengine[_defaults].xml->entity_posdir_updates->type to 0.\n",
 				(pEntity_ ? pEntity_->id() : 0), (viewRadius_ + viewHysteresisArea_)));
 
-			// 不返回，继续生效
+			// ?????????????Ч
 			// return;
 		}
 	}
@@ -306,7 +318,7 @@ void Witness::setViewRadius(float radius, float hyst)
 		{
 			pViewTrigger_ = new ViewTrigger((CoordinateNode*)pEntity_->pEntityCoordinateNode(), viewRadius_, viewRadius_);
 
-			// 如果实体已经在场景中，那么需要安装
+			// ???????????????У??????????
 			if (((CoordinateNode*)pEntity_->pEntityCoordinateNode())->pCoordinateSystem())
 				pViewTrigger_->install();
 		}
@@ -314,12 +326,12 @@ void Witness::setViewRadius(float radius, float hyst)
 		{
 			pViewTrigger_->update(viewRadius_, viewRadius_);
 
-			// 如果实体已经在场景中，那么需要安装
+			// ???????????????У??????????
 			if (!pViewTrigger_->isInstalled() && ((CoordinateNode*)pEntity_->pEntityCoordinateNode())->pCoordinateSystem())
 				pViewTrigger_->reinstall((CoordinateNode*)pEntity_->pEntityCoordinateNode());
 		}
 
-		if (viewHysteresisArea_ > 0.01f && pEntity_/*上面update流程可能导致销毁 */)
+		if (viewHysteresisArea_ > 0.01f && pEntity_/*????update?????????????? */)
 		{
 			if (pViewHysteresisAreaTrigger_ == NULL)
 			{
@@ -333,15 +345,15 @@ void Witness::setViewRadius(float radius, float hyst)
 			{
 				pViewHysteresisAreaTrigger_->update(viewHysteresisArea_ + viewRadius_, viewHysteresisArea_ + viewRadius_);
 
-				// 如果实体已经在场景中，那么需要安装
+				// ???????????????У??????????
 				if (!pViewHysteresisAreaTrigger_->isInstalled() && ((CoordinateNode*)pEntity_->pEntityCoordinateNode())->pCoordinateSystem())
 					pViewHysteresisAreaTrigger_->reinstall((CoordinateNode*)pEntity_->pEntityCoordinateNode());
 			}
 		}
 		else
 		{
-			// 注意：此处如果不销毁pViewHysteresisAreaTrigger_则必须是update
-			// 因为离开View的判断如果pViewHysteresisAreaTrigger_存在，那么必须出了pViewHysteresisAreaTrigger_才算出View
+			// ???????????????pViewHysteresisAreaTrigger_???????update
+			// ?????View???ж????pViewHysteresisAreaTrigger_???????????????pViewHysteresisAreaTrigger_?????View
 			if (pViewHysteresisAreaTrigger_)
 				pViewHysteresisAreaTrigger_->update(viewHysteresisArea_ + viewRadius_, viewHysteresisArea_ + viewRadius_);
 		}
@@ -355,15 +367,15 @@ void Witness::setViewRadius(float radius, float hyst)
 //-------------------------------------------------------------------------------------
 void Witness::onEnterView(ViewTrigger* pViewTrigger, Entity* pEntity)
 {
-	// 如果进入的是Hysteresis区域，那么不产生作用
+	// ??????????Hysteresis?????????????????
 	 if (pViewHysteresisAreaTrigger_ == pViewTrigger)
 		return;
 
-	// 先增加一个引用，避免实体在回调中被销毁造成后续判断出错
+	// ??????????????????????????б????????????ж????
 	Py_INCREF(pEntity);
 
-	// 在onEnteredview和addWitnessed可能导致自己销毁然后
-	// pEntity_将被设置为NULL，后面没有机会DECREF
+	// ??onEnteredview??addWitnessed?????????????????
+	// pEntity_?????????NULL????????л???DECREF
 	Entity* pSelfEntity = pEntity_;
 	Py_INCREF(pSelfEntity);
 
@@ -376,9 +388,9 @@ void Witness::onEnterView(ViewTrigger* pViewTrigger, Entity* pEntity)
 			//DEBUG_MSG(fmt::format("Witness::onEnterView: {} entity={}\n", 
 			//	pEntity_->id(), pEntity->id()));
 
-			// 如果flags是ENTITYREF_FLAG_LEAVE_CLIENT_PENDING | ENTITYREF_FLAG_NORMAL状态那么我们
-			// 只需要撤销离开状态并将其还原到ENTITYREF_FLAG_NORMAL即可
-			// 如果是ENTITYREF_FLAG_LEAVE_CLIENT_PENDING状态那么此时应该将它设置为进入状态 ENTITYREF_FLAG_ENTER_CLIENT_PENDING
+			// ???flags??ENTITYREF_FLAG_LEAVE_CLIENT_PENDING | ENTITYREF_FLAG_NORMAL?????????
+			// ?????????????????仹???ENTITYREF_FLAG_NORMAL????
+			// ?????ENTITYREF_FLAG_LEAVE_CLIENT_PENDING??????????y?????????????? ENTITYREF_FLAG_ENTER_CLIENT_PENDING
 			if ((pEntityRef->flags() & ENTITYREF_FLAG_NORMAL) > 0)
 			{
 				EntityCall* pClientMB = pEntity_->clientEntityCall();
@@ -389,7 +401,9 @@ void Witness::onEnterView(ViewTrigger* pViewTrigger, Entity* pEntity)
 					ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pSendBundle, ClientInterface::onEntityLeaveWorldOptimized, leaveWorld);
 					_addViewEntityIDToBundle(pSendBundle, pEntityRef);
 					ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, ClientInterface::onEntityLeaveWorldOptimized, leaveWorld);
-					pClientMB->sendCall(pSendBundle);
+
+					if(!Cellapp::getSingleton().sendBundleToClientActor(pEntity_->id(), pSendBundle))
+						pClientMB->sendCall(pSendBundle);
 
 					KBE_ASSERT(clientViewSize_ > 0);
 					--clientViewSize_;
@@ -440,7 +454,7 @@ void Witness::onEnterView(ViewTrigger* pViewTrigger, Entity* pEntity)
 //-------------------------------------------------------------------------------------
 void Witness::onLeaveView(ViewTrigger* pViewTrigger, Entity* pEntity)
 {
-	// 如果设置过Hysteresis区域，那么离开Hysteresis区域才算离开View
+	// ??????ù?Hysteresis?????????Hysteresis?????????View
 	if (pViewHysteresisAreaTrigger_ && pViewHysteresisAreaTrigger_ != pViewTrigger)
 		return;
 
@@ -457,7 +471,7 @@ void Witness::_onLeaveView(EntityRef* pEntityRef)
 	//DEBUG_MSG(fmt::format("Witness::onLeaveView: {} entity={}\n", 
 	//	pEntity_->id(), pEntityRef->id()));
 
-	// 这里不delete， 我们需要待update将此行为更新至客户端时再进行
+	// ????delete?? ?????????update????????????????????????
 	//EntityRef::reclaimPoolObject((*iter));
 	//viewEntities_.erase(iter);
 	//viewEntities_map_.erase(iter);
@@ -498,7 +512,7 @@ void Witness::onEnterSpace(SpaceMemory* pSpace)
 	Network::Bundle* pSendBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 	NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pEntity_->id(), (*pSendBundle));
 
-	// 通知位置强制改变
+	// ??λ???????
 	Position3D &pos = pEntity_->position();
 	Direction3D &dir = pEntity_->direction();
 	ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pSendBundle, ClientInterface::onSetEntityPosAndDir, setEntityPosAndDir);
@@ -507,7 +521,7 @@ void Witness::onEnterSpace(SpaceMemory* pSpace)
 	(*pSendBundle) << dir.roll() << dir.pitch() << dir.yaw();
 	ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, ClientInterface::onSetEntityPosAndDir, setEntityPosAndDir);
 	
-	// 通知进入了新地图
+	// ?????????μ??
 	ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pSendBundle, ClientInterface::onEntityEnterSpace, entityEnterSpace);
 
 	(*pSendBundle) << pEntity_->id();
@@ -517,8 +531,9 @@ void Witness::onEnterSpace(SpaceMemory* pSpace)
 
 	ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, ClientInterface::onEntityEnterSpace, entityEnterSpace);
 
-	// 发送消息并清理
-	pEntity_->clientEntityCall()->sendCall(pSendBundle);
+	// ?????????????
+	if(!Cellapp::getSingleton().sendBundleToClientActor(pEntity_->id(), pSendBundle))
+		pEntity_->clientEntityCall()->sendCall(pSendBundle);
 
 	installViewTrigger();
 }
@@ -534,7 +549,9 @@ void Witness::onLeaveSpace(SpaceMemory* pSpace)
 	ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pSendBundle, ClientInterface::onEntityLeaveSpace, entityLeaveSpace);
 	(*pSendBundle) << pEntity_->id();
 	ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, ClientInterface::onEntityLeaveSpace, entityLeaveSpace);
-	pEntity_->clientEntityCall()->sendCall(pSendBundle);
+
+	if(!Cellapp::getSingleton().sendBundleToClientActor(pEntity_->id(), pSendBundle))
+		pEntity_->clientEntityCall()->sendCall(pSendBundle);
 
 	lastBasePos_.z = -FLT_MAX;
 	lastBaseDir_.yaw(-FLT_MAX);
@@ -561,18 +578,18 @@ void Witness::installViewTrigger()
 {
 	if (pViewTrigger_)
 	{
-		// 在设置View半径为0后掉线重登陆会出现这种情况
+		// ??????View???0?????????????????????
 		if (viewRadius_ <= 0.f)
 			return;
 
-		// 必须先安装pViewHysteresisAreaTrigger_，否则一些极端情况会出现错误的结果
-		// 例如：一个Avatar正好进入到世界此时正在安装View触发器，而安装过程中这个实体onWitnessed触发导致自身被销毁了
-		// 由于View触发器并未完全安装完毕导致触发器的节点old_xx等都为-FLT_MAX，所以该实体在离开坐标管理器时Avatar的View触发器判断错误
-		// 如果先安装pViewHysteresisAreaTrigger_则不会触发实体进入View事件，这样在安装pViewTrigger_时触发事件导致上面出现的问题时也能之前捕获离开事件了
-		if (pViewHysteresisAreaTrigger_ && pEntity_/*上面流程可能导致销毁 */)
+		// ????????pViewHysteresisAreaTrigger_???????Щ??????????????????
+		// ???磺???Avatar???y???????????????View?????????????????????????onWitnessed???????????????????
+		// ????View????????δ???????????′?????????old_xx????-FLT_MAX????????????????????????Avatar??View???????ж????
+		// ???????pViewHysteresisAreaTrigger_????????????View?????????????pViewTrigger_?????????????????????????????????????????
+		if (pViewHysteresisAreaTrigger_ && pEntity_/*?????????????????? */)
 			pViewHysteresisAreaTrigger_->reinstall((CoordinateNode*)pEntity_->pEntityCoordinateNode());
 
-		if (pEntity_/*上面流程可能导致销毁 */)
+		if (pEntity_/*?????????????????? */)
 			pViewTrigger_->reinstall((CoordinateNode*)pEntity_->pEntityCoordinateNode());
 	}
 	else
@@ -590,7 +607,7 @@ void Witness::uninstallViewTrigger()
 	if (pViewHysteresisAreaTrigger_)
 		pViewHysteresisAreaTrigger_->uninstall();
 
-	// 通知所有实体离开View
+	// ???????????View
 	VIEW_ENTITIES::iterator iter = viewEntities_.begin();
 	for (; iter != viewEntities_.end(); ++iter)
 	{
@@ -601,6 +618,20 @@ void Witness::uninstallViewTrigger()
 //-------------------------------------------------------------------------------------
 bool Witness::pushBundle(Network::Bundle* pBundle)
 {
+	// Router mode: cellapp is no longer connected to the client directly
+	// (EntityCallAbstract::getChannel() returns NULL). Flatten the legacy
+	// client Bundle and deliver it to the client Actor via router.
+	if(RouterMail::isEnabled())
+	{
+		if(pEntity_ == NULL)
+		{
+			Network::Bundle::reclaimPoolObject(pBundle);
+			return false;
+		}
+
+		return Cellapp::getSingleton().sendBundleToClientActor(pEntity_->id(), pBundle);
+	}
+
 	Network::Channel* pc = pChannel();
 	if(!pc)
 		return false;
@@ -635,8 +666,8 @@ void Witness::_addViewEntityIDToBundle(Network::Bundle* pBundle, EntityRef* pEnt
 	}
 	else
 	{
-		// 注意：不可在该模块外部使用，否则可能出现客户端表找不到entityID的情况
-		// clientViewSize_需要实体真正同步到客户端时才会增加
+		// ???????????????????????????????????????entityID?????
+		// clientViewSize_????????????????????????????
 		if(clientViewSize_ > 255)
 		{
 			(*pBundle) << pEntityRef->id();
@@ -706,7 +737,7 @@ bool Witness::entityID2AliasID(ENTITY_ID id, uint8& aliasID)
 		return false;
 	}
 
-	// 溢出
+	// ???
 	if (pEntityRef->aliasID() > 255)
 	{
 		aliasID = 0;
@@ -741,7 +772,11 @@ bool Witness::update()
 		return true;
 
 	Network::Channel* pChannel = pEntity_->clientEntityCall()->getChannel();
-	if(!pChannel)
+
+	// Router mode: the client is no longer connected to cellapp directly
+	// (getChannel() is always NULL). Do not skip the update, deliver it to
+	// the client Actor through the router instead.
+	if(!pChannel && !RouterMail::isEnabled())
 		return true;
 
 	Py_INCREF(pEntity_);
@@ -765,9 +800,11 @@ bool Witness::update()
 
 	if (viewEntities_map_.size() > 0 || pEntity_->isControlledNotSelfClient())
 	{
-		Network::Bundle* pSendBundle = pChannel->createSendBundle();
+		// Router mode has no channel-cached bundle, use a plain pool object
+		Network::Bundle* pSendBundle = (pChannel != NULL) ? pChannel->createSendBundle()
+			: Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		
-		// 得到当前pSendBundle中是否有数据，如果有数据表示该bundle是重用的缓存的数据包
+		// ??????pSendBundle?????????????????????????bundle????????????????
 		bool isBufferedSendBundleMessageLength = pSendBundle->packets().size() > 0 ? true : 
 			(pSendBundle->pCurrPacket() && pSendBundle->pCurrPacket()->length() > 0);
 		
@@ -781,7 +818,7 @@ bool Witness::update()
 			
 			if((pEntityRef->flags() & ENTITYREF_FLAG_ENTER_CLIENT_PENDING) > 0)
 			{
-				// 这里使用id查找一下， 避免entity在进入View时的回调里被意外销毁
+				// ???????id??????￡? ????entity?????View???????????????
 				Entity* otherEntity = Cellapp::getSingleton().findEntity(pEntityRef->id());
 				if(otherEntity == NULL)
 				{
@@ -863,7 +900,7 @@ bool Witness::update()
 		}
 
 		size_t pSendBundleMessageLength = pSendBundle->currMsgLength();
-		if (pSendBundleMessageLength > 8/*NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN产生的基础包大小*/)
+		if (pSendBundleMessageLength > 8/*NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN?????????????С*/)
 		{
 			if(pSendBundleMessageLength > PACKET_MAX_SIZE_TCP)
 			{
@@ -872,13 +909,17 @@ bool Witness::update()
 			}
 
 			AUTO_SCOPED_PROFILE("sendToClient");
-			pChannel->send(pSendBundle);
-		}
+
+			if(RouterMail::isEnabled())
+				Cellapp::getSingleton().sendBundleToClientActor(pEntity_->id(), pSendBundle);
+			else
+				pChannel->send(pSendBundle);
+			}
 		else
 		{
-			// 如果bundle是channel缓存的包
-			// 取出来重复利用的如果想丢弃本次消息发送
-			// 此时应该将NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN从其中抹除掉
+			// ???bundle??channel??????
+			// ???????????????????????????????
+			// ?????y?NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN???????????
 			if(isBufferedSendBundleMessageLength)
 			{
 				KBE_ASSERT(pSendBundleMessageLength == 8);
@@ -1579,9 +1620,9 @@ uint32 Witness::getEntityVolatileDataUpdateFlags(Entity* otherEntity)
 {
 	uint32 flags = UPDATE_FLAG_NULL;
 
-	/* 如果目标被我控制了，则目标的位置不通知我的客户端。
-	   注意：当这个被我控制的entity在服务器中使用moveToPoint()等接口移动时，
-	         也会由于这个判定导致坐标不会同步到控制者的客户端中
+	/* ????????????????????λ?ò???????????
+	   ????????????????entity????????????moveToPoint()??????????
+	         ???????????ж?????????????????????????????
 	*/
 	if (otherEntity->controlledBy() && pEntity_->id() == otherEntity->controlledBy()->id())
 		return flags;

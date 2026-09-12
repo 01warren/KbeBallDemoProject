@@ -7,6 +7,7 @@
 #include "helper/profile.h"	
 #include "helper/eventhistory_stats.h"
 #include "network/bundle.h"
+#include "server/router_mail.h"
 #include "client_lib/client_interface.h"
 
 namespace KBEngine{	
@@ -55,8 +56,10 @@ PyObject* EntityRemoteMethod::tp_call(PyObject* self, PyObject* args,
 		return RemoteEntityMethod::tp_call(self, args, kwds);
 	}
 
+	// Router æ¨¡å¼ä¸‹å®¢æˆ·ç«¯ä¸å†ä¸Ž cellapp ç›´è¿ž(pChannel æ’ä¸º NULL)ï¼Œ
+	// æ­¤æ—¶ä¸è§†ä¸ºé”™è¯¯ï¼ŒåŽç»­ç» Router ç›´æŠ• client Actorã€‚
 	Network::Channel* pChannel = pEntity->pWitness()->pChannel();
-	if(!pChannel)
+	if(!pChannel && !RouterMail::isEnabled())
 	{
 		PyErr_Format(PyExc_AssertionError, "%s:EntityRemoteMethod(%s)::tp_call: no client, srcEntityID(%d).\n",
 			pEntity->scriptName(), methodDescription->getName(), pEntity->id());		
@@ -64,10 +67,11 @@ PyObject* EntityRemoteMethod::tp_call(PyObject* self, PyObject* args,
 		return RemoteEntityMethod::tp_call(self, args, kwds);
 	}
 	
-	// Èç¹ûÊÇµ÷ÓÃ¿Í»§¶Ë·½·¨£¬ ÎÒÃÇ¼ÇÂ¼ÊÂ¼þ²¢ÇÒ¼ÇÂ¼´ø¿í
+	// å¦‚æžœæ˜¯è°ƒç”¨å®¢æˆ·ç«¯æ–¹æ³•ï¼Œ æˆ‘ä»¬è®°å½•äº‹ä»¶å¹¶ä¸”è®°å½•å¸¦å®½
 	if(methodDescription->checkArgs(args))
 	{
-		Network::Bundle* pBundle = pChannel->createSendBundle();
+		Network::Bundle* pBundle = (pChannel != NULL) ? pChannel->createSendBundle()
+			: Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		entityCall->newCall((*pBundle));
 
 		MemoryStream* mstream = MemoryStream::createPoolObject(OBJECTPOOL_POINT);
@@ -113,13 +117,18 @@ PyObject* EntityRemoteMethod::tp_call(PyObject* self, PyObject* args,
 				DebugHelper::getSingleton().changeLogger(COMPONENT_NAME_EX(g_componentType));																				
 		}
 
-		// ¼ÇÂ¼Õâ¸öÊÂ¼þ²úÉúµÄÊý¾ÝÁ¿´óÐ¡
+		// è®°å½•è¿™ä¸ªäº‹ä»¶äº§ç”Ÿçš„æ•°æ®é‡å¤§å°
 		g_privateClientEventHistoryStats.trackEvent(pEntity->scriptName(), 
 			methodDescription->getName(), 
 			pBundle->currMsgLength(), 
 			"::");
 		
-		pEntity->pWitness()->sendToClient(ClientInterface::onRemoteMethodCall, pBundle);
+		// Router æ¨¡å¼ï¼šbody å·²ç”± newCall_ å†™å…¥ BodyTagï¼Œç›´æŽ¥ sendCall ç›´æŠ• client Actor
+		if(RouterMail::isEnabled())
+			entityCall->sendCall(pBundle);
+		else
+			pEntity->pWitness()->sendToClient(ClientInterface::onRemoteMethodCall, pBundle);
+
 		MemoryStream::reclaimPoolObject(mstream);
 	}
 	

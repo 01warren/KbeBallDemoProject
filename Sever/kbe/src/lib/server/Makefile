@@ -10,6 +10,8 @@ SRCS =				\
 	globaldata_server	\
 	idallocate		\
 	pendingLoginmgr		\
+	router_client		\
+	router_mail		\
 	py_file_descriptor	\
 	python_app		\
 	script_timers		\

@@ -137,6 +137,13 @@ typedef struct EngineComponentInfo
 		clusterHeartbeatIntervalMS = 1000;
 		clusterComponentHeartbeatInterval = 5;
 		clusterComponentLeaseSeconds = 15;
+
+		routerClientPort = 20095;
+		routerServerPort = 20096;
+		routerSuspendTimeoutMS = 30000;
+		routerActorBufferMax = 512;
+		routerPendingTimeoutMS = 30000;
+		routerPendingBufferMax = 512;
 	}
 
 	~EngineComponentInfo()
@@ -156,6 +163,15 @@ typedef struct EngineComponentInfo
 	uint16 clusterHeartbeatIntervalMS;						// leader 心跳间隔(毫秒)
 	uint16 clusterComponentHeartbeatInterval;				// 组件心跳/续租间隔(秒)
 	uint16 clusterComponentLeaseSeconds;					// 组件租约超时(秒)
+
+	// ---- router 接入/路由中心专属配置 ----
+	std::vector< std::string > router_addresses;			// router 地址列表(peer 依次尝试连接)
+	uint16 routerClientPort;								// 客户端接入端口
+	uint16 routerServerPort;								// 服务器组件接入端口
+	uint32 routerSuspendTimeoutMS;							// Actor 迁移挂起超时(毫秒)，超时自动回滚
+	uint32 routerActorBufferMax;							// 单个挂起 Actor 的缓冲上限(条)
+	uint32 routerPendingTimeoutMS;							// 目标未注册时的待定缓冲超时(毫秒)，超时丢弃并回失败
+	uint32 routerPendingBufferMax;							// 单个未注册 Actor 的待定缓冲上限(条)，0 = 关闭该能力
 
 	char entryScriptFile[MAX_NAME];							// 组件的入口脚本文件
 	char dbAccountEntityScriptType[MAX_NAME];				// 数据库帐号脚本类别
@@ -268,6 +284,7 @@ public:
 	INLINE ENGINE_COMPONENT_INFO& getBaseAppMgr(void);
 	INLINE ENGINE_COMPONENT_INFO& getKBMachine(void);
 	INLINE ENGINE_COMPONENT_INFO& getKCluster(void);
+	INLINE ENGINE_COMPONENT_INFO& getKRouter(void);
 	INLINE ENGINE_COMPONENT_INFO& getBots(void);
 	INLINE ENGINE_COMPONENT_INFO& getLogger(void);
 	INLINE ENGINE_COMPONENT_INFO& getInterfaces(void);
@@ -316,6 +333,7 @@ private:
 	ENGINE_COMPONENT_INFO _baseAppMgrInfo;
 	ENGINE_COMPONENT_INFO _kbMachineInfo;
 	ENGINE_COMPONENT_INFO _clusterInfo;
+	ENGINE_COMPONENT_INFO _routerInfo;
 	ENGINE_COMPONENT_INFO _botsInfo;
 	ENGINE_COMPONENT_INFO _loggerInfo;
 	ENGINE_COMPONENT_INFO _interfacesInfo;

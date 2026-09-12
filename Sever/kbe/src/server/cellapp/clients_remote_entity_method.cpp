@@ -7,6 +7,7 @@
 #include "network/bundle.h"
 #include "network/network_stats.h"
 #include "helper/eventhistory_stats.h"
+#include "server/router_mail.h"
 
 #include "client_lib/client_interface.h"
 #include "../../server/baseapp/baseapp_interface.h"
@@ -54,8 +55,8 @@ PyObject* ClientsRemoteEntityMethod::tp_call(PyObject* self, PyObject* args,
 //-------------------------------------------------------------------------------------
 PyObject* ClientsRemoteEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 {
-	// »ñÈ¡entityView·¶Î§ÄÚÆäËûentity
-	// ÏòÕâĞ©entityµÄclientÍÆËÍÕâ¸ö·½·¨µÄµ÷ÓÃ
+	// è·å–entityViewèŒƒå›´å†…å…¶ä»–entity
+	// å‘è¿™äº›entityçš„clientæ¨é€è¿™ä¸ªæ–¹æ³•çš„è°ƒç”¨
 	MethodDescription* methodDescription = getDescription();
 
 	Entity* pEntity = Cellapp::getSingleton().findEntity(id_);
@@ -76,12 +77,12 @@ PyObject* ClientsRemoteEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 			S_Return;
 	}
 	
-	// ÏÈ·¢¸ø×Ô¼º
+	// å…ˆå‘ç»™è‡ªå·±
 	if(methodDescription->checkArgs(args))
 	{
 		MemoryStream* mstream = MemoryStream::createPoolObject(OBJECTPOOL_POINT);
 
-		// Èç¹ûÊÇ¹ã²¥¸ø×é¼şµÄÏûÏ¢
+		// å¦‚æœæ˜¯å¹¿æ’­ç»™ç»„ä»¶çš„æ¶ˆæ¯
 		if (pComponentPropertyDescription_)
 		{
 			if (pScriptModule_->usePropertyDescrAlias())
@@ -150,17 +151,22 @@ PyObject* ClientsRemoteEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 					DebugHelper::getSingleton().changeLogger(COMPONENT_NAME_EX(g_componentType));
 			}
 
-			// ¼ÇÂ¼Õâ¸öÊÂ¼ş²úÉúµÄÊı¾İÁ¿´óĞ¡
+			// è®°å½•è¿™ä¸ªäº‹ä»¶äº§ç”Ÿçš„æ•°æ®é‡å¤§å°
 			g_publicClientEventHistoryStats.trackEvent(pEntity->scriptName(),
 				methodDescription->getName(),
 				pSendBundle->currMsgLength(),
 				"::");
 
 			//entityCall->sendCall((*pBundle));
-			pEntity->pWitness()->sendToClient(ClientInterface::onRemoteMethodCall, pSendBundle);
+			// Router æ¨¡å¼ï¼šbody å·²ç”± newCall_ å†™å…¥ BodyTagï¼Œç›´æ¥ sendCall ç›´æŠ• client Actorï¼›
+			// ç›´è¿æ¨¡å¼ä»èµ° Witness çš„ legacy client é€šè·¯ã€‚
+			if(RouterMail::isEnabled())
+				pEntity->clientEntityCall()->sendCall(pSendBundle);
+			else
+				pEntity->pWitness()->sendToClient(ClientInterface::onRemoteMethodCall, pSendBundle);
 		}
 
-		// ¹ã²¥¸øÆäËûÈË
+		// å¹¿æ’­ç»™å…¶ä»–äºº
 		std::list<ENTITY_ID>::const_iterator iter = entities.begin();
 		for(; iter != entities.end(); ++iter)
 		{
@@ -173,15 +179,19 @@ PyObject* ClientsRemoteEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 				continue;
 
 			Network::Channel* pChannel = entityCall->getChannel();
-			if(pChannel == NULL)
+
+			// Router æ¨¡å¼ä¸‹å®¢æˆ·ç«¯ä¸å†ä¸ cellapp ç›´è¿(pChannel æ’ä¸º NULL)ï¼Œ
+			// æ­¤æ—¶ä»å¯æŒ‰ client Actor ç›´æŠ•ï¼Œä¸èƒ½è·³è¿‡ã€‚
+			if(pChannel == NULL && !RouterMail::isEnabled())
 				continue;
 
-			// Õâ¸ö¿ÉÄÜĞÔÊÇ´æÔÚµÄ£¬ÀıÈçÊı¾İÀ´Ô´ÓÚcreateWitnessFromStream()
-			// ÓÖÈç×Ô¼ºµÄentity»¹Î´ÔÚÄ¿±ê¿Í»§¶ËÉÏ´´½¨
+			// è¿™ä¸ªå¯èƒ½æ€§æ˜¯å­˜åœ¨çš„ï¼Œä¾‹å¦‚æ•°æ®æ¥æºäºcreateWitnessFromStream()
+			// åˆå¦‚è‡ªå·±çš„entityè¿˜æœªåœ¨ç›®æ ‡å®¢æˆ·ç«¯ä¸Šåˆ›å»º
 			if (!pViewEntity->pWitness()->entityInView(pEntity->id()))
 				continue;
 			
-			Network::Bundle* pSendBundle = pChannel->createSendBundle();
+			Network::Bundle* pSendBundle = (pChannel != NULL) ? pChannel->createSendBundle()
+				: Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 			NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pViewEntity->id(), (*pSendBundle));
 			
 			int ialiasID = -1;
@@ -232,7 +242,7 @@ PyObject* ClientsRemoteEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 
 			ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, msgHandler, viewEntityMessage);
 
-			// ¼ÇÂ¼Õâ¸öÊÂ¼ş²úÉúµÄÊı¾İÁ¿´óĞ¡
+			// è®°å½•è¿™ä¸ªäº‹ä»¶äº§ç”Ÿçš„æ•°æ®é‡å¤§å°
 			g_publicClientEventHistoryStats.trackEvent(pViewEntity->scriptName(), 
 				methodDescription->getName(), 
 				pSendBundle->currMsgLength(), 

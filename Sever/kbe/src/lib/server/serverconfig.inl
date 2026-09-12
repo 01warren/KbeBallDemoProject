@@ -52,6 +52,12 @@ INLINE ENGINE_COMPONENT_INFO& ServerConfig::getKCluster(void)
 }
 
 //-------------------------------------------------------------------------------------		
+INLINE ENGINE_COMPONENT_INFO& ServerConfig::getKRouter(void)
+{
+	return _routerInfo;
+}
+
+//-------------------------------------------------------------------------------------		
 INLINE ENGINE_COMPONENT_INFO& ServerConfig::getBots(void)
 {
 	return _botsInfo;
@@ -96,6 +102,8 @@ INLINE ENGINE_COMPONENT_INFO& ServerConfig::getComponent(COMPONENT_TYPE componen
 		return getKBMachine();
 	case CLUSTER_TYPE:
 		return getKCluster();
+	case ROUTER_TYPE:
+		return getKRouter();
 	case LOGGER_TYPE:
 		return getLogger();
 	default:

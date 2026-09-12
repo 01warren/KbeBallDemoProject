@@ -17,6 +17,7 @@
 #include "network/udp_packet.h"
 #include "network/network_stats.h"
 #include "server/components.h"
+#include "server/router_mail.h"
 #include "server/telnet_server.h"
 #include "server/py_file_descriptor.h"
 #include "dbmgr/dbmgr_interface.h"
@@ -129,8 +130,8 @@ void Cellapp::onShutdown(bool first)
 		}
 	}
 
-	// Èç¹ûcountµÈÓÚperSecsDestroyEntitySizeËµÃ÷ÉÏÃæÒÑ¾­Ã»ÓĞ¿É´¦ÀíµÄ¶«Î÷ÁË
-	// Ê£ÏÂµÄÓ¦¸Ã¶¼ÊÇspace£¬¿ÉÒÔ¿ªÊ¼Ïú»ÙÁË
+	// å¦‚æœcountç­‰äºperSecsDestroyEntitySizeè¯´æ˜ä¸Šé¢å·²ç»æ²¡æœ‰å¯å¤„ç†çš„ä¸œè¥¿äº†
+	// å‰©ä¸‹çš„åº”è¯¥éƒ½æ˜¯spaceï¼Œå¯ä»¥å¼€å§‹é”€æ¯äº†
 	if(count == g_serverConfig.getCellApp().perSecsDestroyEntitySize)
 		SpaceMemorys::finalise();
 }
@@ -157,7 +158,7 @@ bool Cellapp::installPyModules()
 	registerScript(Entity::getScriptType());
 	registerScript(EntityComponent::getScriptType());
 
-	// ½«app±ê¼Ç×¢²áµ½½Å±¾
+	// å°†appæ ‡è®°æ³¨å†Œåˆ°è„šæœ¬
 	std::map<uint32, std::string> flagsmaps = createAppFlagsMaps();
 	std::map<uint32, std::string>::iterator fiter = flagsmaps.begin();
 	for (; fiter != flagsmaps.end(); ++fiter)
@@ -168,7 +169,7 @@ bool Cellapp::installPyModules()
 		}
 	}
 
-	// ×¢²á´´½¨entityµÄ·½·¨µ½py
+	// æ³¨å†Œåˆ›å»ºentityçš„æ–¹æ³•åˆ°py
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),		time,							__py_gametime,											METH_VARARGS,			0);
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),		createEntity,					__py_createEntity,										METH_VARARGS,			0);
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(), 		executeRawDatabaseCommand,		__py_executeRawDatabaseCommand,							METH_VARARGS,			0);
@@ -194,7 +195,7 @@ bool Cellapp::installPyModules()
 //-------------------------------------------------------------------------------------
 void Cellapp::onInstallPyModules()
 {
-	// Ìí¼ÓglobalData, cellAppDataÖ§³Ö
+	// æ·»åŠ globalData, cellAppDataæ”¯æŒ
 	pCellAppData_ = new GlobalDataClient(DBMGR_TYPE, GlobalDataServer::CELLAPP_DATA);
 	registerPyObjectToScript("cellAppData", pCellAppData_);
 }
@@ -252,7 +253,7 @@ void Cellapp::handleGameTick()
 {
 	AUTO_SCOPED_PROFILE("gameTick");
 
-	// Ò»¶¨ÒªÔÚ×îÇ°Ãæ
+	// ä¸€å®šè¦åœ¨æœ€å‰é¢
 	updateLoad();
 
 	EntityApp<Entity>::handleGameTick();
@@ -270,8 +271,8 @@ bool Cellapp::initializeBegin()
 //-------------------------------------------------------------------------------------
 bool Cellapp::initializeEnd()
 {
-	// Èç¹ûĞèÒªpyprofileÔòÔÚ´Ë´¦°²×°
-	// ½áÊøÊ±Ğ¶ÔØ²¢Êä³ö½á¹û
+	// å¦‚æœéœ€è¦pyprofileåˆ™åœ¨æ­¤å¤„å®‰è£…
+	// ç»“æŸæ—¶å¸è½½å¹¶è¾“å‡ºç»“æœ
 	if(g_kbeSrvConfig.getCellApp().profiles.open_pyprofile)
 	{
 		script::PyProfile::start("kbengine");
@@ -279,7 +280,7 @@ bool Cellapp::initializeEnd()
 
 	pWitnessedTimeoutHandler_ = new WitnessedTimeoutHandler();
 
-	// ÊÇ·ñ¹ÜÀíYÖá
+	// æ˜¯å¦ç®¡ç†Yè½´
 	CoordinateSystem::hasY = g_kbeSrvConfig.getCellApp().coordinateSystem_hasY;
 
 	dispatcher_.clearSpareTime();
@@ -505,7 +506,7 @@ PyObject* Cellapp::__py_createEntity(PyObject* self, PyObject* args)
 		return 0;
 	}
 	
-	// ´´½¨entity
+	// åˆ›å»ºentity
 	Entity* pEntity = Cellapp::getSingleton().createEntity(entityType, params, false, 0);
 
 	if(pEntity != NULL)
@@ -517,11 +518,11 @@ PyObject* Cellapp::__py_createEntity(PyObject* self, PyObject* args)
 		pEntity->pySetDirection(direction);	
 		pEntity->initializeScript();
 
-		// Ìí¼Óµ½space
+		// æ·»åŠ åˆ°space
 		space->addEntityAndEnterWorld(pEntity);
 
-		// ÓĞ¿ÉÄÜÔÚaddEntityAndEnterWorldÖĞ±»Ïú»ÙÁË
-		// ÕâÀïĞèÒªÈÃÊµÌå·µ»Ø¸ø½Å±¾£¬Ö»²»¹ıÊµÌåÎªisDestroyed = true×´Ì¬
+		// æœ‰å¯èƒ½åœ¨addEntityAndEnterWorldä¸­è¢«é”€æ¯äº†
+		// è¿™é‡Œéœ€è¦è®©å®ä½“è¿”å›ç»™è„šæœ¬ï¼Œåªä¸è¿‡å®ä½“ä¸ºisDestroyed = trueçŠ¶æ€
 		//if(pEntity->isDestroyed())
 		//{
 		//	Py_DECREF(pEntity);
@@ -799,10 +800,10 @@ void Cellapp::onDbmgrInitCompleted(Network::Channel* pChannel,
 {
 	EntityApp<Entity>::onDbmgrInitCompleted(pChannel, gametime, startID, endID, startGlobalOrder, startGroupOrder, digest);
 	
-	// ÔÙ´ÎÍ¬²½×Ô¼ºµÄĞÂĞÅÏ¢(startGlobalOrder, startGroupOrderµÈ)µ½machine
+	// å†æ¬¡åŒæ­¥è‡ªå·±çš„æ–°ä¿¡æ¯(startGlobalOrder, startGroupOrderç­‰)åˆ°machine
 	Components::getSingleton().broadcastSelf();
 
-	// ÕâÀïĞèÒª¸üĞÂÒ»ÏÂpythonµÄ»·¾³±äÁ¿
+	// è¿™é‡Œéœ€è¦æ›´æ–°ä¸€ä¸‹pythonçš„ç¯å¢ƒå˜é‡
 	this->getScript().setenv("KBE_BOOTIDX_GLOBAL", getenv("KBE_BOOTIDX_GLOBAL"));
 	this->getScript().setenv("KBE_BOOTIDX_GROUP", getenv("KBE_BOOTIDX_GROUP"));
 
@@ -840,7 +841,7 @@ void Cellapp::onBroadcastCellAppDataChanged(Network::Channel* pChannel, KBEngine
 		{
 			SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-			// Í¨Öª½Å±¾
+			// é€šçŸ¥è„šæœ¬
 			SCRIPT_OBJECT_CALL_ARGS1(getEntryScript().get(), const_cast<char*>("onCellAppDataDel"), 
 				const_cast<char*>("O"), pyKey, false);
 		}
@@ -860,7 +861,7 @@ void Cellapp::onBroadcastCellAppDataChanged(Network::Channel* pChannel, KBEngine
 		{
 			SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-			// Í¨Öª½Å±¾
+			// é€šçŸ¥è„šæœ¬
 			SCRIPT_OBJECT_CALL_ARGS2(getEntryScript().get(), const_cast<char*>("onCellAppData"), 
 				const_cast<char*>("OO"), pyKey, pyValue, false);
 		}
@@ -869,6 +870,34 @@ void Cellapp::onBroadcastCellAppDataChanged(Network::Channel* pChannel, KBEngine
 	}
 
 	Py_DECREF(pyKey);
+}
+
+namespace
+{
+	/**
+		å‘ baseapp ç»„ä»¶å‘é€ä¸€æ¡"ç»„ä»¶çº§è£¸æ¶ˆæ¯"(å·² finiMessage çš„ Bundle)ã€‚
+
+		Router æ¨¡å¼  -> æŠ•é€’ç»™ baseapp ç»„ä»¶ Actorï¼›baseapp å°šæœªå°±ç»ªæ—¶ç”± router çš„å¾…å®šç¼“å†²å…œåº•ï¼Œ
+		                ä¸å†éœ€è¦ä¸šåŠ¡ä¾§è‡ªå·±å…¥é˜Ÿ(è§ docs/kbe_router_design.md Â§6.2/Â§14.4)ã€‚
+		é Router æ¨¡å¼ -> ä¿æŒåŸæœ‰çš„ Components ç›´è¿ Channelï¼Œè¡Œä¸ºä¸æ”¹é€ å‰é€å­—èŠ‚ä¸€è‡´ã€‚
+	*/
+	void sendBundleToBaseapp(COMPONENT_ID baseappID, Components::ComponentInfos* cinfos,
+		Network::Bundle* pBundle)
+	{
+		if(RouterMail::isEnabled())
+		{
+			Cellapp::getSingleton().sendMailToComponent(baseappID, BASEAPP_TYPE, pBundle);
+			return;
+		}
+
+		if(cinfos != NULL && cinfos->pChannel != NULL)
+		{
+			cinfos->pChannel->send(pBundle);
+			return;
+		}
+
+		Network::Bundle::reclaimPoolObject(pBundle);
+	}
 }
 
 //-------------------------------------------------------------------------------------
@@ -892,7 +921,7 @@ void Cellapp::onCreateCellEntityInNewSpaceFromBaseapp(Network::Channel* pChannel
 	SpaceMemory* space = SpaceMemorys::createNewSpace(spaceID, entityType);
 	if(space != NULL)
 	{
-		// ´´½¨entity
+		// åˆ›å»ºentity
 		Entity* e = createEntity(entityType.c_str(), NULL, false, entitycallEntityID, false);
 		
 		if(e == NULL)
@@ -901,7 +930,7 @@ void Cellapp::onCreateCellEntityInNewSpaceFromBaseapp(Network::Channel* pChannel
 
 			ERROR_MSG("Cellapp::onCreateCellEntityInNewSpaceFromBaseapp: createEntity error!\n");
 
-			/* Ä¿Ç°À´Ëµ³ı·ÇÄÚ´æ»òÕßÏµÍ³ÎÊÌâ£¬·ñÔò²»»á³öÏÖÕâ¸ö´íÎó
+			/* ç›®å‰æ¥è¯´é™¤éå†…å­˜æˆ–è€…ç³»ç»Ÿé—®é¢˜ï¼Œå¦åˆ™ä¸ä¼šå‡ºç°è¿™ä¸ªé”™è¯¯
 			Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 			pBundle->newMessage(BaseappInterface::onCreateCellFailure);
 			BaseappInterface::onCreateCellFailureArgs1::staticAddToBundle(*pBundle, entitycallEntityID);
@@ -912,7 +941,7 @@ void Cellapp::onCreateCellEntityInNewSpaceFromBaseapp(Network::Channel* pChannel
 
 		PyObject* cellData = e->createCellDataFromStream(&s);
 
-		// ÉèÖÃentityµÄbaseEntityCall
+		// è®¾ç½®entityçš„baseEntityCall
 		EntityCall* entityCall = new EntityCall(e->pScriptModule(), NULL, componentID, entitycallEntityID, ENTITYCALL_TYPE_BASE);
 		e->baseEntityCall(entityCall);
 		
@@ -923,16 +952,20 @@ void Cellapp::onCreateCellEntityInNewSpaceFromBaseapp(Network::Channel* pChannel
 			KBE_ASSERT(clientEntityCall != Py_None);
 
 			EntityCall* client = static_cast<EntityCall*>(clientEntityCall);
-			// Py_INCREF(clientEntityCall); ÕâÀï²»ĞèÒªÔö¼ÓÒıÓÃ£¬ ÒòÎªÃ¿´Î¶¼»á²úÉúÒ»¸öĞÂµÄ¶ÔÏó
+			// Py_INCREF(clientEntityCall); è¿™é‡Œä¸éœ€è¦å¢åŠ å¼•ç”¨ï¼Œ å› ä¸ºæ¯æ¬¡éƒ½ä¼šäº§ç”Ÿä¸€ä¸ªæ–°çš„å¯¹è±¡
 
-			// ÎªÁËÄÜ¹»ÈÃentity.__init__ÖĞÄÜ¹»ĞŞ¸ÄÊôĞÔÁ¢¿ÌÄÜ¹ã²¥µ½¿Í»§¶ËÎÒÃÇĞèÒªÌáÇ°ÉèÖÃÕâĞ©
+			// ä¸ºäº†èƒ½å¤Ÿè®©entity.__init__ä¸­èƒ½å¤Ÿä¿®æ”¹å±æ€§ç«‹åˆ»èƒ½å¹¿æ’­åˆ°å®¢æˆ·ç«¯æˆ‘ä»¬éœ€è¦æå‰è®¾ç½®è¿™äº›
 			e->clientEntityCall(client);
 			e->setWitness(Witness::createPoolObject(OBJECTPOOL_POINT));
 		}
 
-		// ´Ë´¦baseapp¿ÉÄÜ»¹ÓĞÃ»³õÊ¼»¯¹ıÀ´£¬ ËùÒÔÓĞÒ»¶¨¸ÅÂÊÊÇÎªNoneµÄ
+		// æ­¤å¤„baseappå¯èƒ½è¿˜æœ‰æ²¡åˆå§‹åŒ–è¿‡æ¥ï¼Œ æ‰€ä»¥æœ‰ä¸€å®šæ¦‚ç‡æ˜¯ä¸ºNoneçš„
+		//
+		// Router æ¨¡å¼ä¸‹ä¸å†éœ€è¦ä¸šåŠ¡ä¾§è‡ªå·±å…¥é˜Ÿï¼šç›´æ¥æŠ•ç»™ baseapp ç»„ä»¶ Actorï¼Œ
+		// ç›®æ ‡å°šæœªæ³¨å†Œæ—¶ç”± router çš„å¾…å®šç¼“å†²æŒ‰åˆ°è¾¾é¡ºåºç¼“å­˜ã€æ³¨å†Œåè‡ªåŠ¨å†²åˆ·ï¼Œ
+		// å› æ­¤è¿™é‡Œåªä¿ç•™"é Router æ¨¡å¼"çš„æ—§ç¼“å†²ä½œä¸ºå®‰å…¨é˜€(å¯å›æ»š)ã€‚
 		Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(BASEAPP_TYPE, componentID);
-		if(cinfos == NULL || cinfos->pChannel == NULL)
+		if(!RouterMail::isEnabled() && (cinfos == NULL || cinfos->pChannel == NULL))
 		{
 			Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 			ForwardItem* pFI = new ForwardItem();
@@ -960,7 +993,7 @@ void Cellapp::onCreateCellEntityInNewSpaceFromBaseapp(Network::Channel* pChannel
 		e->initializeEntity(cellData, true);
 		Py_XDECREF(cellData);
 
-		// Ìí¼Óµ½space
+		// æ·»åŠ åˆ°space
 		space->addEntityToNode(e);
 
 		if (hasClient)
@@ -975,7 +1008,7 @@ void Cellapp::onCreateCellEntityInNewSpaceFromBaseapp(Network::Channel* pChannel
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		(*pBundle).newMessage(BaseappInterface::onEntityGetCell);
 		BaseappInterface::onEntityGetCellArgs3::staticAddToBundle((*pBundle), entitycallEntityID, componentID_, spaceID);
-		cinfos->pChannel->send(pBundle);
+		sendBundleToBaseapp(componentID, cinfos, pBundle);
 
 		return;
 	}
@@ -1005,7 +1038,7 @@ void Cellapp::onRestoreSpaceInCellFromBaseapp(Network::Channel* pChannel, KBEngi
 	SpaceMemory* space = SpaceMemorys::createNewSpace(spaceID, entityType);
 	if(space != NULL)
 	{
-		// ´´½¨entity
+		// åˆ›å»ºentity
 		Entity* e = createEntity(entityType.c_str(), NULL, false, entitycallEntityID, false);
 		
 		if(e == NULL)
@@ -1016,7 +1049,7 @@ void Cellapp::onRestoreSpaceInCellFromBaseapp(Network::Channel* pChannel, KBEngi
 
 		PyObject* cellData = e->createCellDataFromStream(&s);
 
-		// ÉèÖÃentityµÄbaseEntityCall
+		// è®¾ç½®entityçš„baseEntityCall
 		EntityCall* entityCall = new EntityCall(e->pScriptModule(), NULL, componentID, entitycallEntityID, ENTITYCALL_TYPE_BASE);
 		e->baseEntityCall(entityCall);
 		
@@ -1027,16 +1060,17 @@ void Cellapp::onRestoreSpaceInCellFromBaseapp(Network::Channel* pChannel, KBEngi
 			KBE_ASSERT(clientEntityCall != Py_None);
 
 			EntityCall* client = static_cast<EntityCall*>(clientEntityCall);
-			// Py_INCREF(clientEntityCall); ÕâÀï²»ĞèÒªÔö¼ÓÒıÓÃ£¬ ÒòÎªÃ¿´Î¶¼»á²úÉúÒ»¸öĞÂµÄ¶ÔÏó
+			// Py_INCREF(clientEntityCall); è¿™é‡Œä¸éœ€è¦å¢åŠ å¼•ç”¨ï¼Œ å› ä¸ºæ¯æ¬¡éƒ½ä¼šäº§ç”Ÿä¸€ä¸ªæ–°çš„å¯¹è±¡
 
-			// ÎªÁËÄÜ¹»ÈÃentity.__init__ÖĞÄÜ¹»ĞŞ¸ÄÊôĞÔÁ¢¿ÌÄÜ¹ã²¥µ½¿Í»§¶ËÎÒÃÇĞèÒªÌáÇ°ÉèÖÃÕâĞ©
+			// ä¸ºäº†èƒ½å¤Ÿè®©entity.__init__ä¸­èƒ½å¤Ÿä¿®æ”¹å±æ€§ç«‹åˆ»èƒ½å¹¿æ’­åˆ°å®¢æˆ·ç«¯æˆ‘ä»¬éœ€è¦æå‰è®¾ç½®è¿™äº›
 			e->clientEntityCall(client);
 			e->setWitness(Witness::createPoolObject(OBJECTPOOL_POINT));
 		}
 
-		// ´Ë´¦baseapp¿ÉÄÜ»¹ÓĞÃ»³õÊ¼»¯¹ıÀ´£¬ ËùÒÔÓĞÒ»¶¨¸ÅÂÊÊÇÎªNoneµÄ
+		// æ­¤å¤„baseappå¯èƒ½è¿˜æœ‰æ²¡åˆå§‹åŒ–è¿‡æ¥ï¼Œ æ‰€ä»¥æœ‰ä¸€å®šæ¦‚ç‡æ˜¯ä¸ºNoneçš„
+		// (Router æ¨¡å¼ä¸‹ç”± router çš„å¾…å®šç¼“å†²å…œåº•ï¼Œè§ onCreateCellEntityInNewSpaceFromBaseapp)
 		Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(BASEAPP_TYPE, componentID);
-		if(cinfos == NULL || cinfos->pChannel == NULL)
+		if(!RouterMail::isEnabled() && (cinfos == NULL || cinfos->pChannel == NULL))
 		{
 			Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 			ForwardItem* pFI = new ForwardItem();
@@ -1063,7 +1097,7 @@ void Cellapp::onRestoreSpaceInCellFromBaseapp(Network::Channel* pChannel, KBEngi
 		e->createNamespace(cellData);
 		Py_XDECREF(cellData);
 
-		// Ìí¼Óµ½space
+		// æ·»åŠ åˆ°space
 		e->onRestore();
 
 		space->addEntityAndEnterWorld(e, true);
@@ -1071,7 +1105,7 @@ void Cellapp::onRestoreSpaceInCellFromBaseapp(Network::Channel* pChannel, KBEngi
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		(*pBundle).newMessage(BaseappInterface::onEntityGetCell);
 		BaseappInterface::onEntityGetCellArgs3::staticAddToBundle((*pBundle), entitycallEntityID, componentID_, spaceID);
-		cinfos->pChannel->send(pBundle);
+		sendBundleToBaseapp(componentID, cinfos, pBundle);
 		return;
 	}
 	
@@ -1114,9 +1148,10 @@ void Cellapp::onCreateCellEntityFromBaseapp(Network::Channel* pChannel, KBEngine
 	s >> hasClient;
 	s >> inRescore;
 
-	// ´Ë´¦baseapp¿ÉÄÜ»¹ÓĞÃ»³õÊ¼»¯¹ıÀ´£¬ ËùÒÔÓĞÒ»¶¨¸ÅÂÊÊÇÎªNoneµÄ
+	// æ­¤å¤„baseappå¯èƒ½è¿˜æœ‰æ²¡åˆå§‹åŒ–è¿‡æ¥ï¼Œ æ‰€ä»¥æœ‰ä¸€å®šæ¦‚ç‡æ˜¯ä¸ºNoneçš„
+	// (Router æ¨¡å¼ä¸‹ç”± router çš„å¾…å®šç¼“å†²å…œåº•ï¼Œè§ onCreateCellEntityInNewSpaceFromBaseapp)
 	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(BASEAPP_TYPE, componentID);
-	if(cinfos == NULL || cinfos->pChannel == NULL)
+	if(!RouterMail::isEnabled() && (cinfos == NULL || cinfos->pChannel == NULL))
 	{
 		MemoryStream* pCellData = MemoryStream::createPoolObject(OBJECTPOOL_POINT);
 		pCellData->append(s);
@@ -1147,14 +1182,16 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 											MemoryStream* pCellData, bool hasClient, bool inRescore, COMPONENT_ID componentID, 
 											SPACE_ID spaceID)
 {
-	// ×¢Òâ£º´Ë´¦ÀíÂÛ²»»áÕÒ²»µ½×é¼ş£¬ ÒòÎªonCreateCellEntityFromBaseappÖĞÒÑ¾­½øĞĞ¹ıÒ»´ÎÏûÏ¢»º´æÅĞ¶Ï
-	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(BASEAPP_TYPE, componentID);
-	KBE_ASSERT(cinfos != NULL && cinfos->pChannel != NULL);
+	// æ³¨æ„ï¼šé Router æ¨¡å¼ä¸‹æ­¤å¤„ç†è®ºä¸ä¼šæ‰¾ä¸åˆ°ç»„ä»¶ï¼Œ å› ä¸ºonCreateCellEntityFromBaseappä¸­å·²ç»
+	// è¿›è¡Œè¿‡ä¸€æ¬¡æ¶ˆæ¯ç¼“å­˜åˆ¤æ–­ï¼›Router æ¨¡å¼ä¸‹æ²¡æœ‰ Channel çš„æ¦‚å¿µï¼Œå‘é€æ”¹æŠ• baseapp ç»„ä»¶ Actorã€‚
+	Components::ComponentInfos* cinfos = RouterMail::isEnabled() ? NULL
+		: Components::getSingleton().findComponent(BASEAPP_TYPE, componentID);
+	KBE_ASSERT(RouterMail::isEnabled() || (cinfos != NULL && cinfos->pChannel != NULL));
 
 	Entity* pCreateToEntity = pEntities_->find(createToEntityID);
 
-	// ¿ÉÄÜspaceEntityÒÑ¾­Ïú»ÙÁË£¬ µ«»¹Î´À´µÃ¼°Í¨Öªµ½baseappÊ±
-	// base²¿·ÖÔÚÏòÕâ¸öspace´´½¨entity
+	// å¯èƒ½spaceEntityå·²ç»é”€æ¯äº†ï¼Œ ä½†è¿˜æœªæ¥å¾—åŠé€šçŸ¥åˆ°baseappæ—¶
+	// baseéƒ¨åˆ†åœ¨å‘è¿™ä¸ªspaceåˆ›å»ºentity
 	if(pCreateToEntity == NULL)
 	{
 		ERROR_MSG("Cellapp::_onCreateCellEntityFromBaseapp: not fount spaceEntity. may have been destroyed!\n");
@@ -1162,7 +1199,7 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		pBundle->newMessage(BaseappInterface::onCreateCellFailure);
 		BaseappInterface::onCreateCellFailureArgs1::staticAddToBundle(*pBundle, entityID);
-		cinfos->pChannel->send(pBundle);
+		sendBundleToBaseapp(componentID, cinfos, pBundle);
 		return;
 	}
 
@@ -1174,16 +1211,16 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 	SpaceMemory* space = SpaceMemorys::findSpace(spaceID);
 	if(space != NULL && space->isGood())
 	{
-		// ¸æÖªbaseapp£¬ entityµÄcell´´½¨ÁË
+		// å‘ŠçŸ¥baseappï¼Œ entityçš„cellåˆ›å»ºäº†
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		pBundle->newMessage(BaseappInterface::onEntityGetCell);
 		BaseappInterface::onEntityGetCellArgs3::staticAddToBundle(*pBundle, entityID, componentID_, spaceID);
-		cinfos->pChannel->send(pBundle);
+		sendBundleToBaseapp(componentID, cinfos, pBundle);
 
-		// ½â°ücellDataĞÅÏ¢.
+		// è§£åŒ…cellDataä¿¡æ¯.
 		PyObject* cellData = NULL;
 	
-		// ´´½¨entity
+		// åˆ›å»ºentity
 		Entity* e = createEntity(entityType.c_str(), cellData, false, entityID, false);
 		
 		if(e == NULL)
@@ -1192,7 +1229,7 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 			return;
 		}
 
-		// ÉèÖÃentityµÄbaseEntityCall
+		// è®¾ç½®entityçš„baseEntityCall
 		EntityCall* entityCall = new EntityCall(e->pScriptModule(), NULL, componentID, entityID, ENTITYCALL_TYPE_BASE);
 		e->baseEntityCall(entityCall);
 		
@@ -1213,9 +1250,9 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 			KBE_ASSERT(clientEntityCall != Py_None);
 
 			EntityCall* client = static_cast<EntityCall*>(clientEntityCall);	
-			// Py_INCREF(clientEntityCall); ÕâÀï²»ĞèÒªÔö¼ÓÒıÓÃ£¬ ÒòÎªÃ¿´Î¶¼»á²úÉúÒ»¸öĞÂµÄ¶ÔÏó
+			// Py_INCREF(clientEntityCall); è¿™é‡Œä¸éœ€è¦å¢åŠ å¼•ç”¨ï¼Œ å› ä¸ºæ¯æ¬¡éƒ½ä¼šäº§ç”Ÿä¸€ä¸ªæ–°çš„å¯¹è±¡
 
-			// ÎªÁËÄÜ¹»ÈÃentity.__init__ÖĞÄÜ¹»ĞŞ¸ÄÊôĞÔÁ¢¿ÌÄÜ¹ã²¥µ½¿Í»§¶ËÎÒÃÇĞèÒªÌáÇ°ÉèÖÃÕâĞ©
+			// ä¸ºäº†èƒ½å¤Ÿè®©entity.__init__ä¸­èƒ½å¤Ÿä¿®æ”¹å±æ€§ç«‹åˆ»èƒ½å¹¿æ’­åˆ°å®¢æˆ·ç«¯æˆ‘ä»¬éœ€è¦æå‰è®¾ç½®è¿™äº›
 			e->clientEntityCall(client);
 			e->setWitness(Witness::createPoolObject(OBJECTPOOL_POINT));
 		}
@@ -1233,7 +1270,7 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 
 		Py_XDECREF(cellData);
 		
-		// ÕâÀïÔö¼ÓÒ»¸öÒıÓÃ£¬ ÒòÎª¿ÉÄÜÔÚ½øÈëÊ±±»Ïú»Ù
+		// è¿™é‡Œå¢åŠ ä¸€ä¸ªå¼•ç”¨ï¼Œ å› ä¸ºå¯èƒ½åœ¨è¿›å…¥æ—¶è¢«é”€æ¯
 		Py_INCREF(e);
 
 		space->addEntityToNode(e);
@@ -1243,7 +1280,7 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 		if(isDestroyed == true)
 			return;
 
-		// Èç¹ûÊÇÓĞclientµÄentityÔòÉèÖÃËüµÄcliententitycall, baseapp²¿·ÖµÄonEntityGetCell»á¸æÖª¿Í»§¶Ëenterworld.
+		// å¦‚æœæ˜¯æœ‰clientçš„entityåˆ™è®¾ç½®å®ƒçš„cliententitycall, baseappéƒ¨åˆ†çš„onEntityGetCellä¼šå‘ŠçŸ¥å®¢æˆ·ç«¯enterworld.
 		if(hasClient)
 		{
 			e->onGetWitness();
@@ -1276,7 +1313,7 @@ void Cellapp::onDestroyCellEntityFromBaseapp(Network::Channel* pChannel, ENTITY_
 
 	if (!e->isReal())
 	{
-		// ĞèÒª×öÖĞ×ª
+		// éœ€è¦åšä¸­è½¬
 		GhostManager* gm = Cellapp::getSingleton().pGhostManager();
 		if (gm)
 		{
@@ -1299,6 +1336,207 @@ RemoteEntityMethod* Cellapp::createEntityCallCallEntityRemoteMethod(MethodDescri
 }
 
 //-------------------------------------------------------------------------------------
+// Router æ¥å…¥ï¼šcell å®ä½“ Actor çš„ç”Ÿå‘½å‘¨æœŸ
+//-------------------------------------------------------------------------------------
+void Cellapp::onEntityCreated(Entity* entity)
+{
+	if(entity == NULL || !RouterMail::isEnabled())
+		return;
+
+	// åªæœ‰çœŸå®ä½“æ‰æ³¨å†Œè¯¥åœ°å€ï¼šghost è‹¥ä¹Ÿæ³¨å†Œï¼Œè·¯ç”±ä¼šåœ¨"çœŸå®ä½“å®¿ä¸»"ä¸"ghost å®¿ä¸»"é—´æŠ–åŠ¨ï¼Œ
+	// å¯¼è‡´åŒä¸€æ¡ entity.cell.xxx() ä¸€ä¼šå„¿æŠ•åˆ° realã€ä¸€ä¼šå„¿æŠ•åˆ° ghostã€‚
+	if(!entity->isReal())
+		return;
+
+	routerRegisterActor(RouterMail::entityMailbox(entity->id(), (uint32)CELLAPP_TYPE));
+}
+
+//-------------------------------------------------------------------------------------
+void Cellapp::onEntityDestroyed(Entity* entity)
+{
+	if(entity == NULL || !RouterMail::isEnabled())
+		return;
+
+	// æ³¨æ„ï¼šè¿ç§»æˆåŠŸæ—¶"ç›®æ ‡ cellapp å·²æ³¨å†Œè¯¥åœ°å€"æ—©äº"æº cellapp é”€æ¯å®ä½“"ï¼Œ
+	// å› æ­¤è¿™é‡Œæ˜¯æ— æ¡ä»¶æ³¨é”€ï¼Œé  router ä¾§çš„ Owner æ ¡éªŒ(onUnregisterActor)
+	// ä¿è¯ä¸ä¼šæŠŠç›®æ ‡è¿›ç¨‹åˆšå»ºç«‹çš„è·¯ç”±æŠ¹æ‰â€”â€”è¿™æ˜¯è¿ç§»æ­£ç¡®æ€§çš„ä¸€éƒ¨åˆ†ã€‚
+	routerUnregisterActor(RouterMail::entityMailbox(entity->id(), (uint32)CELLAPP_TYPE));
+}
+
+//-------------------------------------------------------------------------------------
+// RouterMail é‡Œçš„ legacy æ¶ˆæ¯å¤´å°ºå¯¸å¸¸é‡å¿…é¡»ä¸ network/common.h çš„å®é™…ç±»å‹ä¸€è‡´ï¼Œ
+// å¦åˆ™å‰¥ä¸­ç»§å¤–å£³æ—¶ä¼šè¯»é”™åç§»â€”â€”è¿™é‡Œåœ¨ç¼–è¯‘æœŸæ‹¦ä½æ¼‚ç§»ã€‚
+static_assert(RouterMail::LEGACY_MSG_ID_SIZE == sizeof(Network::MessageID),
+	"RouterMail::LEGACY_MSG_ID_SIZE != sizeof(Network::MessageID)");
+static_assert(RouterMail::LEGACY_MSG_LEN_SIZE == sizeof(Network::MessageLength),
+	"RouterMail::LEGACY_MSG_LEN_SIZE != sizeof(Network::MessageLength)");
+static_assert(RouterMail::LEGACY_MSG_LEN1_SIZE == sizeof(Network::MessageLength1),
+	"RouterMail::LEGACY_MSG_LEN1_SIZE != sizeof(Network::MessageLength1)");
+static_assert(RouterMail::LEGACY_MSG_LEN_MAX == NETWORK_MESSAGE_MAX_SIZE,
+	"RouterMail::LEGACY_MSG_LEN_MAX != NETWORK_MESSAGE_MAX_SIZE");
+
+//-------------------------------------------------------------------------------------
+bool Cellapp::sendMailToClientActor(ENTITY_ID eid, const std::string& bundleBody)
+{
+	if(eid <= 0 || !RouterMail::isEnabled())
+		return false;
+
+	const std::string body = RouterMail::buildBody(RouterMail::BODY_CLIENT_MESSAGE, bundleBody);
+
+	if(routerSendMail(RouterMail::entityMailbox(eid, (uint32)CLIENT_TYPE), body))
+		return true;
+
+	ERROR_MSG(fmt::format("Cellapp::sendMailToClientActor: router deliver failed, "
+		"entityID({}), bodySize({})!\n", eid, (int)bundleBody.size()));
+
+	return false;
+}
+
+//-------------------------------------------------------------------------------------
+bool Cellapp::sendBundleToClientActor(ENTITY_ID eid, Network::Bundle* pBundle)
+{
+	if(pBundle == NULL || !RouterMail::isEnabled())
+		return false;
+
+	pBundle->finiMessage(true);
+
+	const std::string bundleBody = RouterMail::bundleToBody(*pBundle);
+	Network::Bundle::reclaimPoolObject(pBundle);
+
+	// cellapp -> client çš„ legacy é€šè·¯æ˜¯"ç» baseapp ä¸­ç»§"ï¼šbundle çš„ç¬¬ä¸€æ¡æ¶ˆæ¯å›ºå®šæ˜¯
+	// BaseappInterface::forwardMessageToClientFromCellappï¼Œå…¶è½½è·ä¸º
+	// [entityID][å®¢æˆ·ç«¯åè®®æ¶ˆæ¯åºåˆ—...]ã€‚Router æ¨¡å¼ä¸‹å®¢æˆ·ç«¯ç”± baseapp æ³¨å†Œä¸º
+	// CLIENT_TYPE Actorï¼Œcellapp å¯ç›´æ¥å¯»å€ï¼Œå› æ­¤æŠ•é€’å‰å…ˆå‰¥æ‰è¿™å±‚ä¸­ç»§å¤–å£³ã€‚
+	std::string clientBody;
+	uint16_t relayMsgID = 0;
+	ENTITY_ID forwardedEID = 0;
+
+	if(!RouterMail::stripClientForwardEnvelope(bundleBody, clientBody, &relayMsgID, &forwardedEID) ||
+		relayMsgID != BaseappInterface::forwardMessageToClientFromCellapp.msgID)
+	{
+		ERROR_MSG(fmt::format("Cellapp::sendBundleToClientActor: unexpected client bundle, "
+			"entityID({}), size({}), msgID({})!\n", eid, (int)bundleBody.size(), (int)relayMsgID));
+
+		// pBundle å·²è¢«å›æ”¶ï¼Œè¿”å› true é˜»æ­¢è°ƒç”¨æ–¹å›é€€åˆ°æ—§é€šè·¯é‡å¤ä½¿ç”¨ã€‚
+		return true;
+	}
+
+	if(forwardedEID != eid)
+	{
+		WARNING_MSG(fmt::format("Cellapp::sendBundleToClientActor: forward entityID({}) "
+			"!= target entityID({}).\n", forwardedEID, eid));
+	}
+
+	sendMailToClientActor(eid, clientBody);
+
+	// æ— è®ºæŠ•é€’æ˜¯å¦æˆåŠŸ pBundle éƒ½å·²æ¶ˆè´¹ï¼šRouter æ¨¡å¼ä¸‹å¤±è´¥ä¹Ÿå¿…é¡»è¿”å› trueï¼Œ
+	// å¦åˆ™è°ƒç”¨æ–¹ä¼šæŠŠå·²å›æ”¶çš„ bundle å†äº¤ç»™ sendCall/Channel::sendã€‚
+	return true;
+}
+
+//-------------------------------------------------------------------------------------
+void Cellapp::onRouterReady()
+{
+	// é‡è¿åå¿…é¡»é‡å»ºæœ¬è¿›ç¨‹å…¨éƒ¨ Actorï¼šrouter çš„è·¯ç”±è¡¨æ˜¯å†…å­˜è½¯çŠ¶æ€ã€‚
+	// ç»„ä»¶è‡ªèº«çš„ Actor å·²ç”± ServerApp::startRouter çš„ onReadyChanged æ³¨å†Œã€‚
+	if(pEntities_ == NULL)
+		return;
+
+	Entities<Entity>::ENTITYS_MAP& entities = pEntities_->getEntities();
+	Entities<Entity>::ENTITYS_MAP::const_iterator iter = entities.begin();
+	uint32 registered = 0;
+
+	for(; iter != entities.end(); ++iter)
+	{
+		Entity* entity = static_cast<Entity*>(iter->second.get());
+
+		if(entity == NULL || !entity->isReal())
+			continue;
+
+		routerRegisterActor(RouterMail::entityMailbox(entity->id(), (uint32)CELLAPP_TYPE));
+		++registered;
+	}
+
+	INFO_MSG(fmt::format("Cellapp::onRouterReady: re-registered {} cell entity actor(s).\n",
+		(unsigned long long)registered));
+}
+
+//-------------------------------------------------------------------------------------
+void Cellapp::onRouterMail(const RouterClient::Mail& mail)
+{
+	RouterMail::BodyTag tag = RouterMail::BODY_UNKNOWN;
+	const char* payload = NULL;
+	size_t size = 0;
+
+	if(!RouterMail::parseBody(mail.body, tag, payload, size))
+	{
+		WARNING_MSG(fmt::format("Cellapp::onRouterMail: illegal body from {}, size={}.\n",
+			RouterMail::mailboxToString(mail.src), (int)mail.body.size()));
+
+		return;
+	}
+
+	// åŸæœ‰ handler çš„å…¥å£éƒ½æ˜¯ MemoryStreamï¼Œè¿™é‡ŒæŠŠ body è½½è·é›¶è§£æåœ°åŒ…ä¸€å±‚ã€‚
+	// tag ä¹‹åçš„å†…å®¹ä¸è€è·¯å¾„é€å­—èŠ‚ç›¸åŒï¼Œå› æ­¤ handler çš„è§£æä»£ç æ— éœ€ä»»ä½•æ”¹åŠ¨ã€‚
+	MemoryStream* s = MemoryStream::createPoolObject(OBJECTPOOL_POINT);
+
+	if(size > 0)
+		s->append(payload, size);
+
+	switch(tag)
+	{
+	case RouterMail::BODY_ENTITY_CALL:
+		// æœåŠ¡ç«¯å®ä½“è°ƒç”¨(å¦‚ base å®ä½“è°ƒç”¨ cell å®ä½“æ–¹æ³•)ï¼Œç­‰ä»·äºè€è·¯å¾„
+		// CellappInterface::onEntityCallã€‚pChannel=NULL è¡¨ç¤º"æ²¡æœ‰ Channel çš„å†…éƒ¨æ¥æº"ã€‚
+		this->onEntityCall(NULL, *s);
+		break;
+
+	case RouterMail::BODY_REMOTE_CELL_FROM_CLIENT:
+		{
+			// å®¢æˆ·ç«¯ entity.cell.xxx()ï¼šè½½è· = entityID + æ–¹æ³•è°ƒç”¨è½½è·ã€‚
+			// è€è·¯å¾„ç”± baseapp è½¬å‘å¹¶æ˜¾å¼æºå¸¦ srcEntityID/targetIDï¼›å®¢æˆ·ç«¯åªå…è®¸è°ƒç”¨
+			// "è‡ªå·±çš„å®ä½“"çš„ cell éƒ¨åˆ†ï¼Œå› æ­¤äºŒè€…éƒ½ç­‰äº eidï¼Œè¿™é‡Œç›´æ¥è¡¥ä¸Šã€‚
+			ENTITY_ID eid = 0;
+
+			if(s->length() >= sizeof(ENTITY_ID))
+				(*s) >> eid;
+
+			Entity* pEntity = pEntities_->find(eid);
+			if(pEntity == NULL)
+			{
+				WARNING_MSG(fmt::format("Cellapp::onRouterMail: BODY_REMOTE_CELL_FROM_CLIENT entityID {} not found.\n", eid));
+				break;
+			}
+
+			pEntity->onRemoteCallMethodFromClient(NULL, eid, *s);
+		}
+		break;
+
+	case RouterMail::BODY_COMPONENT_MESSAGE:
+		// ç»„ä»¶çº§è£¸æ¶ˆæ¯ï¼šè½½è· = msgId(uint32) + åŸ interface æ¶ˆæ¯è½½è·ã€‚
+		// å–ä»£ Components ç›´è¿é€€åŒ–å baseapp -> cellapp çš„æ§åˆ¶æ¶ˆæ¯
+		// (onCreateCellEntityFromBaseapp / onDestroyCellEntityFromBaseapp / ghost åŒæ­¥ç­‰)ã€‚
+		RouterMail::dispatchComponentMessage(CellappInterface::messageHandlers,
+			payload, size, "Cellapp::onRouterMail");
+		break;
+
+	case RouterMail::BODY_FORWARD_TO_CLIENT:
+	case RouterMail::BODY_FORWARD_TO_CELLAPP:
+		// è¿™ä¸¤ä¸ªæ ‡ç­¾çš„ç›®çš„åœ°æ˜¯ baseappï¼Œä¸åº”æŠ•é€’åˆ° cellappï¼ŒæŠ•åˆ°å³è¯´æ˜å‘é€æ–¹é€‰é”™äº† dstã€‚
+		WARNING_MSG(fmt::format("Cellapp::onRouterMail: body tag {} is for baseapp, unexpected. src={}.\n",
+			RouterMail::bodyTagName(tag), RouterMail::mailboxToString(mail.src)));
+		break;
+
+	default:
+		WARNING_MSG(fmt::format("Cellapp::onRouterMail: unexpected body tag {} from {}.\n",
+			(int)tag, RouterMail::mailboxToString(mail.src)));
+		break;
+	}
+
+	MemoryStream::reclaimPoolObject(s);
+}
+
+//-------------------------------------------------------------------------------------
 void Cellapp::onEntityCall(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 {
 	ENTITY_ID eid;
@@ -1307,10 +1545,20 @@ void Cellapp::onEntityCall(Network::Channel* pChannel, KBEngine::MemoryStream& s
 	ENTITYCALL_TYPE calltype;
 	s >> calltype;
 
-	// ÔÚ±¾µØÇø³¢ÊÔ²éÕÒ¸ÃÊÕ¼şÈËĞÅÏ¢£¬ ¿´ÊÕ¼şÈËÊÇ·ñÊôÓÚ±¾ÇøÓò
+	// åœ¨æœ¬åœ°åŒºå°è¯•æŸ¥æ‰¾è¯¥æ”¶ä»¶äººä¿¡æ¯ï¼Œ çœ‹æ”¶ä»¶äººæ˜¯å¦å±äºæœ¬åŒºåŸŸ
 	Entity* entity = pEntities_->find(eid);
 	if(entity == NULL)
 	{
+		// Router æ¨¡å¼ä¸‹æŠ•é€’ç›®æ ‡ç”± router çš„è·¯ç”±è¡¨å†³å®šï¼Œæœ¬åœ°æ‰¾ä¸åˆ°å®ä½“å³è¯´æ˜æœ¬è¿›ç¨‹
+		// æ ¹æœ¬ä¸æ˜¯è¯¥å®ä½“çš„å®¿ä¸»ï¼›æ­¤æ—¶å†æŒ‰ GhostManager è‡ªç»´æŠ¤çš„æ—§è·¯ç”±è½¬å‘å±äº"äºŒæ¬¡è·¯ç”±"ï¼Œ
+		// ä¼šåœ¨è¿ç§»ç­‰åœºæ™¯ä¸‹å½¢æˆé”™è¯¯æŠ•é€’ï¼Œå› æ­¤ç›´æ¥ä¸¢å¼ƒã€‚
+		if(RouterMail::isEnabled())
+		{
+			WARNING_MSG(fmt::format("Cellapp::onEntityCall: entityID {} not found, dropped (Router mode).\n", eid));
+			s.done();
+			return;
+		}
+
 		if(calltype == ENTITYCALL_TYPE_CELL)
 		{
 			GhostManager* gm = Cellapp::getSingleton().pGhostManager();
@@ -1334,11 +1582,22 @@ void Cellapp::onEntityCall(Network::Channel* pChannel, KBEngine::MemoryStream& s
 
 	switch(calltype)
 	{
-		// ±¾×é¼şÊÇcellapp£¬ÄÇÃ´È·ÈÏÓÊ¼şµÄÄ¿µÄµØÊÇÕâÀï£¬ ÄÇÃ´Ö´ĞĞ×îÖÕ²Ù×÷
+		// æœ¬ç»„ä»¶æ˜¯cellappï¼Œé‚£ä¹ˆç¡®è®¤é‚®ä»¶çš„ç›®çš„åœ°æ˜¯è¿™é‡Œï¼Œ é‚£ä¹ˆæ‰§è¡Œæœ€ç»ˆæ“ä½œ
 		case ENTITYCALL_TYPE_CELL:	
 			{
 				if(!entity->isReal())
 				{
+					if(RouterMail::isEnabled())
+					{
+						// Router æ¨¡å¼ä¸‹åœ°å€åªç”± entityID å†³å®šï¼Œä¸”åªæœ‰"çœŸå®ä½“å®¿ä¸»"ä¼šæ³¨å†Œè¯¥åœ°å€ï¼Œ
+						// å› æ­¤æ¶ˆæ¯ä¸åº”è½åˆ°æœ¬(ghost)è¿›ç¨‹ã€‚çœŸå‡ºç°äº†ï¼Œè¯´æ˜è¿ç§»çš„ SUSPEND/RESUME
+						// å°šæœªå®Œæˆï¼›æ­¤æ—¶ä¸¢å¼ƒå¹¶å‘Šè­¦ï¼Œæ¯”æŒ‰ GhostManager è‡ªç»´æŠ¤çš„æ—§è·¯ç”±è½¬å‘æ›´å®‰å…¨â€”â€”
+						// åè€…ä¼šåœ¨ router å·²æ”¹æŒ‡æ–°å®¿ä¸»åå½¢æˆé‡å¤æŠ•é€’(åŒä¸€æ–¹æ³•è¢«æ‰§è¡Œä¸¤æ¬¡)ã€‚
+						WARNING_MSG(fmt::format("Cellapp::onEntityCall: entity({}) is ghost on this cellapp, "
+							"but the mail was routed here; dropped. (migration SUSPEND/RESUME in flight?)\n", eid));
+						break;
+					}
+
 					GhostManager* gm = Cellapp::getSingleton().pGhostManager();
 					if(gm)
 					{
@@ -1368,6 +1627,18 @@ void Cellapp::onEntityCall(Network::Channel* pChannel, KBEngine::MemoryStream& s
 
 					break;
 				}
+
+				if(RouterMail::isEnabled())
+				{
+					// Router æ¨¡å¼ï¼šåœ°å€ä¸éšå®¿ä¸»å˜åŒ–ï¼Œç›´æ¥æŠŠå‰©ä½™è½½è·è½¬æŠ•ç»™ base å®ä½“ Actorï¼Œ
+					// å–ä»£"æŸ¥ Channel -> ç›´è¿ baseapp"çš„è€è·¯å¾„(sendCall å†…éƒ¨èµ° Routerï¼Œ
+					// å¹¶ç”± sendCall æ¥ç®¡ pBundle çš„æ‰€æœ‰æƒ)ã€‚
+					Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
+					entityCall->newCall_(*pBundle);
+					pBundle->append(s);
+					entityCall->sendCall(pBundle);
+					break;
+				}
 				
 				Network::Channel* pChannel = entityCall->getChannel();
 				if (pChannel)
@@ -1389,6 +1660,17 @@ void Cellapp::onEntityCall(Network::Channel* pChannel, KBEngine::MemoryStream& s
 					//WARNING_MSG(fmt::format("Cellapp::onEntityCall: not found clientEntityCall! entitycallType={}, entityID={}.\n",
 					//	calltype, eid));
 
+					break;
+				}
+
+				if(RouterMail::isEnabled())
+				{
+					// Router æ¨¡å¼ï¼šcellapp -> client çš„ä¸­é—´è·³(baseapp)ä¸å†éœ€è¦ï¼Œ
+					// ç›´æ¥æŠŠå‰©ä½™è½½è·è½¬æŠ•ç»™è¯¥å®¢æˆ·ç«¯å®ä½“ Actor(sendCall å†…éƒ¨èµ° Router)ã€‚
+					Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
+					entityCall->newCall_(*pBundle);
+					pBundle->append(s);
+					entityCall->sendCall(pBundle);
 					break;
 				}
 				
@@ -1430,12 +1712,12 @@ void Cellapp::onRemoteCallMethodFromClient(Network::Channel* pChannel, KBEngine:
 		return;
 	}
 
-	// Õâ¸ö·½·¨ºô½ĞÈç¹û²»ÊÇÕâ¸öproxy×Ô¼ºµÄ·½·¨Ôò±ØĞëºô½ĞµÄentityºÍproxyµÄcellEntityÔÚÒ»¸öspaceÖĞ¡£
+	// è¿™ä¸ªæ–¹æ³•å‘¼å«å¦‚æœä¸æ˜¯è¿™ä¸ªproxyè‡ªå·±çš„æ–¹æ³•åˆ™å¿…é¡»å‘¼å«çš„entityå’Œproxyçš„cellEntityåœ¨ä¸€ä¸ªspaceä¸­ã€‚
 	try
 	{
 		if (!e->isReal())
 		{
-			// ĞèÒª×öÖĞ×ª
+			// éœ€è¦åšä¸­è½¬
 			GhostManager* gm = Cellapp::getSingleton().pGhostManager();
 			if (gm)
 			{
@@ -1483,12 +1765,12 @@ void Cellapp::onUpdateDataFromClient(Network::Channel* pChannel, KBEngine::Memor
 		return;
 	}
 
-	// Èç¹ûÊÇ±»ÏµÍ³¿ØÖÆÁË£¬ÓÖ»ò±»±ğÈË¿ØÖÆÁË£¬ÔòºöÂÔÀ´×Ô×Ô¼º¿Í»§¶ËµÄ¸üĞÂÏûÏ¢
+	// å¦‚æœæ˜¯è¢«ç³»ç»Ÿæ§åˆ¶äº†ï¼Œåˆæˆ–è¢«åˆ«äººæ§åˆ¶äº†ï¼Œåˆ™å¿½ç•¥æ¥è‡ªè‡ªå·±å®¢æˆ·ç«¯çš„æ›´æ–°æ¶ˆæ¯
 	if (e->controlledBy() == NULL || e->controlledBy()->id() != srcEntityID)
 	{
-		// phw: ¾­²âÊÔ·¢ÏÖ£¬ÓÉÓÚcontrolledBy¸Ä±äÊ±Í¨Öª¿Í»§¶Ë´æÔÚÒ»¶¨µÄÊ±¼ä²î£¬
-		//      ËùÒÔ¿Í»§¶ËÊÕµ½ÏûÏ¢Ç°ÈÔÈ»·¢ËÍÎ»ÒÆÏûÏ¢£¬ÕâÊ¹µÃÏÂÃæµÄ´íÎóÈÕÖ¾±äµÃÓĞµã¶à£¬
-		//      Òò´Ë×¢ÊÍµôÕâ¸öÈÕÖ¾£¬ÒÔ¼õÉÙ²»±ØÒªµÄÈÕÖ¾Êä³ö¡£
+		// phw: ç»æµ‹è¯•å‘ç°ï¼Œç”±äºcontrolledByæ”¹å˜æ—¶é€šçŸ¥å®¢æˆ·ç«¯å­˜åœ¨ä¸€å®šçš„æ—¶é—´å·®ï¼Œ
+		//      æ‰€ä»¥å®¢æˆ·ç«¯æ”¶åˆ°æ¶ˆæ¯å‰ä»ç„¶å‘é€ä½ç§»æ¶ˆæ¯ï¼Œè¿™ä½¿å¾—ä¸‹é¢çš„é”™è¯¯æ—¥å¿—å˜å¾—æœ‰ç‚¹å¤šï¼Œ
+		//      å› æ­¤æ³¨é‡Šæ‰è¿™ä¸ªæ—¥å¿—ï¼Œä»¥å‡å°‘ä¸å¿…è¦çš„æ—¥å¿—è¾“å‡ºã€‚
 		//ERROR_MSG(fmt::format("Cellapp::onUpdateDataFromClientForControlledEntity: entity {} has no permission to control entity {}!\n", proxiesEntityID, srcEntityID));
 
 		s.done();
@@ -1531,9 +1813,9 @@ void Cellapp::onUpdateDataFromClientForControlledEntity(Network::Channel* pChann
 
 	if (e->controlledBy() == NULL || e->controlledBy()->id() != proxiesEntityID)
 	{
-		// phw: ¾­²âÊÔ·¢ÏÖ£¬ÓÉÓÚcontrolledBy¸Ä±äÊ±Í¨Öª¿Í»§¶Ë´æÔÚÒ»¶¨µÄÊ±¼ä²î£¬
-		//      ËùÒÔ¿Í»§¶ËÊÕµ½ÏûÏ¢Ç°ÈÔÈ»·¢ËÍÎ»ÒÆÏûÏ¢£¬ÕâÊ¹µÃÏÂÃæµÄ´íÎóÈÕÖ¾±äµÃÓĞµã¶à£¬
-		//      Òò´Ë×¢ÊÍµôÕâ¸öÈÕÖ¾£¬ÒÔ¼õÉÙ²»±ØÒªµÄÈÕÖ¾Êä³ö¡£
+		// phw: ç»æµ‹è¯•å‘ç°ï¼Œç”±äºcontrolledByæ”¹å˜æ—¶é€šçŸ¥å®¢æˆ·ç«¯å­˜åœ¨ä¸€å®šçš„æ—¶é—´å·®ï¼Œ
+		//      æ‰€ä»¥å®¢æˆ·ç«¯æ”¶åˆ°æ¶ˆæ¯å‰ä»ç„¶å‘é€ä½ç§»æ¶ˆæ¯ï¼Œè¿™ä½¿å¾—ä¸‹é¢çš„é”™è¯¯æ—¥å¿—å˜å¾—æœ‰ç‚¹å¤šï¼Œ
+		//      å› æ­¤æ³¨é‡Šæ‰è¿™ä¸ªæ—¥å¿—ï¼Œä»¥å‡å°‘ä¸å¿…è¦çš„æ—¥å¿—è¾“å‡ºã€‚
 		//ERROR_MSG(fmt::format("Cellapp::onUpdateDataFromClientForControlledEntity: entity {} has no permission to control entity {}!\n", proxiesEntityID, srcEntityID));
 		
 		s.done();
@@ -1684,7 +1966,7 @@ void Cellapp::forwardEntityMessageToCellappFromClient(Network::Channel* pChannel
 
 	if (!e->isReal())
 	{
-		// ĞèÒª×öÖĞ×ª
+		// éœ€è¦åšä¸­è½¬
 		GhostManager* gm = Cellapp::getSingleton().pGhostManager();
 		if (gm)
 		{
@@ -1698,7 +1980,7 @@ void Cellapp::forwardEntityMessageToCellappFromClient(Network::Channel* pChannel
 		return;
 	}
 
-	// ¼ì²éÊÇ·ñÊÇentityÏûÏ¢£¬ ·ñÔò²»ºÏ·¨.
+	// æ£€æŸ¥æ˜¯å¦æ˜¯entityæ¶ˆæ¯ï¼Œ å¦åˆ™ä¸åˆæ³•.
 	while(s.length() > 0 && !e->isDestroyed())
 	{
 		Network::MessageID currMsgID;
@@ -1711,7 +1993,7 @@ void Cellapp::forwardEntityMessageToCellappFromClient(Network::Channel* pChannel
 		if(pMsgHandler == NULL)
 		{
 			ERROR_MSG(fmt::format("Cellapp::forwardEntityMessageToCellappFromClient: invalide msgID={}, msglen={}, from {}.\n", 
-				currMsgID, s.wpos(), pChannel->c_str()));
+				currMsgID, s.wpos(), (pChannel != NULL) ? pChannel->c_str() : "router(internal)"));
 
 			s.done();
 			return;
@@ -1734,13 +2016,13 @@ void Cellapp::forwardEntityMessageToCellappFromClient(Network::Channel* pChannel
 		if(s.length() < currMsgLen || currMsgLen >  NETWORK_MESSAGE_MAX_SIZE / 2)
 		{
 			ERROR_MSG(fmt::format("Cellapp::forwardEntityMessageToCellappFromClient: msgID={}, invalide msglen={}, from {}.\n", 
-				currMsgID, s.wpos(), pChannel->c_str()));
+				currMsgID, s.wpos(), (pChannel != NULL) ? pChannel->c_str() : "router(internal)"));
 
 			s.done();
 			return;
 		}
 
-		// ÁÙÊ±ÉèÖÃÓĞĞ§¶ÁÈ¡Î»£¬ ·ÀÖ¹½Ó¿ÚÖĞÒç³ö²Ù×÷
+		// ä¸´æ—¶è®¾ç½®æœ‰æ•ˆè¯»å–ä½ï¼Œ é˜²æ­¢æ¥å£ä¸­æº¢å‡ºæ“ä½œ
 		size_t wpos = s.wpos();
 		// size_t rpos = s.rpos();
 		size_t frpos = s.rpos() + currMsgLen;
@@ -1758,7 +2040,7 @@ void Cellapp::forwardEntityMessageToCellappFromClient(Network::Channel* pChannel
 			return;
 		}
 
-		// ·ÀÖ¹handleÖĞÃ»ÓĞ½«Êı¾İµ¼³ö»ñÈ¡·Ç·¨²Ù×÷
+		// é˜²æ­¢handleä¸­æ²¡æœ‰å°†æ•°æ®å¯¼å‡ºè·å–éæ³•æ“ä½œ
 		if(currMsgLen > 0)
 		{
 			if(frpos != s.rpos())
@@ -1935,7 +2217,7 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 		return;
 	}
 
-	// ´´½¨entity
+	// åˆ›å»ºentity
 	Entity* e = createEntity(EntityDef::findScriptModule(entityType)->getName(), NULL, false, teleportEntityID, false);
 	if (e == NULL)
 	{
@@ -1957,12 +2239,12 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 	Py_INCREF(e);
 	e->createFromStream(s);
 
-	// ÓĞ¿ÉÄÜĞòÁĞ»¯¹ıÀ´µÄghostÄÚÈİ°üº¬ÒÆ¶¯¿ØÖÆÆ÷£¬Ö®ËùÒÔĞòÁĞ»¯¹ıÀ´ÊÇÎªÁË
-	// ÔÚ´«ËÍÊ§°ÜÊ±¿ÉÒÔÓÃÓÚ»Ö¸´ÏÖ³¡, ÄÇÃ´´«ËÍ³É¹¦ÁËÎÒÃÇÓ¦¸ÃÍ£Ö¹ÒÔÇ°µÄÒÆ¶¯ĞĞÎª
+	// æœ‰å¯èƒ½åºåˆ—åŒ–è¿‡æ¥çš„ghostå†…å®¹åŒ…å«ç§»åŠ¨æ§åˆ¶å™¨ï¼Œä¹‹æ‰€ä»¥åºåˆ—åŒ–è¿‡æ¥æ˜¯ä¸ºäº†
+	// åœ¨ä¼ é€å¤±è´¥æ—¶å¯ä»¥ç”¨äºæ¢å¤ç°åœº, é‚£ä¹ˆä¼ é€æˆåŠŸäº†æˆ‘ä»¬åº”è¯¥åœæ­¢ä»¥å‰çš„ç§»åŠ¨è¡Œä¸º
 	e->stopMove();
 
-	// ¶ÔÓÚ´«ËÍ²Ù×÷À´Ëµ£¬ÊµÌå´«ËÍ¹ıÀ´¾Í²»»áÓĞghost²¿·ÖÁË
-	// µ±Ç°ÊµÌå×ö³öµÄÈÎºÎ¸Ä±ä²»ĞèÒªÍ¬²½µ½Ô­ÓĞcell£¬Õâ¿ÉÄÜ»á²úÉúÍøÂçÏûÏ¢ËÀÑ­»·
+	// å¯¹äºä¼ é€æ“ä½œæ¥è¯´ï¼Œå®ä½“ä¼ é€è¿‡æ¥å°±ä¸ä¼šæœ‰ghostéƒ¨åˆ†äº†
+	// å½“å‰å®ä½“åšå‡ºçš„ä»»ä½•æ”¹å˜ä¸éœ€è¦åŒæ­¥åˆ°åŸæœ‰cellï¼Œè¿™å¯èƒ½ä¼šäº§ç”Ÿç½‘ç»œæ¶ˆæ¯æ­»å¾ªç¯
 	//ghostCell = 0;
 	e->ghostCell(0);
 
@@ -1973,10 +2255,10 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 	{
 		e->addFlags(ENTITY_FLAGS_TELEPORT_START);
 		
-		// Èç¹ûÊÇÓĞbaseµÄÊµÌå£¬ĞèÒª½«baseappIDÌîÈë£¬ÒÔ±ãÔÚreqTeleportToCellAppCBÖĞ»Øµ÷¸øbaseapp´«Êä½áÊø×´Ì¬
+		// å¦‚æœæ˜¯æœ‰baseçš„å®ä½“ï¼Œéœ€è¦å°†baseappIDå¡«å…¥ï¼Œä»¥ä¾¿åœ¨reqTeleportToCellAppCBä¸­å›è°ƒç»™baseappä¼ è¾“ç»“æŸçŠ¶æ€
 		entityBaseappID = e->baseEntityCall()->componentID();
 
-		// Ïòbaseapp·¢ËÍ´«ËÍµ½´ïÍ¨Öª
+		// å‘baseappå‘é€ä¼ é€åˆ°è¾¾é€šçŸ¥
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
 		(*pBundle).newMessage(BaseappInterface::onMigrationCellappEnd);
 		(*pBundle) << e->id();
@@ -1984,7 +2266,7 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 		e->baseEntityCall()->sendCall(pBundle);
 	}
 
-	// ½øÈëĞÂspaceÖ®Ç°±ØĞëÍ¨Öª¿Í»§¶ËleaveSpace
+	// è¿›å…¥æ–°spaceä¹‹å‰å¿…é¡»é€šçŸ¥å®¢æˆ·ç«¯leaveSpace
 	if (e->clientEntityCall())
 	{
 		Network::Bundle* pSendBundle = Network::Bundle::createPoolObject(OBJECTPOOL_POINT);
@@ -1992,10 +2274,13 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 		ENTITY_MESSAGE_FORWARD_CLIENT_BEGIN(pSendBundle, ClientInterface::onEntityLeaveSpace, leaveSpace);
 		(*pSendBundle) << e->id();
 		ENTITY_MESSAGE_FORWARD_CLIENT_END(pSendBundle, ClientInterface::onEntityLeaveSpace, leaveSpace);
-		e->clientEntityCall()->sendCall(pSendBundle);
+
+		// Router æ¨¡å¼ï¼šlegacy client æ¶ˆæ¯ç» client Actor ç›´æŠ•ï¼Œå¤±è´¥(æœªå¯ç”¨)åˆ™å›é€€ç›´è¿ sendCall
+		if(!sendBundleToClientActor(e->id(), pSendBundle))
+			e->clientEntityCall()->sendCall(pSendBundle);
 	}
 
-	// ½øÈëĞÂµÄspaceÖĞ
+	// è¿›å…¥æ–°çš„spaceä¸­
 	space->addEntityAndEnterWorld(e);
 
 	Entity* nearbyMBRef = Cellapp::getSingleton().findEntity(nearbyMBRefID);
@@ -2024,22 +2309,22 @@ void Cellapp::reqTeleportToCellAppCB(Network::Channel* pChannel, MemoryStream& s
 
 	s >> sourceCellappID >> targetCellappID >> entityBaseappID >> teleportEntityID >> success;
 
-	// Õı³£Çé¿öÏÂ£¬ Ó¦¸Ã´«ËÍ½á¹û·µ»ØÊ±´«ËÍÇ°µÄÊµÌåÓ¦¸ÃÔÚµ±Ç°cellÉÏ£¬ Èç¹ûµ½ÆäËûcellappÉÏÁË£¬ ËµÃ÷ÔÚ´ËÆÚ¼ä±»Ç¨ÒÆ×ßÁË
-	// ´ËÊ±±»Ç¨ÒÆºÜ¿ÉÄÜ»áÓĞÎÊÌâ
+	// æ­£å¸¸æƒ…å†µä¸‹ï¼Œ åº”è¯¥ä¼ é€ç»“æœè¿”å›æ—¶ä¼ é€å‰çš„å®ä½“åº”è¯¥åœ¨å½“å‰cellä¸Šï¼Œ å¦‚æœåˆ°å…¶ä»–cellappä¸Šäº†ï¼Œ è¯´æ˜åœ¨æ­¤æœŸé—´è¢«è¿ç§»èµ°äº†
+	// æ­¤æ—¶è¢«è¿ç§»å¾ˆå¯èƒ½ä¼šæœ‰é—®é¢˜
 	if (sourceCellappID != g_componentID)
 	{
 		ERROR_MSG(fmt::format("Cellapp::reqTeleportToCellAppCB(): sourceCellappID={} != currCellappID={}, targetCellappID={}\n", 
 			sourceCellappID, g_componentID, targetCellappID));
 	}
 
-	// ´«ËÍ³É¹¦£¬ÎÒÃÇÏú»ÙÕâ¸öentity
+	// ä¼ é€æˆåŠŸï¼Œæˆ‘ä»¬é”€æ¯è¿™ä¸ªentity
 	if(success)
 	{
 		destroyEntity(teleportEntityID, false);
 		return;
 	}
 
-	// ÊµÌå¿ÉÄÜÃ»ÓĞbase²¿·Ö£¬ÄÇÃ´²»ĞèÒªÍ¨Öªbaseapp
+	// å®ä½“å¯èƒ½æ²¡æœ‰baseéƒ¨åˆ†ï¼Œé‚£ä¹ˆä¸éœ€è¦é€šçŸ¥baseapp
 	if (entityBaseappID > 0)
 	{
 		Components::ComponentInfos* pInfos = Components::getSingleton().findComponent(entityBaseappID);
@@ -2058,7 +2343,7 @@ void Cellapp::reqTeleportToCellAppCB(Network::Channel* pChannel, MemoryStream& s
 		}
 	}
 
-	// Ä³Ğ©Çé¿öÏÂÊµÌå¿ÉÄÜ´ËÊ±ÕÒ²»µ½ÁË£¬ÀıÈç£º¸±±¾Ïú»ÙÁË
+	// æŸäº›æƒ…å†µä¸‹å®ä½“å¯èƒ½æ­¤æ—¶æ‰¾ä¸åˆ°äº†ï¼Œä¾‹å¦‚ï¼šå‰¯æœ¬é”€æ¯äº†
 	Entity* entity = Cellapp::getSingleton().findEntity(teleportEntityID);
 	if(entity == NULL)
 	{
@@ -2069,7 +2354,7 @@ void Cellapp::reqTeleportToCellAppCB(Network::Channel* pChannel, MemoryStream& s
 		return;
 	}
 
-	// ´«ËÍÊ§°ÜÁË£¬ÎÒÃÇĞèÒªÖØ»Ö¸´entity
+	// ä¼ é€å¤±è´¥äº†ï¼Œæˆ‘ä»¬éœ€è¦é‡æ¢å¤entity
 	ENTITY_ID nearbyMBRefID = 0;
 	Position3D pos;
 	Direction3D dir;
@@ -2098,7 +2383,7 @@ void Cellapp::reqTeleportToCellAppOver(Network::Channel* pChannel, MemoryStream&
 
 	s >> teleportEntityID;
 	
-	// Ä³Ğ©Çé¿öÏÂÊµÌå¿ÉÄÜ´ËÊ±ÕÒ²»µ½ÁË£¬ÀıÈç£º¸±±¾Ïú»ÙÁË
+	// æŸäº›æƒ…å†µä¸‹å®ä½“å¯èƒ½æ­¤æ—¶æ‰¾ä¸åˆ°äº†ï¼Œä¾‹å¦‚ï¼šå‰¯æœ¬é”€æ¯äº†
 	Entity* entity = Cellapp::getSingleton().findEntity(teleportEntityID);
 	if(entity == NULL)
 	{
@@ -2264,7 +2549,7 @@ void Cellapp::setSpaceViewer(Network::Channel* pChannel, MemoryStream& s)
 	SPACE_ID spaceID;
 	s >> spaceID;
 
-	// Èç¹ûÎª0£¬Ôò²é¿´ËùÓĞcell
+	// å¦‚æœä¸º0ï¼Œåˆ™æŸ¥çœ‹æ‰€æœ‰cell
 	CELL_ID cellID;
 	s >> cellID;
 

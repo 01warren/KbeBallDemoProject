@@ -1,0 +1,23 @@
+<root>
+	<!--
+		L3 真实 router 进程协议测试专用配置(run_tests.ps1 -WithRouter / run_tests.sh --with-router)。
+
+		通过 KBE_RES_PATH 把这个 assets 排在 kbe/res 之前，使 router 进程只覆盖下列 <router>
+		字段，其余字段仍取 kbe/res/server/kbengine_defaults.xml 的默认值，避免污染产品配置。
+
+		端口刻意与引擎默认(20095/20096)区分，避免与本机已运行的服务端冲突；
+		pending*/suspend* 调小：I14(溢出) 只需少量报文、I15(TTL) 与挂起回滚都能在秒级看到。
+
+		改动下列数值时，必须同步 run_tests.ps1 / run_tests.sh 里对应的常量。
+	-->
+	<router>
+		<clientPort> 20295 </clientPort>			<!-- 与 run_tests.* 的 RouterClientPort 一致 -->
+		<serverPort> 20296 </serverPort>			<!-- 与 run_tests.* 的 RouterServerPort 一致 -->
+
+		<suspendTimeout> 3000 </suspendTimeout>		<!-- ms：SUSPEND 后自动回滚窗口 -->
+		<actorBufferMax> 8 </actorBufferMax>		<!-- 挂起期间单 Actor 缓冲上限 -->
+
+		<pendingTimeout> 2000 </pendingTimeout>		<!-- ms：与 run_tests.* 的 PendingTimeoutMS 一致 -->
+		<pendingBufferMax> 8 </pendingBufferMax>	<!-- 与 run_tests.* 的 PendingBufferMax 一致 -->
+	</router>
+</root>

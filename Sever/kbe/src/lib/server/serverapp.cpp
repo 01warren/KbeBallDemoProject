@@ -2,6 +2,7 @@
 
 
 #include "serverapp.h"
+#include "server/router_mail.h"
 #include "server/component_active_report_handler.h"
 #include "server/shutdowner.h"
 #include "server/serverconfig.h"
@@ -52,6 +53,7 @@ startGlobalOrder_(-1),
 startGroupOrder_(-1),
 pShutdowner_(NULL),
 pActiveTimerHandle_(NULL),
+pRouterClient_(NULL),
 threadPool_()
 {
 	networkInterface_.pChannelTimeOutHandler(this);
@@ -72,6 +74,7 @@ threadPool_()
 //-------------------------------------------------------------------------------------
 ServerApp::~ServerApp()
 {
+	stopRouter();
 	SAFE_RELEASE(pActiveTimerHandle_);
 	SAFE_RELEASE(pShutdowner_);
 }
@@ -149,6 +152,14 @@ bool ServerApp::initialize()
 		return false;
 
 	bool ret = initializeEnd();
+
+	// 接入 router(见 ServerApp::startRouter)。
+	// 只对 isRouterParticipant() 为真的组件类型生效；启动失败不阻断进程，
+	// 该进程会保持原有的 Components 直连通路(安全阀)。
+	// 放在 initializeEnd() 之后：此时各 App 的内部状态已就绪，
+	// 而 router 回调只会在 handleTimeout 里被 tick 出来，不会早于本函数返回。
+	if(ret)
+		startRouter();
 
 	// 最后仍然需要设置一次，避免期间被其他第三方库修改
 	if (!installSignals())
@@ -230,6 +241,10 @@ bool ServerApp::initThreadPool()
 //-------------------------------------------------------------------------------------		
 void ServerApp::finalise(void)
 {
+	// 先停 router：确保收尾期间不会再有 Mail 回调进来访问正在析构的进程状态。
+	// stopRouter 是幂等的，析构函数里还会再调一次。
+	stopRouter();
+
 	ProfileGroup::finalise();
 	threadPool_.finalise();
 	Network::finalise();
@@ -244,6 +259,298 @@ double ServerApp::gameTimeInSeconds() const
 //-------------------------------------------------------------------------------------
 void ServerApp::handleTimeout(TimerHandle, void * arg)
 {
+	// 所有 App 的每帧心跳最终都会收口到这里：
+	//   baseapp / cellapp  -> EntityApp::handleTimeout -> 本函数
+	//   loginapp / dbmgr   -> PythonApp::handleTimeout -> 本函数
+	//   baseappmgr / cellappmgr / router / cluster -> 直接调本函数
+	// 因此 router 的事件派发放在这里即可"一次接入、全部生效"。
+	if(pRouterClient_ != NULL && reinterpret_cast<uintptr>(arg) == TIMEOUT_GAME_TICK)
+		pRouterClient_->tick();
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::isRouterParticipant() const
+{
+	switch(componentType_)
+	{
+	case LOGINAPP_TYPE:
+	case BASEAPP_TYPE:
+	case CELLAPP_TYPE:
+	case DBMGR_TYPE:
+	case BASEAPPMGR_TYPE:
+	case CELLAPPMGR_TYPE:
+		return true;
+
+	default:
+		// 不接入的：router 自身(它也派生自 ServerApp，接入就会去连自己)、
+		// cluster(machine) / logger / bots / interfaces / kbcmd 等工具进程。
+		return false;
+	}
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::startRouter()
+{
+	if(!isRouterParticipant())
+	{
+		DEBUG_MSG(fmt::format("ServerApp::startRouter: component {} does not participate in router, skip.\n",
+			COMPONENT_NAME_EX(componentType_)));
+
+		return false;
+	}
+
+	if(pRouterClient_ != NULL)
+		return true;
+
+	pRouterClient_ = new RouterClient(componentType_, componentID_);
+
+	pRouterClient_->onMail = [this](const RouterClient::Mail& mail)
+	{
+		this->onRouterMail(mail);
+	};
+
+	pRouterClient_->onDeliveryFailed = [this](const RouterClient::DeliveryFailure& failure)
+	{
+		this->onRouterDeliveryFailed(failure);
+	};
+
+	pRouterClient_->onServiceFound =
+		[this](uint64_t requestId, const std::vector< RouterInterface::MailboxAddress >& addrs)
+	{
+		this->onRouterServiceFound(requestId, addrs);
+	};
+
+	pRouterClient_->onServiceNotFound = [this](uint64_t requestId)
+	{
+		this->onRouterServiceNotFound(requestId);
+	};
+
+	pRouterClient_->onReadyChanged = [this](bool ready)
+	{
+		INFO_MSG(fmt::format("ServerApp: component {}({}) router {}.\n",
+			COMPONENT_NAME_EX(componentType_), (uint64)componentID_,
+			ready ? "ready" : "disconnected"));
+
+		// 路由表是 router 内存中的软状态：进程(重)连后表内条目已全部丢失，
+		// 必须把本进程当前持有的**全部** Actor / Service 重新注册一遍。
+		if(ready)
+		{
+			// 组件自身也是一个 Actor：让其它进程可经 Router 按组件地址寻址本进程
+			// (CallService / 组件级消息的兜底寻址)。先于 onRouterReady() 注册，
+			// 保证派生类重建实体 Actor 时本进程的组件身份已经可用。
+			pRouterClient_->registerActor(RouterMail::localComponentMailbox());
+
+			this->onRouterReady();
+		}
+	};
+
+	pRouterClient_->onError = [this](const std::string& err)
+	{
+		WARNING_MSG(fmt::format("ServerApp: component {}({}), {}.\n",
+			COMPONENT_NAME_EX(componentType_), (uint64)componentID_, err));
+	};
+
+	if(!pRouterClient_->start(g_kbeSrvConfig.getKRouter().router_addresses,
+			g_kbeSrvConfig.getKRouter().routerServerPort))
+	{
+		ERROR_MSG(fmt::format("ServerApp::startRouter: start failed, component {}({})!\n",
+			COMPONENT_NAME_EX(componentType_), (uint64)componentID_));
+
+		SAFE_RELEASE(pRouterClient_);
+		return false;
+	}
+
+	// 把实体发信路径切到 router(见 EntityCallAbstract::newCall_ / sendCall)。
+	// 注意：置位后**不再回落**——重连期间 sendMail 返回 false、消息丢弃并回报失败，
+	// 而不是中途改走旧的 Components 直连 channel：那会造成同一对收发方
+	// 一半按 body tag 写、一半按 digest 解析的错乱。
+	RouterMail::setEnabled(true);
+
+	// 注入投递钩子(见 RouterMail::SendMailHook 的说明)。
+	// 钩子存储放在 RouterMail 而不是 EntityCallAbstract，是为了让依赖方向保持
+	// entitydef -> server，避免所有 App 工程都必须额外链接 entitydef.lib。
+	RouterMail::sendMailHook() =
+		[this](const RouterInterface::MailboxAddress& dst, uint64_t msgId, const std::string& body) -> bool
+		{
+			if(pRouterClient_ == NULL)
+				return false;
+
+			// src 填本进程的组件地址。原协议(onEntityCall / onRemoteMethodCall)本身
+			// 不携带"发送方实体"身份，收方靠自身的 entityCall 回包，这里保持同一语义。
+			return pRouterClient_->sendMail(dst, RouterMail::localComponentMailbox(), msgId, body);
+		};
+
+	return true;
+}
+
+//-------------------------------------------------------------------------------------
+void ServerApp::stopRouter()
+{
+	if(pRouterClient_ == NULL)
+		return;
+
+	// 先摘钩子再停连接：避免 stop 期间仍有回调访问正在退场的对象
+	RouterMail::sendMailHook() = RouterMail::SendMailHook();
+	RouterMail::setEnabled(false);
+
+	SAFE_RELEASE(pRouterClient_);
+}
+
+//-------------------------------------------------------------------------------------
+void ServerApp::tickRouter()
+{
+	if(pRouterClient_ != NULL)
+		pRouterClient_->tick();
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerReady() const
+{
+	return pRouterClient_ != NULL && pRouterClient_->ready();
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerRegisterActor(const RouterInterface::MailboxAddress& addr, uint64_t targetConnId)
+{
+	if(pRouterClient_ == NULL)
+		return false;
+
+	return pRouterClient_->registerActor(addr, targetConnId);
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerUnregisterActor(const RouterInterface::MailboxAddress& addr)
+{
+	if(pRouterClient_ == NULL)
+		return false;
+
+	return pRouterClient_->unregisterActor(addr);
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerSuspendActor(const RouterInterface::MailboxAddress& addr)
+{
+	if(pRouterClient_ == NULL)
+		return false;
+
+	return pRouterClient_->suspendActor(addr);
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerResumeActor(const RouterInterface::MailboxAddress& addr)
+{
+	if(pRouterClient_ == NULL)
+		return false;
+
+	return pRouterClient_->resumeActor(addr);
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerRegisterService(const std::string& name, const RouterInterface::MailboxAddress& addr)
+{
+	if(pRouterClient_ == NULL)
+		return false;
+
+	return pRouterClient_->registerService(name, addr);
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerFindService(const std::string& name, uint64_t requestId)
+{
+	if(pRouterClient_ == NULL)
+		return false;
+
+	return pRouterClient_->findService(name, requestId);
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::routerSendMail(const RouterInterface::MailboxAddress& dst, const std::string& body)
+{
+	if(pRouterClient_ == NULL)
+		return false;
+
+	return pRouterClient_->sendMail(dst, RouterMail::localComponentMailbox(),
+		RouterMail::nextMsgId(), body);
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::sendMailToComponent(const RouterInterface::MailboxAddress& dst, Network::Bundle* pBundle)
+{
+	if(pBundle == NULL)
+		return false;
+
+	if(pRouterClient_ == NULL)
+	{
+		Network::Bundle::reclaimPoolObject(pBundle);
+		return false;
+	}
+
+	// 与 Channel::send 同一约定：先 finiMessage(true) 才能得到"完整且已回填变长消息长度头"
+	// 的字节序列(见 router_mail.h::bundleToBody 的说明)。
+	pBundle->finiMessage(true);
+
+	const std::string legacyPayload = RouterMail::bundleToBody(*pBundle);
+	Network::Bundle::reclaimPoolObject(pBundle);
+
+	const std::string body = RouterMail::buildBody(RouterMail::BODY_COMPONENT_MESSAGE, legacyPayload);
+
+	const bool ok = routerSendMail(dst, body);
+
+	if(!ok)
+	{
+		WARNING_MSG(fmt::format("ServerApp::sendMailToComponent: send to {} failed, msglen={}.\n",
+			RouterMail::mailboxToString(dst), (int)legacyPayload.size()));
+	}
+
+	return ok;
+}
+
+//-------------------------------------------------------------------------------------
+bool ServerApp::sendMailToComponent(COMPONENT_ID componentID, COMPONENT_TYPE componentType,
+	Network::Bundle* pBundle)
+{
+	return sendMailToComponent(RouterMail::componentMailbox(componentID, componentType), pBundle);
+}
+
+//-------------------------------------------------------------------------------------
+void ServerApp::onRouterMail(const RouterClient::Mail& mail)
+{
+	// 基类默认实现：只留可见性提示后丢弃。
+	// 各 App 应覆写它，按 body 首字节(RouterMail::BodyTag)派发到原有的 handler。
+	WARNING_MSG(fmt::format("ServerApp::onRouterMail: component {}({}) has no dispatcher, "
+		"drop mail {} -> {}, msgId={}, size={}.\n",
+		COMPONENT_NAME_EX(componentType_), (uint64)componentID_,
+		RouterMail::mailboxToString(mail.src), RouterMail::mailboxToString(mail.dst),
+		(unsigned long long)mail.msgId, (int)mail.body.size()));
+}
+
+//-------------------------------------------------------------------------------------
+void ServerApp::onRouterDeliveryFailed(const RouterClient::DeliveryFailure& failure)
+{
+	// 默认只告警。业务若需要重试，覆写本函数并按 msgId / dst 做补偿。
+	WARNING_MSG(fmt::format("ServerApp::onRouterDeliveryFailed: component {}({}), "
+		"{} -> {}, msgId={}, code={}.\n",
+		COMPONENT_NAME_EX(componentType_), (uint64)componentID_,
+		RouterMail::mailboxToString(failure.src), RouterMail::mailboxToString(failure.dst),
+		(unsigned long long)failure.msgId, (int)failure.code));
+}
+
+//-------------------------------------------------------------------------------------
+void ServerApp::onRouterServiceFound(uint64_t requestId,
+	const std::vector< RouterInterface::MailboxAddress >& addrs)
+{
+	WARNING_MSG(fmt::format("ServerApp::onRouterServiceFound: component {}({}) has no handler, "
+		"requestId={}, addrs={}.\n",
+		COMPONENT_NAME_EX(componentType_), (uint64)componentID_,
+		(unsigned long long)requestId, (int)addrs.size()));
+}
+
+//-------------------------------------------------------------------------------------
+void ServerApp::onRouterServiceNotFound(uint64_t requestId)
+{
+	WARNING_MSG(fmt::format("ServerApp::onRouterServiceNotFound: component {}({}) has no handler, "
+		"requestId={}.\n",
+		COMPONENT_NAME_EX(componentType_), (uint64)componentID_, (unsigned long long)requestId));
 }
 
 //-------------------------------------------------------------------------------------

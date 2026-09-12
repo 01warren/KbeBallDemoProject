@@ -22,6 +22,7 @@ endif
 	$(MAKE) -C dbmgr $@
 	$(MAKE) -C loginapp $@
 	$(MAKE) -C cluster $@
+	$(MAKE) -C router $@
 	$(MAKE) -C tools $@
 
 ifdef KBE_CONFIG

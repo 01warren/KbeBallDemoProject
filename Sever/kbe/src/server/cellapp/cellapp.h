@@ -43,13 +43,13 @@ public:
 	virtual bool initializeWatcher();
 
 	/**  
-		Ïà¹Ø´¦Àí½Ó¿Ú 
+		ç›¸å…³å¤„ç†æ¥å£ 
 	*/
 	virtual void handleTimeout(TimerHandle handle, void * arg);
 	virtual void handleGameTick();
 
 	/**  
-		³õÊ¼»¯Ïà¹Ø½Ó¿Ú 
+		åˆå§‹åŒ–ç›¸å…³æ¥å£ 
 	*/
 	bool initializeBegin();
 	bool initializeEnd();
@@ -63,9 +63,9 @@ public:
 	float _getLoad() const { return getLoad(); }
 	virtual void onUpdateLoad();
 
-	/**  ÍøÂç½Ó¿Ú
-		dbmgr¸æÖªÒÑ¾­Æô¶¯µÄÆäËûbaseapp»òÕßcellappµÄµØÖ·
-		µ±Ç°appĞèÒªÖ÷¶¯µÄÈ¥ÓëËûÃÇ½¨Á¢Á¬½Ó
+	/**  ç½‘ç»œæ¥å£
+		dbmgrå‘ŠçŸ¥å·²ç»å¯åŠ¨çš„å…¶ä»–baseappæˆ–è€…cellappçš„åœ°å€
+		å½“å‰appéœ€è¦ä¸»åŠ¨çš„å»ä¸ä»–ä»¬å»ºç«‹è¿æ¥
 	*/
 	virtual void onGetEntityAppFromDbmgr(Network::Channel* pChannel, 
 							int32 uid, 
@@ -74,130 +74,130 @@ public:
 							uint32 intaddr, uint16 intport, uint32 extaddr, uint16 extport, std::string& extaddrEx);
 
 	/**
-		´´½¨ÁËÒ»¸öentity»Øµ÷
+		åˆ›å»ºäº†ä¸€ä¸ªentityå›è°ƒ
 	*/
 	virtual Entity* onCreateEntity(PyObject* pyEntity, ScriptDefModule* sm, ENTITY_ID eid);
 
 	/**  
-		´´½¨Ò»¸öentity 
+		åˆ›å»ºä¸€ä¸ªentity 
 	*/
 	static PyObject* __py_createEntity(PyObject* self, PyObject* args);
 
 	/** 
-		ÏòdbmgrÇëÇóÖ´ĞĞÒ»¸öÊı¾İ¿âÃüÁî
+		å‘dbmgrè¯·æ±‚æ‰§è¡Œä¸€ä¸ªæ•°æ®åº“å‘½ä»¤
 	*/
 	static PyObject* __py_executeRawDatabaseCommand(PyObject* self, PyObject* args);
 	void executeRawDatabaseCommand(const char* datas, uint32 size, PyObject* pycallback, ENTITY_ID eid, const std::string& dbInterfaceName);
 	void onExecuteRawDatabaseCommandCB(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		dbmgr·¢ËÍ³õÊ¼ĞÅÏ¢
-		startID: ³õÊ¼·ÖÅäENTITY_ID ¶ÎÆğÊ¼Î»ÖÃ
-		endID: ³õÊ¼·ÖÅäENTITY_ID ¶Î½áÊøÎ»ÖÃ
-		startGlobalOrder: È«¾ÖÆô¶¯Ë³Ğò °üÀ¨¸÷ÖÖ²»Í¬×é¼ş
-		startGroupOrder: ×éÄÚÆô¶¯Ë³Ğò£¬ ±ÈÈçÔÚËùÓĞbaseappÖĞµÚ¼¸¸öÆô¶¯¡£
-		machineGroupOrder: ÔÚmachineÖĞÕæÊµµÄ×éË³Ğò, Ìá¹©µ×²ãÔÚÄ³Ğ©Ê±ºòÅĞ¶ÏÊÇ·ñÎªµÚÒ»¸öcellappÊ±Ê¹ÓÃ
+	/** ç½‘ç»œæ¥å£
+		dbmgrå‘é€åˆå§‹ä¿¡æ¯
+		startID: åˆå§‹åˆ†é…ENTITY_ID æ®µèµ·å§‹ä½ç½®
+		endID: åˆå§‹åˆ†é…ENTITY_ID æ®µç»“æŸä½ç½®
+		startGlobalOrder: å…¨å±€å¯åŠ¨é¡ºåº åŒ…æ‹¬å„ç§ä¸åŒç»„ä»¶
+		startGroupOrder: ç»„å†…å¯åŠ¨é¡ºåºï¼Œ æ¯”å¦‚åœ¨æ‰€æœ‰baseappä¸­ç¬¬å‡ ä¸ªå¯åŠ¨ã€‚
+		machineGroupOrder: åœ¨machineä¸­çœŸå®çš„ç»„é¡ºåº, æä¾›åº•å±‚åœ¨æŸäº›æ—¶å€™åˆ¤æ–­æ˜¯å¦ä¸ºç¬¬ä¸€ä¸ªcellappæ—¶ä½¿ç”¨
 	*/
 	void onDbmgrInitCompleted(Network::Channel* pChannel, GAME_TIME gametime, 
 		ENTITY_ID startID, ENTITY_ID endID, COMPONENT_ORDER startGlobalOrder, COMPONENT_ORDER startGroupOrder, 
 		const std::string& digest);
 
-	/** ÍøÂç½Ó¿Ú
-		dbmgr¹ã²¥globalÊı¾İµÄ¸Ä±ä
+	/** ç½‘ç»œæ¥å£
+		dbmgrå¹¿æ’­globalæ•°æ®çš„æ”¹å˜
 	*/
 	void onBroadcastCellAppDataChanged(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		baseEntityÇëÇó´´½¨ÔÚÒ»¸öĞÂµÄspaceÖĞ
+	/** ç½‘ç»œæ¥å£
+		baseEntityè¯·æ±‚åˆ›å»ºåœ¨ä¸€ä¸ªæ–°çš„spaceä¸­
 	*/
 	void onCreateCellEntityInNewSpaceFromBaseapp(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		baseEntityÇëÇó´´½¨ÔÚÒ»¸öĞÂµÄspaceÖĞ
+	/** ç½‘ç»œæ¥å£
+		baseEntityè¯·æ±‚åˆ›å»ºåœ¨ä¸€ä¸ªæ–°çš„spaceä¸­
 	*/
 	void onRestoreSpaceInCellFromBaseapp(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 	
-	/** ÍøÂç½Ó¿Ú
-	¹¤¾ßÇëÇó¸Ä±äspace²é¿´Æ÷£¨º¬Ìí¼ÓºÍÉ¾³ı¹¦ÄÜ£©
-	Èç¹ûÊÇÇëÇó¸üĞÂ²¢ÇÒ·şÎñÆ÷ÉÏ²»´æÔÚ¸ÃµØÖ·µÄ²é¿´Æ÷Ôò×Ô¶¯´´½¨£¬Èç¹ûÊÇÉ¾³ıÔòÃ÷È·¸ø³öÉ¾³ıÒªÇó
+	/** ç½‘ç»œæ¥å£
+	å·¥å…·è¯·æ±‚æ”¹å˜spaceæŸ¥çœ‹å™¨ï¼ˆå«æ·»åŠ å’Œåˆ é™¤åŠŸèƒ½ï¼‰
+	å¦‚æœæ˜¯è¯·æ±‚æ›´æ–°å¹¶ä¸”æœåŠ¡å™¨ä¸Šä¸å­˜åœ¨è¯¥åœ°å€çš„æŸ¥çœ‹å™¨åˆ™è‡ªåŠ¨åˆ›å»ºï¼Œå¦‚æœæ˜¯åˆ é™¤åˆ™æ˜ç¡®ç»™å‡ºåˆ é™¤è¦æ±‚
 	*/
 	void setSpaceViewer(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		ÆäËûAPPÇëÇóÔÚ´ËÔÖÄÑ»Ö¸´
+	/** ç½‘ç»œæ¥å£
+		å…¶ä»–APPè¯·æ±‚åœ¨æ­¤ç¾éš¾æ¢å¤
 	*/
 	void requestRestore(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		baseappÇëÇóÔÚÕâ¸öcellappÉÏ´´½¨Ò»¸öentity
+	/** ç½‘ç»œæ¥å£
+		baseappè¯·æ±‚åœ¨è¿™ä¸ªcellappä¸Šåˆ›å»ºä¸€ä¸ªentity
 	*/
 	void onCreateCellEntityFromBaseapp(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 	void _onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID createToEntityID, ENTITY_ID entityID, 
 		MemoryStream* pCellData, bool hasClient, bool inRescore, COMPONENT_ID componentID, SPACE_ID spaceID);
 
-	/** ÍøÂç½Ó¿Ú
-		Ïú»ÙÄ³¸öcellEntity
+	/** ç½‘ç»œæ¥å£
+		é”€æ¯æŸä¸ªcellEntity
 	*/
 	void onDestroyCellEntityFromBaseapp(Network::Channel* pChannel, ENTITY_ID eid);
 
-	/** ÍøÂç½Ó¿Ú
-		entityÊÕµ½Ô¶³ÌcallÇëÇó, ÓÉÄ³¸öappÉÏµÄentitycall·¢Æğ
+	/** ç½‘ç»œæ¥å£
+		entityæ”¶åˆ°è¿œç¨‹callè¯·æ±‚, ç”±æŸä¸ªappä¸Šçš„entitycallå‘èµ·
 	*/
 	void onEntityCall(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 	
-	/** ÍøÂç½Ó¿Ú
-		client·ÃÎÊentityµÄcell·½·¨ÓÉbaseapp×ª·¢
+	/** ç½‘ç»œæ¥å£
+		clientè®¿é—®entityçš„cellæ–¹æ³•ç”±baseappè½¬å‘
 	*/
 	void onRemoteCallMethodFromClient(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		client¸üĞÂÊı¾İ
+	/** ç½‘ç»œæ¥å£
+		clientæ›´æ–°æ•°æ®
 	*/
 	void onUpdateDataFromClient(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 	void onUpdateDataFromClientForControlledEntity(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		realÇëÇó¸üĞÂÊôĞÔµ½ghost
+	/** ç½‘ç»œæ¥å£
+		realè¯·æ±‚æ›´æ–°å±æ€§åˆ°ghost
 	*/
 	void onUpdateGhostPropertys(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 	
-	/** ÍøÂç½Ó¿Ú
-		ghostÇëÇóµ÷ÓÃdef·½·¨real
+	/** ç½‘ç»œæ¥å£
+		ghostè¯·æ±‚è°ƒç”¨defæ–¹æ³•real
 	*/
 	void onRemoteRealMethodCall(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		realÇëÇó¸üĞÂÊôĞÔµ½ghost
+	/** ç½‘ç»œæ¥å£
+		realè¯·æ±‚æ›´æ–°å±æ€§åˆ°ghost
 	*/
 	void onUpdateGhostVolatileData(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		baseÇëÇó»ñÈ¡celldata
+	/** ç½‘ç»œæ¥å£
+		baseè¯·æ±‚è·å–celldata
 	*/
 	void reqBackupEntityCellData(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		baseÇëÇó»ñÈ¡WriteToDB
+	/** ç½‘ç»œæ¥å£
+		baseè¯·æ±‚è·å–WriteToDB
 	*/
 	void reqWriteToDBFromBaseapp(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		¿Í»§¶ËÖ±½Ó·¢ËÍÏûÏ¢¸øcellÊµÌå
+	/** ç½‘ç»œæ¥å£
+		å®¢æˆ·ç«¯ç›´æ¥å‘é€æ¶ˆæ¯ç»™cellå®ä½“
 	*/
 	void forwardEntityMessageToCellappFromClient(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		ÇëÇóÉèÖÃflags
+	/** ç½‘ç»œæ¥å£
+		è¯·æ±‚è®¾ç½®flags
 	*/
 	void reqSetFlags(Network::Channel* pChannel, MemoryStream& s);
 
 	/**
-		»ñÈ¡ÓÎÏ·Ê±¼ä
+		è·å–æ¸¸æˆæ—¶é—´
 	*/
 	static PyObject* __py_gametime(PyObject* self, PyObject* args);
 
 	/**
-		Ìí¼ÓÓëÉ¾³ıÒ»¸öUpdatable¶ÔÏó
+		æ·»åŠ ä¸åˆ é™¤ä¸€ä¸ªUpdatableå¯¹è±¡
 	*/
 	bool addUpdatable(Updatable* pObject);
 	bool removeUpdatable(Updatable* pObject);
@@ -207,40 +207,88 @@ public:
 	*/
 	RemoteEntityMethod* createEntityCallCallEntityRemoteMethod(MethodDescription* pMethodDescription, EntityCallAbstract* pEntityCall);
 
-	/** ÍøÂç½Ó¿Ú
-		Ä³¸öappÇëÇó²é¿´¸Ãapp
+	/** ç½‘ç»œæ¥å£
+		æŸä¸ªappè¯·æ±‚æŸ¥çœ‹è¯¥app
 	*/
 	virtual void lookApp(Network::Channel* pChannel);
 
 	/**
-		ÖØĞÂµ¼ÈëËùÓĞµÄ½Å±¾
+		é‡æ–°å¯¼å…¥æ‰€æœ‰çš„è„šæœ¬
 	*/
 	static PyObject* __py_reloadScript(PyObject* self, PyObject* args);
 	virtual void reloadScript(bool fullReload);
 	virtual void onReloadScript(bool fullReload);
 
 	/**
-		»ñÈ¡½ø³ÌÊÇ·ñÕıÔÚ¹Ø±ÕÖĞ
+		è·å–è¿›ç¨‹æ˜¯å¦æ­£åœ¨å…³é—­ä¸­
 	*/
 	static PyObject* __py_isShuttingDown(PyObject* self, PyObject* args);
 
 	/**
-		»ñÈ¡½ø³ÌÄÚ²¿ÍøÂçµØÖ·
+		è·å–è¿›ç¨‹å†…éƒ¨ç½‘ç»œåœ°å€
 	*/
 	static PyObject* __py_address(PyObject* self, PyObject* args);
 
 	WitnessedTimeoutHandler	* pWitnessedTimeoutHandler(){ return pWitnessedTimeoutHandler_; }
 
 	/**
-		ÍøÂç½Ó¿Ú
-		ÁíÒ»¸öcellappµÄentityÒªteleportµ½±¾cellappÉÏµÄspaceÖĞ
+		ç½‘ç»œæ¥å£
+		å¦ä¸€ä¸ªcellappçš„entityè¦teleportåˆ°æœ¬cellappä¸Šçš„spaceä¸­
 	*/
 	void reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s);
 	void reqTeleportToCellAppCB(Network::Channel* pChannel, MemoryStream& s);
 	void reqTeleportToCellAppOver(Network::Channel* pChannel, MemoryStream& s);
 
+	// ------------------------------------------------------------------
+	// Router æ¥å…¥(è§ ServerApp ä¸ docs/kbe_router_design.md)
+	//
+	// cell å®ä½“ Actor åœ°å€åªç”± entityID å†³å®šï¼šMailboxAddress{MAILBOX_ENTITY,
+	// componentType=CELLAPP_TYPE, actorId=entityID}ã€‚base éƒ¨åˆ†(å®¿ä¸» baseapp)ä¸
+	// cell éƒ¨åˆ†(å®¿ä¸» cellapp)æ˜¯åŒä¸€ entityID ä¸‹çš„ä¸¤ä¸ª Actorï¼ŒRouter ä¾§é  componentType åŒºåˆ†ã€‚
+	//
+	// åªæœ‰"çœŸå®ä½“"æ‰€åœ¨è¿›ç¨‹æ‰æ³¨å†Œè¯¥åœ°å€ï¼Œghost ä¸æ³¨å†Œâ€”â€”å¦åˆ™è·¯ç”±ä¼šåœ¨
+	// "çœŸå®ä½“å®¿ä¸»"ä¸"ghost å®¿ä¸»"ä¹‹é—´æ¥å›æŠ–åŠ¨ã€‚è¿ç§»æœŸé—´ç”± SUSPEND/RESUME
+	// ä¿è¯æ¶ˆæ¯æ—¢ä¸ä¸¢ä¹Ÿä¸æŠ•é”™ï¼Œå–ä»£äº†æ—§ ghost è½¬å‘ç¼“å†²ã€‚
+	// ------------------------------------------------------------------
+
+	/** entity åˆ›å»ºåæ³¨å†Œ cell å®ä½“ Actor(ä»…çœŸå®ä½“) */
+	virtual void onEntityCreated(Entity* entity);
+
+	/** entity é”€æ¯å‰æ³¨é”€ cell å®ä½“ Actor */
+	virtual void onEntityDestroyed(Entity* entity);
+
+	/** router(é‡)è¿æˆåŠŸï¼šé‡å»ºæœ¬è¿›ç¨‹å…¨éƒ¨çœŸå®ä½“ Actor */
+	virtual void onRouterReady();
+
+	/** æ”¶åˆ°æŠ•é€’åˆ°æœ¬è¿›ç¨‹çš„ Mailï¼šæŒ‰ RouterMail::BodyTag æ´¾å‘åˆ°åŸæœ‰ handler */
+	virtual void onRouterMail(const RouterClient::Mail& mail);
+
 	/**
-		»ñÈ¡ºÍÉèÖÃghost¹ÜÀíÆ÷
+		ç» Router å‘æŸå®ä½“å¯¹åº”çš„å®¢æˆ·ç«¯ Actor æŠ•é€’ä¸€æ®µ"æ‹å¹³çš„ legacy client æ¶ˆæ¯è½½è·"ã€‚
+
+		body tag ä¸º RouterMail::BODY_CLIENT_MESSAGEï¼Œå®¢æˆ·ç«¯æŒ‰åŸæœ‰ MessageHandlers
+		é€æ¡è§£æå³å¯ï¼Œå› æ­¤å®¢æˆ·ç«¯æ¶ˆæ¯å±‚æ— éœ€ä¸º Router åšè§£ææ”¹åŠ¨ã€‚ä¸ baseapp çš„
+		Baseapp::sendMailToClientActor ä¿æŒåŒä¸€çº¦å®š(cellapp ä¸å†ç›´è¿å®¢æˆ·ç«¯)ã€‚
+
+		ä»… Router æ¨¡å¼å¯ç”¨ï¼›è¿”å› false æ—¶è°ƒç”¨æ–¹åº”å›é€€åˆ°åŸæœ‰ç›´è¿ Channel é€šè·¯ã€‚
+	*/
+	bool sendMailToClientActor(ENTITY_ID eid, const std::string& bundleBody);
+
+	/**
+		åŒä¸Šï¼Œä½†å…¥å‚æ˜¯"ç» baseapp ä¸­ç»§çš„ legacy client æ¶ˆæ¯"Bundleï¼š
+		æœ¬å‡½æ•°è´Ÿè´£ finiMessage -> æ‹å¹³ -> å‰¥æ‰ BaseappInterface::
+		forwardMessageToClientFromCellapp è¿™å±‚ä¸­ç»§å¤–å£³ -> æŠ•é€’ -> å›æ”¶ã€‚
+
+		æ³¨æ„ eid å¿…é¡»ä¸æ„é€  bundle æ—¶ NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_*
+		å†™å…¥çš„ entityID ä¸€è‡´(å³"è¯¥æ¶ˆæ¯è¦æŠ•é€’åˆ°çš„å®¢æˆ·ç«¯")ï¼Œå‰¥å£³æ—¶ä¼šåšä¸€è‡´æ€§æ ¡éªŒã€‚
+
+		@return true  Router æ¨¡å¼ä¸‹ pBundle å·²è¢«æ¶ˆè´¹(è°ƒç”¨æ–¹ä¸å¾—å†ä½¿ç”¨)ï¼›
+		        false æœªå¯ç”¨ Routerï¼ŒpBundle ä»å½’è°ƒç”¨æ–¹æ‰€æœ‰(ç”¨äºå›é€€æ—§é€šè·¯)ã€‚
+	*/
+	bool sendBundleToClientActor(ENTITY_ID eid, Network::Bundle* pBundle);
+
+	/**
+		è·å–å’Œè®¾ç½®ghostç®¡ç†å™¨
 	*/
 	void pGhostManager(GhostManager* v){ pGhostManager_ = v; }
 	GhostManager* pGhostManager() const{ return pGhostManager_; }
@@ -248,7 +296,7 @@ public:
 	ArraySize spaceSize() const { return (ArraySize)SpaceMemorys::size(); }
 
 	/** 
-		ÉäÏß 
+		å°„çº¿ 
 	*/
 	int raycast(SPACE_ID spaceID, int layer, const Position3D& start, const Position3D& end, std::vector<Position3D>& hitPos);
 	static PyObject* __py_raycast(PyObject* self, PyObject* args);
@@ -266,7 +314,7 @@ protected:
 
 	Updatables							updatables_;
 
-	// ËùÓĞµÄcell
+	// æ‰€æœ‰çš„cell
 	Cells								cells_;
 
 	TelnetServer*						pTelnetServer_;
@@ -275,10 +323,10 @@ protected:
 
 	GhostManager*						pGhostManager_;
 	
-	// APPµÄ±êÖ¾
+	// APPçš„æ ‡å¿—
 	uint32								flags_;
 
-	// Í¨¹ı¹¤¾ß²é¿´space
+	// é€šè¿‡å·¥å…·æŸ¥çœ‹space
 	SpaceViewers						spaceViewers_;
 
 	InitProgressHandler*				pInitProgressHandler_;
